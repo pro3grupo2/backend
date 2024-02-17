@@ -1,0 +1,8 @@
+# Carpetas
+.idea
+.vscode
+node_modules
+build
+
+# Ficheros
+.env

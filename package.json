@@ -1,0 +1,12 @@
+{
+  "name": "proyectos3-backend",
+  "version": "1.0.0",
+  "description": "Backend del proyecto",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js"
+  },
+  "author": "Adrian Toral",
+  "license": "GPL-3.0"
+}

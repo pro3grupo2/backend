@@ -20,7 +20,7 @@ const get_usuario_and_verify_password = async (correo, password) => {
         }
     })
 
-    if (data.password !== password) return null
+    if (data && data.password !== password) return null
 
     return jwt.sign({id: data.id}, process.env.JWT_SECRET, {expiresIn: '1d'})
 }

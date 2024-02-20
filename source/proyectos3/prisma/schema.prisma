@@ -1,0 +1,173 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("MYSQL_URL")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model administradores {
+  id_usuario Int?
+  usuarios   usuarios? @relation(fields: [id_usuario], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "administradores_ibfk_1")
+
+  @@index([id_usuario], map: "id_usuario")
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model alumnos {
+  id_usuario    Int?
+  id_titulacion Int?
+  promocion     Int?
+  usuarios      usuarios?     @relation(fields: [id_usuario], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "alumnos_ibfk_1")
+  titulaciones  titulaciones? @relation(fields: [id_titulacion], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "alumnos_ibfk_2")
+
+  @@index([id_titulacion], map: "id_titulacion")
+  @@index([id_usuario], map: "id_usuario")
+  @@ignore
+}
+
+model asignaturas {
+  id                       Int                        @id @default(autoincrement())
+  titulo                   String?                    @db.VarChar(50)
+  curso                    Int?
+  letra                    String?                    @db.Char(1)
+  asignaturas_materias     asignaturas_materias[]     @ignore
+  asignaturas_titulaciones asignaturas_titulaciones[] @ignore
+  proyectos                proyectos[]
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model asignaturas_materias {
+  id_asignatura Int?
+  id_materia    Int?
+  asignaturas   asignaturas? @relation(fields: [id_asignatura], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "asignaturas_materias_ibfk_1")
+  materias      materias?    @relation(fields: [id_materia], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "asignaturas_materias_ibfk_2")
+
+  @@index([id_asignatura], map: "id_asignatura")
+  @@index([id_materia], map: "id_materia")
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model asignaturas_titulaciones {
+  id_asignatura Int?
+  id_titulacion Int?
+  asignaturas   asignaturas?  @relation(fields: [id_asignatura], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "asignaturas_titulaciones_ibfk_1")
+  titulaciones  titulaciones? @relation(fields: [id_titulacion], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "asignaturas_titulaciones_ibfk_2")
+
+  @@index([id_asignatura], map: "id_asignatura")
+  @@index([id_titulacion], map: "id_titulacion")
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model creadores {
+  id_usuario Int?
+  usuarios   usuarios? @relation(fields: [id_usuario], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "creadores_ibfk_1")
+
+  @@index([id_usuario], map: "id_usuario")
+  @@ignore
+}
+
+model departamentos {
+  id                     Int                      @id @default(autoincrement())
+  titulo                 String?                  @db.VarChar(50)
+  departamentos_usuarios departamentos_usuarios[] @ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model departamentos_usuarios {
+  id_usuario      Int?
+  id_departamento Int?
+  usuarios        usuarios?      @relation(fields: [id_usuario], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "departamentos_usuarios_ibfk_1")
+  departamentos   departamentos? @relation(fields: [id_departamento], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "departamentos_usuarios_ibfk_2")
+
+  @@index([id_departamento], map: "id_departamento")
+  @@index([id_usuario], map: "id_usuario")
+  @@ignore
+}
+
+model materias {
+  id                   Int                    @id @default(autoincrement())
+  titulo               String?                @db.VarChar(50)
+  asignaturas_materias asignaturas_materias[] @ignore
+}
+
+model premios {
+  id                Int                 @id @default(autoincrement())
+  titulo            String?             @db.VarChar(50)
+  proyectos_premios proyectos_premios[] @ignore
+}
+
+model proyectos {
+  id                 Int                  @id @default(autoincrement())
+  id_creador         Int?
+  id_asignatura      Int?
+  titulo             String?              @db.VarChar(100)
+  ficha_tecnica      String?              @db.Text
+  ruta_fichero       String?              @db.VarChar(100)
+  ruta_imagen        String?              @db.VarChar(100)
+  usuarios           usuarios?            @relation(fields: [id_creador], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "proyectos_ibfk_1")
+  asignaturas        asignaturas?         @relation(fields: [id_asignatura], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "proyectos_ibfk_2")
+  proyectos_premios  proyectos_premios[]  @ignore
+  proyectos_usuarios proyectos_usuarios[] @ignore
+
+  @@index([id_asignatura], map: "id_asignatura")
+  @@index([id_creador], map: "id_creador")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model proyectos_premios {
+  id_proyecto Int?
+  id_premio   Int?
+  anio        Int?
+  proyectos   proyectos? @relation(fields: [id_proyecto], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "proyectos_premios_ibfk_1")
+  premios     premios?   @relation(fields: [id_premio], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "proyectos_premios_ibfk_2")
+
+  @@index([id_premio], map: "id_premio")
+  @@index([id_proyecto], map: "id_proyecto")
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model proyectos_usuarios {
+  id_proyecto Int?
+  id_usuario  Int?
+  proyectos   proyectos? @relation(fields: [id_proyecto], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "proyectos_usuarios_ibfk_1")
+  usuarios    usuarios?  @relation(fields: [id_usuario], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "proyectos_usuarios_ibfk_2")
+
+  @@index([id_proyecto], map: "id_proyecto")
+  @@index([id_usuario], map: "id_usuario")
+  @@ignore
+}
+
+model titulaciones {
+  id                       Int                        @id @default(autoincrement())
+  titulo                   String?                    @db.VarChar(50)
+  alumnos                  alumnos[]                  @ignore
+  asignaturas_titulaciones asignaturas_titulaciones[] @ignore
+}
+
+model usuarios {
+  id                     Int                      @id @default(autoincrement())
+  correo                 String?                  @unique(map: "correo") @db.VarChar(50)
+  nombre_completo        String?                  @db.VarChar(50)
+  alias                  String?                  @unique(map: "alias") @db.VarChar(50)
+  password               String?                  @db.VarChar(102)
+  frase_recuperacion     String?                  @db.VarChar(100)
+  administradores        administradores[]        @ignore
+  alumnos                alumnos[]                @ignore
+  creadores              creadores[]              @ignore
+  departamentos_usuarios departamentos_usuarios[] @ignore
+  proyectos              proyectos[]
+  proyectos_usuarios     proyectos_usuarios[]     @ignore
+}

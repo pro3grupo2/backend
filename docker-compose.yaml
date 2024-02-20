@@ -1,0 +1,56 @@
+# Docker compose file
+networks:
+  internalNetwork:
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.19.0.0/24"
+
+services:
+  nodejs:
+    build: ./source
+
+    ports:
+      - "80:3000"
+
+    volumes:
+      - ./out/files:/files
+
+    networks:
+      internalNetwork:
+        ipv4_address: 172.19.0.3
+
+    depends_on:
+      mysql_database:
+        condition: service_healthy
+
+    restart: always
+
+  mysql_database:
+    image: mysql:8.3.0
+
+    environment:
+      MYSQL_ROOT_PASSWORD: PR0Y3C7053R00T
+      MYSQL_DATABASE: proyectos3
+      MYSQL_USER: proyectos3
+      MYSQL_PASSWORD: PR0Y3C7053
+
+    ports:
+      - "3306:3306" # Quitar en producción para que solo sea accesible desde la red interna
+
+    command: [
+      '--wait_timeout=31536000'
+    ]
+
+    volumes:
+      - ./out/mysql:/var/lib/mysql/
+      - ./source/databases/mysql:/docker-entrypoint-initdb.d
+
+    networks:
+      internalNetwork:
+        ipv4_address: 172.19.0.2
+
+    healthcheck:
+      test: [ 'CMD', 'mysqladmin', 'ping', '-h', 'localhost' ]
+      timeout: 20s
+      retries: 10

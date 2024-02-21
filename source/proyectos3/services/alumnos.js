@@ -70,9 +70,9 @@ const update_alumno = async (alumno_id, alumno_nuevo) => {
             where: {
                 id: alumno_id
             }, data: {
-                id_usuario: alumno.id_usuario,
-                id_titulacion: alumno.id_titulacion,
-                promocion: alumno.promocion
+                id_usuario: alumno_nuevo.id_usuario,
+                id_titulacion: alumno_nuevo.id_titulacion,
+                promocion: alumno_nuevo.promocion
             }
         })
     } catch (e) {

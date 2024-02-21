@@ -1,0 +1,34 @@
+
+### /api/v1/proyectos/
+GET http://localhost:3000/api/v1/proyectos/
+Authorization: Bearer {{auth_token}}
+
+### /api/v1/proyectos/
+POST http://localhost:3000/api/v1/proyectos/
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "id_creador": 1,
+  "titulo": "proyecto.titulo",
+  "ficha_tecnica": "proyecto.ficha_tecnica",
+  "ruta_fichero": "proyecto.ruta_fichero",
+  "ruta_imagen": "proyecto.ruta_imagen"
+}
+
+### /api/v1/proyectos/1
+GET http://localhost:3000/api/v1/proyectos/1
+Authorization: Bearer {{auth_token}}
+
+### /api/v1/proyectos/1
+PUT http://localhost:3000/api/v1/proyectos/1
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "titulo": "proyecto.titulo mejorado"
+}
+
+### /api/v1/proyectos/1
+DELETE http://localhost:3000/api/v1/proyectos/1
+Authorization: Bearer {{auth_token}}

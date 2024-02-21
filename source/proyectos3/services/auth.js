@@ -68,6 +68,19 @@ const get_usuario_by_id = async (usuario_id) => {
     return prisma.usuarios.findUnique({
         where: {
             id: usuario_id
+        },
+        select: {
+            id: true,
+            correo: true,
+            nombre_completo: true,
+            alias: true,
+            proyectos: {
+                select: {
+                    id: true,
+                    titulo: true,
+                    ruta_imagen: true,
+                }
+            }
         }
     })
 }

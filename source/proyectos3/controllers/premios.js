@@ -31,7 +31,7 @@ const update_premio = async (req, res) => {
     const {body} = req
     const data = await premios_service.update_premio(parseInt(req.params.premio_id), body)
 
-    if (!data) return res.status(400).send({data: "Bad Request"})
+    if (!data) return res.status(404).send({data: "Not Found"})
 
     return res.send({
         data: data

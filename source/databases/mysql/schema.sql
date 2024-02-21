@@ -32,7 +32,9 @@ DROP TABLE IF EXISTS `administradores`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `administradores`
 (
+    `id`         int NOT NULL AUTO_INCREMENT,
     `id_usuario` int DEFAULT NULL,
+    PRIMARY KEY (`id`),
     KEY `id_usuario` (`id_usuario`),
     CONSTRAINT `administradores_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`)
 ) ENGINE = InnoDB
@@ -44,12 +46,14 @@ CREATE TABLE `administradores`
 -- Dumping data for table `administradores`
 --
 
-LOCK TABLES `administradores` WRITE;
+LOCK
+    TABLES `administradores` WRITE;
 /*!40000 ALTER TABLE `administradores`
     DISABLE KEYS */;
 /*!40000 ALTER TABLE `administradores`
     ENABLE KEYS */;
-UNLOCK TABLES;
+UNLOCK
+    TABLES;
 
 --
 -- Table structure for table `alumnos`
@@ -60,9 +64,11 @@ DROP TABLE IF EXISTS `alumnos`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `alumnos`
 (
+    `id`            int NOT NULL AUTO_INCREMENT,
     `id_usuario`    int DEFAULT NULL,
     `id_titulacion` int DEFAULT NULL,
     `promocion`     int DEFAULT NULL,
+    PRIMARY KEY (`id`),
     KEY `id_usuario` (`id_usuario`),
     KEY `id_titulacion` (`id_titulacion`),
     CONSTRAINT `alumnos_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`),
@@ -76,12 +82,14 @@ CREATE TABLE `alumnos`
 -- Dumping data for table `alumnos`
 --
 
-LOCK TABLES `alumnos` WRITE;
+LOCK
+    TABLES `alumnos` WRITE;
 /*!40000 ALTER TABLE `alumnos`
     DISABLE KEYS */;
 /*!40000 ALTER TABLE `alumnos`
     ENABLE KEYS */;
-UNLOCK TABLES;
+UNLOCK
+    TABLES;
 
 --
 -- Table structure for table `asignaturas`
@@ -106,12 +114,14 @@ CREATE TABLE `asignaturas`
 -- Dumping data for table `asignaturas`
 --
 
-LOCK TABLES `asignaturas` WRITE;
+LOCK
+    TABLES `asignaturas` WRITE;
 /*!40000 ALTER TABLE `asignaturas`
     DISABLE KEYS */;
 /*!40000 ALTER TABLE `asignaturas`
     ENABLE KEYS */;
-UNLOCK TABLES;
+UNLOCK
+    TABLES;
 
 --
 -- Table structure for table `asignaturas_materias`
@@ -122,8 +132,9 @@ DROP TABLE IF EXISTS `asignaturas_materias`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `asignaturas_materias`
 (
-    `id_asignatura` int DEFAULT NULL,
-    `id_materia`    int DEFAULT NULL,
+    `id_asignatura` int NOT NULL,
+    `id_materia`    int NOT NULL,
+    PRIMARY KEY (`id_asignatura`, `id_materia`),
     KEY `id_asignatura` (`id_asignatura`),
     KEY `id_materia` (`id_materia`),
     CONSTRAINT `asignaturas_materias_ibfk_1` FOREIGN KEY (`id_asignatura`) REFERENCES `asignaturas` (`id`),
@@ -137,12 +148,14 @@ CREATE TABLE `asignaturas_materias`
 -- Dumping data for table `asignaturas_materias`
 --
 
-LOCK TABLES `asignaturas_materias` WRITE;
+LOCK
+    TABLES `asignaturas_materias` WRITE;
 /*!40000 ALTER TABLE `asignaturas_materias`
     DISABLE KEYS */;
 /*!40000 ALTER TABLE `asignaturas_materias`
     ENABLE KEYS */;
-UNLOCK TABLES;
+UNLOCK
+    TABLES;
 
 --
 -- Table structure for table `asignaturas_titulaciones`
@@ -153,8 +166,9 @@ DROP TABLE IF EXISTS `asignaturas_titulaciones`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `asignaturas_titulaciones`
 (
-    `id_asignatura` int DEFAULT NULL,
-    `id_titulacion` int DEFAULT NULL,
+    `id_asignatura` int NOT NULL,
+    `id_titulacion` int NOT NULL,
+    PRIMARY KEY (`id_asignatura`, `id_titulacion`),
     KEY `id_asignatura` (`id_asignatura`),
     KEY `id_titulacion` (`id_titulacion`),
     CONSTRAINT `asignaturas_titulaciones_ibfk_1` FOREIGN KEY (`id_asignatura`) REFERENCES `asignaturas` (`id`),
@@ -168,12 +182,14 @@ CREATE TABLE `asignaturas_titulaciones`
 -- Dumping data for table `asignaturas_titulaciones`
 --
 
-LOCK TABLES `asignaturas_titulaciones` WRITE;
+LOCK
+    TABLES `asignaturas_titulaciones` WRITE;
 /*!40000 ALTER TABLE `asignaturas_titulaciones`
     DISABLE KEYS */;
 /*!40000 ALTER TABLE `asignaturas_titulaciones`
     ENABLE KEYS */;
-UNLOCK TABLES;
+UNLOCK
+    TABLES;
 
 --
 -- Table structure for table `creadores`
@@ -184,7 +200,9 @@ DROP TABLE IF EXISTS `creadores`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `creadores`
 (
+    `id`         int NOT NULL AUTO_INCREMENT,
     `id_usuario` int DEFAULT NULL,
+    PRIMARY KEY (`id`),
     KEY `id_usuario` (`id_usuario`),
     CONSTRAINT `creadores_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`)
 ) ENGINE = InnoDB
@@ -196,12 +214,14 @@ CREATE TABLE `creadores`
 -- Dumping data for table `creadores`
 --
 
-LOCK TABLES `creadores` WRITE;
+LOCK
+    TABLES `creadores` WRITE;
 /*!40000 ALTER TABLE `creadores`
     DISABLE KEYS */;
 /*!40000 ALTER TABLE `creadores`
     ENABLE KEYS */;
-UNLOCK TABLES;
+UNLOCK
+    TABLES;
 
 --
 -- Table structure for table `departamentos`
@@ -224,12 +244,14 @@ CREATE TABLE `departamentos`
 -- Dumping data for table `departamentos`
 --
 
-LOCK TABLES `departamentos` WRITE;
+LOCK
+    TABLES `departamentos` WRITE;
 /*!40000 ALTER TABLE `departamentos`
     DISABLE KEYS */;
 /*!40000 ALTER TABLE `departamentos`
     ENABLE KEYS */;
-UNLOCK TABLES;
+UNLOCK
+    TABLES;
 
 --
 -- Table structure for table `departamentos_usuarios`
@@ -240,8 +262,9 @@ DROP TABLE IF EXISTS `departamentos_usuarios`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `departamentos_usuarios`
 (
-    `id_usuario`      int DEFAULT NULL,
-    `id_departamento` int DEFAULT NULL,
+    `id_usuario`      int NOT NULL,
+    `id_departamento` int NOT NULL,
+    PRIMARY KEY (`id_usuario`, `id_departamento`),
     KEY `id_usuario` (`id_usuario`),
     KEY `id_departamento` (`id_departamento`),
     CONSTRAINT `departamentos_usuarios_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`),
@@ -255,12 +278,14 @@ CREATE TABLE `departamentos_usuarios`
 -- Dumping data for table `departamentos_usuarios`
 --
 
-LOCK TABLES `departamentos_usuarios` WRITE;
+LOCK
+    TABLES `departamentos_usuarios` WRITE;
 /*!40000 ALTER TABLE `departamentos_usuarios`
     DISABLE KEYS */;
 /*!40000 ALTER TABLE `departamentos_usuarios`
     ENABLE KEYS */;
-UNLOCK TABLES;
+UNLOCK
+    TABLES;
 
 --
 -- Table structure for table `materias`
@@ -283,12 +308,14 @@ CREATE TABLE `materias`
 -- Dumping data for table `materias`
 --
 
-LOCK TABLES `materias` WRITE;
+LOCK
+    TABLES `materias` WRITE;
 /*!40000 ALTER TABLE `materias`
     DISABLE KEYS */;
 /*!40000 ALTER TABLE `materias`
     ENABLE KEYS */;
-UNLOCK TABLES;
+UNLOCK
+    TABLES;
 
 --
 -- Table structure for table `premios`
@@ -311,12 +338,14 @@ CREATE TABLE `premios`
 -- Dumping data for table `premios`
 --
 
-LOCK TABLES `premios` WRITE;
+LOCK
+    TABLES `premios` WRITE;
 /*!40000 ALTER TABLE `premios`
     DISABLE KEYS */;
 /*!40000 ALTER TABLE `premios`
     ENABLE KEYS */;
-UNLOCK TABLES;
+UNLOCK
+    TABLES;
 
 --
 -- Table structure for table `proyectos`
@@ -348,12 +377,14 @@ CREATE TABLE `proyectos`
 -- Dumping data for table `proyectos`
 --
 
-LOCK TABLES `proyectos` WRITE;
+LOCK
+    TABLES `proyectos` WRITE;
 /*!40000 ALTER TABLE `proyectos`
     DISABLE KEYS */;
 /*!40000 ALTER TABLE `proyectos`
     ENABLE KEYS */;
-UNLOCK TABLES;
+UNLOCK
+    TABLES;
 
 --
 -- Table structure for table `proyectos_premios`
@@ -364,9 +395,10 @@ DROP TABLE IF EXISTS `proyectos_premios`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `proyectos_premios`
 (
-    `id_proyecto` int DEFAULT NULL,
-    `id_premio`   int DEFAULT NULL,
+    `id_proyecto` int NOT NULL,
+    `id_premio`   int NOT NULL,
     `anio`        int DEFAULT NULL,
+    PRIMARY KEY (`id_proyecto`, `id_premio`),
     KEY `id_proyecto` (`id_proyecto`),
     KEY `id_premio` (`id_premio`),
     CONSTRAINT `proyectos_premios_ibfk_1` FOREIGN KEY (`id_proyecto`) REFERENCES `proyectos` (`id`),
@@ -380,12 +412,14 @@ CREATE TABLE `proyectos_premios`
 -- Dumping data for table `proyectos_premios`
 --
 
-LOCK TABLES `proyectos_premios` WRITE;
+LOCK
+    TABLES `proyectos_premios` WRITE;
 /*!40000 ALTER TABLE `proyectos_premios`
     DISABLE KEYS */;
 /*!40000 ALTER TABLE `proyectos_premios`
     ENABLE KEYS */;
-UNLOCK TABLES;
+UNLOCK
+    TABLES;
 
 --
 -- Table structure for table `proyectos_usuarios`
@@ -396,8 +430,9 @@ DROP TABLE IF EXISTS `proyectos_usuarios`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `proyectos_usuarios`
 (
-    `id_proyecto` int DEFAULT NULL,
-    `id_usuario`  int DEFAULT NULL,
+    `id_proyecto` int NOT NULL,
+    `id_usuario`  int NOT NULL,
+    PRIMARY KEY (`id_proyecto`, `id_usuario`),
     KEY `id_proyecto` (`id_proyecto`),
     KEY `id_usuario` (`id_usuario`),
     CONSTRAINT `proyectos_usuarios_ibfk_1` FOREIGN KEY (`id_proyecto`) REFERENCES `proyectos` (`id`),
@@ -411,12 +446,14 @@ CREATE TABLE `proyectos_usuarios`
 -- Dumping data for table `proyectos_usuarios`
 --
 
-LOCK TABLES `proyectos_usuarios` WRITE;
+LOCK
+    TABLES `proyectos_usuarios` WRITE;
 /*!40000 ALTER TABLE `proyectos_usuarios`
     DISABLE KEYS */;
 /*!40000 ALTER TABLE `proyectos_usuarios`
     ENABLE KEYS */;
-UNLOCK TABLES;
+UNLOCK
+    TABLES;
 
 --
 -- Table structure for table `titulaciones`
@@ -439,12 +476,14 @@ CREATE TABLE `titulaciones`
 -- Dumping data for table `titulaciones`
 --
 
-LOCK TABLES `titulaciones` WRITE;
+LOCK
+    TABLES `titulaciones` WRITE;
 /*!40000 ALTER TABLE `titulaciones`
     DISABLE KEYS */;
 /*!40000 ALTER TABLE `titulaciones`
     ENABLE KEYS */;
-UNLOCK TABLES;
+UNLOCK
+    TABLES;
 
 --
 -- Table structure for table `usuarios`
@@ -473,12 +512,14 @@ CREATE TABLE `usuarios`
 -- Dumping data for table `usuarios`
 --
 
-LOCK TABLES `usuarios` WRITE;
+LOCK
+    TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios`
     DISABLE KEYS */;
 /*!40000 ALTER TABLE `usuarios`
     ENABLE KEYS */;
-UNLOCK TABLES;
+UNLOCK
+    TABLES;
 /*!40103 SET TIME_ZONE = @OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE = @OLD_SQL_MODE */;
@@ -489,4 +530,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2024-02-20 13:22:32
+-- Dump completed on 2024-02-21 10:42:59

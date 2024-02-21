@@ -7,7 +7,9 @@ Content-Type: application/json
   "password": "12345"
 }
 
-> {%client.global.set("auth_token", response.body.data.token);%}
+> {%
+    client.global.set("auth_token", response.body.data.token);
+%}
 
 ### /api/v1/auth/signin - FAIL
 POST http://localhost:3000/api/v1/auth/signin
@@ -56,7 +58,7 @@ GET http://localhost:3000/api/v1/premios/1
 Authorization: Bearer {{auth_token}}
 
 ### /api/v1/premios/1
-PUT http://localhost:3000/api/v1/premios/10
+PUT http://localhost:3000/api/v1/premios/1
 Authorization: Bearer {{auth_token}}
 Content-Type: application/json
 

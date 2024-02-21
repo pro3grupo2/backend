@@ -7,17 +7,13 @@ Content-Type: application/json
   "password": "12345"
 }
 
-> {%
-    client.global.set("auth_token", response.body.data.token);
-%}
-
 ### /api/v1/auth/signin - FAIL
 POST http://localhost:3000/api/v1/auth/signin
 Content-Type: application/json
 
 {
-  "correo": "adriantoral@live.u-tad.com",
-  "password": "123456"
+  "correo": "adria@live.u-tad.com",
+  "password": "123"
 }
 
 ### /api/v1/auth/signup
@@ -25,16 +21,17 @@ POST http://localhost:3000/api/v1/auth/signup
 Content-Type: application/json
 
 {
-  "correo": "adriantoral@live.u-tad.com",
+  "correo": "adria@live.u-tad.com",
   "nombre_completo": "Adrian Toral",
-  "alias": "adriantoral",
-  "password": "12345",
+  "alias": "adroral",
+  "password": "123",
   "frase_recuperacion": "adriantoral"
 }
 
 ### /api/v1/auth/me
 GET http://localhost:3000/api/v1/auth/me
-Authorization: Bearer {{auth_token}}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzA4NTMyMjkxLCJleHAiOjE3MDg2MTg2OTF9.opTJiMob5173O3gBPoZoyfo4N5B7EV5G4jS_bLmAzPQ
+
 
 ### /api/v1/auth/me - FAIl
 GET http://localhost:3000/api/v1/auth/me
@@ -103,3 +100,18 @@ Content-Type: application/json
 ### /api/v1/proyectos/1
 DELETE http://localhost:3000/api/v1/proyectos/1
 Authorization: Bearer {{auth_token}}
+
+### /api/v1/alumnos/
+POST http://localhost:3000/api/v1/alumnos/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQsImlhdCI6MTcwODUzNDIyMSwiZXhwIjoxNzA4NjIwNjIxfQ.z8NIYw-061hRHZ6sflKpF82gtYAbLZiRfIkjm4aC10U
+Content-Type: application/json
+
+{
+  "id_usuario": 5,
+  "id_titulacion": 5,
+  "promocion": 254
+}
+
+### /api/v1/alumnos/1
+GET http://localhost:3000/api/v1/alumnos/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQsImlhdCI6MTcwODUzNDIyMSwiZXhwIjoxNzA4NjIwNjIxfQ.z8NIYw-061hRHZ6sflKpF82gtYAbLZiRfIkjm4aC10U

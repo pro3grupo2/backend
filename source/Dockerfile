@@ -9,7 +9,7 @@ COPY proyectos3 proyectos3
 
 # Archivo de configuracion de la base de datos para prisma
 COPY prisma prisma
-COPY .env .
+RUN echo "MYSQL_URL=\"mysql://proyectos3:PR0Y3C7053@172.19.0.2:3306/proyectos3\"" > .env
 
 # Instalar las dependencias de la aplicacion
 RUN npm install

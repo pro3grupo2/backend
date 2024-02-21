@@ -21,12 +21,12 @@ router.post("/",
 )
 router.put("/:proyecto_id",
     auth_middleware.get_and_verify_bearer_token,
-    proyectos_middleware.is_propietario,
+    proyectos_middleware.is_propietario_or_administrador,
     proyectos_controller.update_proyecto
 )
 router.delete("/:proyecto_id",
     auth_middleware.get_and_verify_bearer_token,
-    proyectos_middleware.is_propietario,
+    proyectos_middleware.is_propietario_or_administrador,
     proyectos_controller.delete_proyecto
 )
 

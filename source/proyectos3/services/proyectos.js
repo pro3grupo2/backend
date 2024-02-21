@@ -6,7 +6,23 @@ const get_proyectos = async (skip = 0, take = 20) => {
     return prisma.proyectos.findMany(
         {
             skip: skip,
-            take: take
+            take: take,
+            include: {
+                usuarios: {
+                    select: {
+                        id: true,
+                        correo: true,
+                        nombre_completo: true,
+                        alias: true
+                    }
+                },
+                proyectos_premios: {
+                    select: {
+                        premios: true,
+                        anio: true
+                    }
+                }
+            }
         }
     );
 }
@@ -15,6 +31,27 @@ const get_proyecto = async (proyecto_id) => {
     return prisma.proyectos.findUnique({
         where: {
             id: proyecto_id
+        },
+        include: {
+            proyectos_usuarios: {
+                select: {
+                    usuarios: true
+                }
+            },
+            usuarios: {
+                select: {
+                    id: true,
+                    correo: true,
+                    nombre_completo: true,
+                    alias: true
+                }
+            },
+            proyectos_premios: {
+                select: {
+                    premios: true,
+                    anio: true
+                }
+            }
         }
     })
 }

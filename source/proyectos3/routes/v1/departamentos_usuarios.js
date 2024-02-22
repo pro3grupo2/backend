@@ -10,7 +10,7 @@ router.get("/",
     auth_middleware.get_and_verify_bearer_token,
     premios_controller.get_departamentos_usuarios
 )
-router.get("/:premio_id",
+router.get("/:idUsuario/:idDepartamento",
     auth_middleware.get_and_verify_bearer_token,
     premios_controller.get_departamentos_usuario
 )
@@ -19,12 +19,12 @@ router.post("/",
     //auth_middleware.is_administrador,
     premios_controller.create_departamentos_usuarios
 )
-router.put("/:premio_id",
+router.put("/:idUsuario/:idDepartamento",
     auth_middleware.get_and_verify_bearer_token,
     //auth_middleware.is_administrador,
     premios_controller.update_departamentos_usuarios
 )
-router.delete("/:premio_id",
+router.delete("/:idUsuario/:idDepartamento",
     auth_middleware.get_and_verify_bearer_token,
     //auth_middleware.is_administrador,
     premios_controller.delete_departamentos_usuarios

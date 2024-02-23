@@ -89,13 +89,7 @@ const get_usuario_by_id = async (usuario_id) => {
 const create_usuario = async (usuario) => {
     try {
         return await prisma.usuarios.create({
-            data: {
-                "correo": usuario.correo,
-                "nombre_completo": usuario.nombre_completo,
-                "alias": usuario.alias,
-                "password": usuario.password,
-                "frase_recuperacion": usuario.frase_recuperacion
-            }
+            data: usuario
         })
     } catch (e) {
         return null

@@ -17,6 +17,9 @@ const get_proyecto = async (req, res) => {
 
 const create_proyecto = async (req, res) => {
     const {body} = req
+    if (typeof body.id_creador !== "number") body.id_creador = parseInt(body.id_creador)
+    if (typeof body.id_asignatura !== "number") body.id_asignatura = parseInt(body.id_asignatura)
+
     const data = await proyectos_service.create_proyecto(body)
 
     if (!data) return res.status(400).send({data: "Bad Request"})

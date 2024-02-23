@@ -17,11 +17,21 @@ router.get("/:proyecto_id",
 )
 router.post("/",
     auth_middleware.get_and_verify_bearer_token,
+    proyectos_middleware.upload_file.fields([
+        {name: "ruta_fichero", maxCount: 1},
+        {name: "ruta_imagen", maxCount: 1}
+    ]),
+    proyectos_middleware.inject_file_path_to_body,
     proyectos_controller.create_proyecto
 )
 router.put("/:proyecto_id",
     auth_middleware.get_and_verify_bearer_token,
     proyectos_middleware.is_propietario_or_administrador,
+    proyectos_middleware.upload_file.fields([
+        {name: "ruta_fichero", maxCount: 1},
+        {name: "ruta_imagen", maxCount: 1}
+    ]),
+    proyectos_middleware.inject_file_path_to_body,
     proyectos_controller.update_proyecto
 )
 router.delete("/:proyecto_id",

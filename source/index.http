@@ -77,15 +77,31 @@ Authorization: Bearer {{auth_token}}
 ### /api/v1/proyectos/
 POST http://localhost:3000/api/v1/proyectos/
 Authorization: Bearer {{auth_token}}
-Content-Type: application/json
+Content-Type: multipart/form-data; boundary=WebAppBoundary
 
-{
-  "id_creador": 1,
-  "titulo": "proyecto.titulo",
-  "ficha_tecnica": "proyecto.ficha_tecnica",
-  "ruta_fichero": "proyecto.ruta_fichero",
-  "ruta_imagen": "proyecto.ruta_imagen"
-}
+--WebAppBoundary
+Content-Disposition: form-data; name="ruta_fichero"; filename="package.json"
+Content-Type: application/pdf
+
+< package.json
+--WebAppBoundary
+Content-Disposition: form-data; name="id_creador"
+
+1
+--WebAppBoundary
+Content-Disposition: form-data; name="titulo"
+
+proyecto.titulo
+--WebAppBoundary
+Content-Disposition: form-data; name="ficha_tecnica"
+
+proyecto.ficha_tecnica
+--WebAppBoundary
+Content-Disposition: form-data; name="ruta_imagen"; filename="imagen.jpg"
+Content-Type: image/jpeg
+
+< imagen.jpg
+--WebAppBoundary
 
 ### /api/v1/proyectos/1
 GET http://localhost:3000/api/v1/proyectos/1

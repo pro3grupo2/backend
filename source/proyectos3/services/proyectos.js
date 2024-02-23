@@ -59,14 +59,7 @@ const get_proyecto = async (proyecto_id) => {
 const create_proyecto = async (proyecto) => {
     try {
         return await prisma.proyectos.create({
-            data: {
-                id_creador: proyecto.id_creador,
-                id_asignatura: proyecto.id_asignatura,
-                titulo: proyecto.titulo,
-                ficha_tecnica: proyecto.ficha_tecnica,
-                ruta_fichero: proyecto.ruta_fichero,
-                ruta_imagen: proyecto.ruta_imagen
-            }
+            data: proyecto
         })
     } catch (e) {
         return null
@@ -78,14 +71,7 @@ const update_proyecto = async (proyecto_id, proyecto_nuevo) => {
         return await prisma.proyectos.update({
             where: {
                 id: proyecto_id
-            }, data: {
-                id_creador: proyecto_nuevo.id_creador,
-                id_asignatura: proyecto_nuevo.id_asignatura,
-                titulo: proyecto_nuevo.titulo,
-                ficha_tecnica: proyecto_nuevo.ficha_tecnica,
-                ruta_fichero: proyecto_nuevo.ruta_fichero,
-                ruta_imagen: proyecto_nuevo.ruta_imagen
-            }
+            }, data: proyecto_nuevo
         })
     } catch (e) {
         return null

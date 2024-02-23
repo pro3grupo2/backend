@@ -1,3 +1,5 @@
+const multer = require('multer')
+const fs = require("fs");
 const proyectos_service = require("../services/proyectos")
 const auth_service = require("../services/auth");
 
@@ -27,7 +29,30 @@ const is_propietario_or_administrador = async (req, res, next) => {
     next()
 }
 
+const upload_file = multer({
+    storage: multer.diskStorage({
+        destination: function (req, file, callback) {
+            const path = "./files/" + req.usuario_id // Cambiar por /files en produccion
+            if (!fs.existsSync(path)) fs.mkdirSync(path, {recursive: true})
+            callback(null, path)
+        },
+        filename: function (req, file, callback) {
+            callback(null, Date.now() + "." + file.originalname.split(".").pop())
+        }
+    })
+})
+
+const inject_file_path_to_body = (req, res, next) => {
+    Object.keys(req.files).forEach(fichero => {
+        req.body[fichero] = req.files[fichero][0].destination + req.files[fichero][0].filename
+    })
+
+    next()
+}
+
 module.exports = {
     is_propietario,
-    is_propietario_or_administrador
+    is_propietario_or_administrador,
+    upload_file,
+    inject_file_path_to_body
 }

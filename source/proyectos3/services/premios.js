@@ -22,9 +22,7 @@ const get_premio = async (premio_id) => {
 const create_premio = async (premio) => {
     try {
         return await prisma.premios.create({
-            data: {
-                titulo: premio.titulo
-            }
+            data: premio
         })
     } catch (e) {
         return null
@@ -36,9 +34,7 @@ const update_premio = async (premio_id, premio_nuevo) => {
         return await prisma.premios.update({
             where: {
                 id: premio_id
-            }, data: {
-                titulo: premio_nuevo.titulo
-            }
+            }, data: premio_nuevo
         })
     } catch (e) {
         return null

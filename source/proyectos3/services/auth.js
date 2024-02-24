@@ -6,7 +6,7 @@ const prisma = new PrismaClient()
 // Funciones que verifica la validez de un token
 const verify_token = (token) => {
     try {
-        return jwt.verify(token, "proyectos3")
+        return jwt.verify(token, process.env.JWT_SECRET)
     } catch (e) {
         return null
     }
@@ -54,7 +54,7 @@ const get_usuario_and_verify_password = async (correo, password) => {
     if (!data) return null
     if (data.password !== password) return null
 
-    return jwt.sign({id: data.id}, "proyectos3", {expiresIn: '1d'})
+    return jwt.sign({id: data.id}, process.env.JWT_SECRET, {expiresIn: process.env.JWT_EXPIRES_IN || "1d"})
 }
 
 // Funcion que obtiene un usuario a partir de un token

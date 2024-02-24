@@ -3,7 +3,7 @@ const {validate} = require('./validation')
 
 
 const get_premio = [
-    param('premio_id').toInt(),
+    param('premio_id', 'Type: Int').toInt(),
     validate
 ]
 
@@ -13,14 +13,14 @@ const create_premio = [
 ]
 
 const update_premio = [
-    param('premio_id').toInt(),
+    param('premio_id', 'Type: Int').toInt(),
     body('titulo', 'Type: String, Max-Length: 50').isString().notEmpty().isLength({max: 50}),
 
     validate
 ]
 
 const delete_premio = [
-    param('premio_id').toInt(),
+    param('premio_id', 'Type: Int').toInt(),
     validate
 ]
 

@@ -3,7 +3,7 @@ const {validate} = require('./validation')
 
 
 const get_proyecto = [
-    param('proyecto_id').toInt(),
+    param('proyecto_id', 'Type: Int').toInt(),
     validate
 ]
 
@@ -17,7 +17,7 @@ const create_proyecto = [
 ]
 
 const update_proyecto = [
-    param('proyecto_id').toInt(),
+    param('proyecto_id', 'Type: Int').toInt(),
     body('id_asignatura', 'Type: Int').toInt(),
     body('titulo', 'Type: String, Max-Length: 100').isString().notEmpty().isLength({max: 100}),
     body('ficha_tecnica', 'Type: String, Max-Length: None').isString().notEmpty(),
@@ -27,7 +27,7 @@ const update_proyecto = [
 ]
 
 const delete_proyecto = [
-    param('proyecto_id').toInt(),
+    param('proyecto_id', 'Type: Int').toInt(),
     validate
 ]
 

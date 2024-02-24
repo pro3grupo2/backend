@@ -4,12 +4,12 @@ const premios_service = require('../services/premios')
 const get_premios = async (req, res) => {
     const {body} = req
     return res.send({
-        data: await premios_service.get_premios(body.skip || 0, body.take || 20)
+        data: await premios_service.get_premios(body.skip, body.take)
     })
 }
 
 const get_premio = async (req, res) => {
-    const data = await premios_service.get_premio(parseInt(req.params.premio_id))
+    const data = await premios_service.get_premio(req.params.premio_id)
 
     if (!data) return res.status(404).send({data: "Not Found"})
 

@@ -8,13 +8,14 @@ const get_premio = [
 ]
 
 const create_premio = [
-    body('titulo').isString().notEmpty(),
+    body('titulo', 'Type: String, Max-Length: 50').isString().notEmpty().isLength({max: 50}),
     validate
 ]
 
 const update_premio = [
     param('premio_id').toInt(),
-    body('titulo').isString().notEmpty(),
+    body('titulo', 'Type: String, Max-Length: 50').isString().notEmpty().isLength({max: 50}),
+
     validate
 ]
 

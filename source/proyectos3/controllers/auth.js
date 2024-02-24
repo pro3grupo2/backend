@@ -29,8 +29,7 @@ const signup = async (req, res) => {
 
 // Ruta para manejar la obtencion de datos de un usuario mediante Bearer Token (JWT)
 const me = async (req, res) => {
-    const {usuario_id} = req
-    return res.send({data: await auth_service.get_usuario_by_id(usuario_id)})
+    return res.send({data: await auth_service.get_usuario_by_id(req.usuario_id)})
 }
 
 module.exports = {

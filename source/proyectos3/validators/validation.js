@@ -1,11 +1,12 @@
-const {validationResult, body} = require("express-validator")
+const {validationResult, body, matchedData} = require("express-validator")
 
 const validate = (req, res, next) => {
     try {
         validationResult(req).throw()
+        req.body = matchedData(req)
         return next()
     } catch (err) {
-        return res.status(403).send({data: err})
+        return res.status(403).send({data: {errors: err.array({onlyFirstError: true})}})
     }
 }
 

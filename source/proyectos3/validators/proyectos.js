@@ -3,33 +3,31 @@ const {validate} = require('./validation')
 
 
 const get_proyecto = [
-    param('proyecto_id').isInt().toInt(),
+    param('proyecto_id').toInt(),
     validate
 ]
 
 const create_proyecto = [
-    body('id_creador').isInt().toInt(),
-    body('id_asignatura').isInt().toInt(),
-    body('titulo').isString().notEmpty(),
-    body('ficha_tecnica').isString().notEmpty(),
-    body('ruta_fichero').isString().notEmpty(),
-    body('ruta_imagen').isString().notEmpty(),
+    body('id_asignatura', 'Type: Int').toInt(),
+    body('titulo', 'Type: String, Max-Length: 100').isString().notEmpty().isLength({max: 100}),
+    body('ficha_tecnica', 'Type: String, Max-Length: None').isString().notEmpty(),
+    body('ruta_fichero', 'Type: String, Max-Length: 100').isString().notEmpty().isLength({max: 100}),
+    body('ruta_imagen', 'Type: String, Max-Length: 100').isString().notEmpty().isLength({max: 100}),
     validate
 ]
 
 const update_proyecto = [
-    param('proyecto_id').isInt().toInt(),
-    body('id_creador').isInt().toInt(),
-    body('id_asignatura').isInt().toInt(),
-    body('titulo').isString().notEmpty(),
-    body('ficha_tecnica').isString().notEmpty(),
-    body('ruta_fichero').isString().notEmpty(),
-    body('ruta_imagen').isString().notEmpty(),
+    param('proyecto_id').toInt(),
+    body('id_asignatura', 'Type: Int').toInt(),
+    body('titulo', 'Type: String, Max-Length: 100').isString().notEmpty().isLength({max: 100}),
+    body('ficha_tecnica', 'Type: String, Max-Length: None').isString().notEmpty(),
+    body('ruta_fichero', 'Type: String, Max-Length: 100').isString().notEmpty().isLength({max: 100}),
+    body('ruta_imagen', 'Type: String, Max-Length: 100').isString().notEmpty().isLength({max: 100}),
     validate
 ]
 
 const delete_proyecto = [
-    param('proyecto_id').isInt().toInt(),
+    param('proyecto_id').toInt(),
     validate
 ]
 

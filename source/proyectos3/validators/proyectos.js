@@ -18,11 +18,11 @@ const create_proyecto = [
 
 const update_proyecto = [
     param('proyecto_id', 'Type: Int').toInt(),
-    body('id_asignatura', 'Type: Int').toInt(),
-    body('titulo', 'Type: String, Max-Length: 100').isString().notEmpty().isLength({max: 100}),
-    body('ficha_tecnica', 'Type: String, Max-Length: None').isString().notEmpty(),
-    body('ruta_fichero', 'Type: String, Max-Length: 100').isString().notEmpty().isLength({max: 100}),
-    body('ruta_imagen', 'Type: String, Max-Length: 100').isString().notEmpty().isLength({max: 100}),
+    body('id_asignatura', 'Type: Int').optional().toInt(),
+    body('titulo', 'Type: String, Max-Length: 100').optional().isString().notEmpty().isLength({max: 100}),
+    body('ficha_tecnica', 'Type: String, Max-Length: None').optional().isString().notEmpty(),
+    body('ruta_fichero', 'Type: String, Max-Length: 100').optional().isString().notEmpty().isLength({max: 100}),
+    body('ruta_imagen', 'Type: String, Max-Length: 100').optional().isString().notEmpty().isLength({max: 100}),
     validate
 ]
 

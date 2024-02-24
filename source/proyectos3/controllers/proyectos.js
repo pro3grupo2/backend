@@ -8,7 +8,7 @@ const get_proyectos = async (req, res) => {
 }
 
 const get_proyecto = async (req, res) => {
-    const data = await proyectos_service.get_proyecto(req.params.proyecto_id)
+    const data = await proyectos_service.get_proyecto(req.matched_data.proyecto_id)
 
     if (!data) return res.status(404).send({data: "Not Found"})
 
@@ -16,10 +16,10 @@ const get_proyecto = async (req, res) => {
 }
 
 const create_proyecto = async (req, res) => {
-    const {body} = req
+    const {matched_data} = req
 
-    body.id_creador = req.usuario_id
-    const data = await proyectos_service.create_proyecto(body)
+    matched_data.id_creador = req.usuario_id
+    const data = await proyectos_service.create_proyecto(matched_data)
 
     if (!data) return res.status(400).send({data: "Bad Request"})
 
@@ -29,10 +29,13 @@ const create_proyecto = async (req, res) => {
 }
 
 const update_proyecto = async (req, res) => {
-    const {body} = req
+    const {matched_data} = req
 
-    body.id_creador = req.usuario_id
-    const data = await proyectos_service.update_proyecto(req.params.proyecto_id, body)
+    const proyecto_id = matched_data.proyecto_id
+    delete matched_data.proyecto_id
+
+    matched_data.id_creador = req.usuario_id
+    const data = await proyectos_service.update_proyecto(proyecto_id, matched_data)
 
     if (!data) return res.status(404).send({data: "Not Found"})
 
@@ -42,7 +45,7 @@ const update_proyecto = async (req, res) => {
 }
 
 const delete_proyecto = async (req, res) => {
-    const data = await proyectos_service.delete_proyecto(req.params.proyecto_id)
+    const data = await proyectos_service.delete_proyecto(req.matched_data.proyecto_id)
 
     if (!data) return res.status(404).send({data: "Not Found"})
 

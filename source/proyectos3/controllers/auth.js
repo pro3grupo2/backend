@@ -3,8 +3,8 @@ const auth_service = require("../services/auth")
 
 // Ruta para manejar el inicio de sesion
 const signin = async (req, res) => {
-    const {body} = req
-    const data = await auth_service.get_usuario_and_verify_password(body.correo, body.password)
+    const {matched_data} = req
+    const data = await auth_service.get_usuario_and_verify_password(matched_data.correo, matched_data.password)
 
     if (!data) return res.status(401).send({data: "Unauthorized"})
 
@@ -17,8 +17,8 @@ const signin = async (req, res) => {
 
 // Ruta para manejar el registro de usuarios
 const signup = async (req, res) => {
-    const {body} = req
-    const data = await auth_service.create_usuario(body)
+    const {matched_data} = req
+    const data = await auth_service.create_usuario(matched_data)
 
     if (!data) return res.status(400).send({data: "Bad Request"})
 

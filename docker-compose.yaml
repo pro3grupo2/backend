@@ -11,7 +11,7 @@ services:
     build: ./source
 
     ports:
-      - "80:3000"
+      - "3000:3000"
 
     volumes:
       - ./out/files:/files
@@ -35,8 +35,8 @@ services:
       MYSQL_USER: proyectos3
       MYSQL_PASSWORD: PR0Y3C7053
 
-    ports:
-      - "3306:3306" # Quitar en producción para que solo sea accesible desde la red interna
+#    ports:
+#      - "3306:3306" # Quitar en producción para que solo sea accesible desde la red interna
 
     command: [
       '--wait_timeout=31536000'

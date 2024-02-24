@@ -32,7 +32,7 @@ const is_propietario_or_administrador = async (req, res, next) => {
 const upload_file = multer({
     storage: multer.diskStorage({
         destination: function (req, file, callback) {
-            const path = "./files/" + req.usuario_id // Cambiar por /files en produccion
+            const path = "/files/" + req.usuario_id
             if (!fs.existsSync(path)) fs.mkdirSync(path, {recursive: true})
             callback(null, path)
         },

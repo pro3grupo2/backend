@@ -4,6 +4,7 @@
 
 // Importar modulos
 const express = require("express")
+const cors = require('cors');
 const router_v1 = require("./routes/v1")
 
 // Crear aplicacion express y definir puerto
@@ -12,6 +13,7 @@ const port = process.env.PORT || 3000
 
 // Configurar rutas y middlewares
 app.use(express.json())
+app.use(cors())
 app.use("/api/v1", router_v1)
 
 // Iniciar servidor

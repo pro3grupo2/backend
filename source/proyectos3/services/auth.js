@@ -68,17 +68,10 @@ const get_usuario_by_id = async (usuario_id) => {
     return prisma.usuarios.findUnique({
         where: {
             id: usuario_id
-        },
-        select: {
-            id: true,
-            correo: true,
-            nombre_completo: true,
-            alias: true,
-            proyectos: {
+        }, select: {
+            id: true, correo: true, nombre_completo: true, alias: true, proyectos: {
                 select: {
-                    id: true,
-                    titulo: true,
-                    ruta_imagen: true,
+                    id: true, titulo: true, ruta_imagen: true,
                 }
             }
         }
@@ -97,12 +90,5 @@ const create_usuario = async (usuario) => {
 }
 
 module.exports = {
-    verify_token,
-    is_administrador,
-    is_creador,
-    is_alumno,
-    get_usuario_and_verify_password,
-    get_usuario_by_token,
-    get_usuario_by_id,
-    create_usuario
+    verify_token, is_administrador, is_creador, is_alumno, get_usuario_and_verify_password, get_usuario_by_token, get_usuario_by_id, create_usuario
 }

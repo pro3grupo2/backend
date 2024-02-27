@@ -6,7 +6,7 @@ const validate = (req, res, next) => {
         req.matched_data = matchedData(req)
         return next()
     } catch (err) {
-        return res.status(403).send({data: {errors: err.array({onlyFirstError: true})}})
+        return res.status(400).send({data: {errors: err.array({onlyFirstError: true})}})
     }
 }
 

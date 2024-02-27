@@ -14,6 +14,7 @@ services:
       - "3000:3000"
 
     volumes:
+      - ./source/proyectos3:/proyectos3/proyectos3 # Quitar en producción para que no se pueda modificar el código
       - ./out/files:/files
 
     networks:
@@ -35,8 +36,8 @@ services:
       MYSQL_USER: proyectos3
       MYSQL_PASSWORD: PR0Y3C7053
 
-#    ports:
-#      - "3306:3306" # Quitar en producción para que solo sea accesible desde la red interna
+    #    ports:
+    #      - "3306:3306" # Quitar en producción para que solo sea accesible desde la red interna
 
     command: [
       '--wait_timeout=31536000'

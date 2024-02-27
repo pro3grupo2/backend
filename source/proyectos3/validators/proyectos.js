@@ -1,33 +1,34 @@
 const {body, param} = require('express-validator')
 const {validate} = require('./validation')
 
+// TODO: Agregar validación de existencia en la base de datos en todos los id
 
 const get_proyecto = [
-    param('proyecto_id', 'Type: Int').toInt(),
+    param('proyecto_id', 'Type: Int').exists().toInt(),
     validate
 ]
 
 const create_proyecto = [
-    body('id_asignatura', 'Type: Int').toInt(),
-    body('titulo', 'Type: String, Max-Length: 100').isString().notEmpty().isLength({max: 100}),
-    body('ficha_tecnica', 'Type: String, Max-Length: None').isString().notEmpty(),
-    body('ruta_fichero', 'Type: String, Max-Length: 100').isString().notEmpty().isLength({max: 100}),
-    body('ruta_imagen', 'Type: String, Max-Length: 100').isString().notEmpty().isLength({max: 100}),
+    body('id_asignatura', 'Type: Int').exists().toInt().optional(),
+    body('titulo', 'Type: String, Max-Length: 100').exists().notEmpty().isString().isLength({max: 100}),
+    body('ficha_tecnica', 'Type: String, Max-Length: None').exists().notEmpty().isString(),
+    body('ruta_fichero', 'Type: String, Max-Length: 100').exists().notEmpty().isString().isLength({max: 100}),
+    body('ruta_imagen', 'Type: String, Max-Length: 100').exists().notEmpty().isString().isLength({max: 100}),
     validate
 ]
 
 const update_proyecto = [
-    param('proyecto_id', 'Type: Int').toInt(),
-    body('id_asignatura', 'Type: Int').optional().toInt(),
-    body('titulo', 'Type: String, Max-Length: 100').optional().isString().notEmpty().isLength({max: 100}),
-    body('ficha_tecnica', 'Type: String, Max-Length: None').optional().isString().notEmpty(),
-    body('ruta_fichero', 'Type: String, Max-Length: 100').optional().isString().notEmpty().isLength({max: 100}),
-    body('ruta_imagen', 'Type: String, Max-Length: 100').optional().isString().notEmpty().isLength({max: 100}),
+    param('proyecto_id', 'Type: Int').exists().toInt(),
+    body('id_asignatura', 'Type: Int').exists().toInt().optional(),
+    body('titulo', 'Type: String, Max-Length: 100').exists().notEmpty().isString().isLength({max: 100}).optional(),
+    body('ficha_tecnica', 'Type: String, Max-Length: None').exists().notEmpty().isString().optional(),
+    body('ruta_fichero', 'Type: String, Max-Length: 100').exists().notEmpty().isString().isLength({max: 100}).optional(),
+    body('ruta_imagen', 'Type: String, Max-Length: 100').exists().notEmpty().isString().isLength({max: 100}).optional(),
     validate
 ]
 
 const delete_proyecto = [
-    param('proyecto_id', 'Type: Int').toInt(),
+    param('proyecto_id', 'Type: Int').exists().toInt(),
     validate
 ]
 

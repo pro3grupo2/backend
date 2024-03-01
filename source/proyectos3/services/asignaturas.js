@@ -21,11 +21,7 @@ const get_asignatura = async (asignatura_id) => {
 const create_asignatura = async (asignatura) => {
     try {
         return await prisma.asignaturas.create({
-            data: {
-                "titulo": asignatura.titulo,
-                "curso": asignatura.curso,
-                "letra": asignatura.letra
-            }
+            data: asignatura
         })
     } catch (e) {
         return null
@@ -37,11 +33,7 @@ const update_asignatura = async (asignatura_id, asignatura) => {
         return await prisma.asignaturas.update({
             where: {
                 id: asignatura_id
-            }, data: {
-                "titulo": asignatura.titulo,
-                "curso": asignatura.curso,
-                "letra": asignatura.letra
-            }
+            }, data: asignatura
         })
     } catch (e) {
         return null

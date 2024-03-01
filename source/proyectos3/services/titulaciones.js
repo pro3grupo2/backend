@@ -21,9 +21,7 @@ const get_titulacion = async (titulacion_id) => {
 const create_titulacion = async (titulacion) => {
     try {
         return await prisma.titulaciones.create({
-            data: {
-                "titulo": titulacion.titulo
-            }
+            data: titulacion
         })
     } catch (e) {
         return null
@@ -35,9 +33,7 @@ const update_titulacion = async (titulacion_id, titulacion_nueva) => {
         return await prisma.titulaciones.update({
             where: {
                 id: titulacion_id
-            }, data: {
-                "titulo": titulacion_nueva.titulo
-            }
+            }, data: titulacion_nueva
         })
     } catch (e) {
         return null

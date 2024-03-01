@@ -21,9 +21,7 @@ const get_materia = async (materia_id) => {
 const create_materia = async (materia) => {
     try {
         return await prisma.materias.create({
-            data: {
-                "titulo": materia.titulo
-            }
+            data: materia
         })
     } catch (e) {
         return null
@@ -35,9 +33,7 @@ const update_materia = async (materia_id, materia_nueva) => {
         return await prisma.materias.update({
             where: {
                 id: materia_id
-            }, data: {
-                "titulo": materia_nueva.titulo
-            }
+            }, data: materia_nueva
         })
     } catch (e) {
         return null

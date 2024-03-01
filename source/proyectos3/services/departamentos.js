@@ -21,9 +21,7 @@ const get_departamento = async (departamento_id) => {
 const create_departamento = async (departamento) => {
     try {
         return await prisma.departamentos.create({
-            data: {
-                "titulo": departamento.titulo
-            }
+            data: departamento
         })
     } catch (e) {
         return null
@@ -35,9 +33,7 @@ const update_departamento = async (departamento_id, departamento_nueva) => {
         return await prisma.departamentos.update({
             where: {
                 id: departamento_id
-            }, data: {
-                "titulo": departamento_nueva.titulo
-            }
+            }, data: departamento_nueva
         })
     } catch (e) {
         return null

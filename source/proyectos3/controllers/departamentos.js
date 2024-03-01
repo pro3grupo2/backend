@@ -1,6 +1,6 @@
 // Dependecias necesarias para el manejo de las rutas de autenticacion
 const departamentos_service = require('../services/departamentos')
-
+const departamentos_errors = require('../errors/departamentos')
 const get_departamentos = async (req, res) => {
     const {body} = req
     return res.send({
@@ -11,7 +11,11 @@ const get_departamentos = async (req, res) => {
 const get_departamento = async (req, res) => {
     const data = await departamentos_service.get_departamento(parseInt(req.params.departamento_id))
 
-    if (!data) return res.status(404).send({data: "Not Found"})
+    if (!data) return res.status(404).send({
+        data: {
+            errors: [departamentos_errors.NOT_FOUND]
+        }
+    })
 
     return res.send({data: data})
 }
@@ -20,7 +24,11 @@ const create_departamento = async (req, res) => {
     const {body} = req
     const data = await departamentos_service.create_departamento(body)
 
-    if (!data) return res.status(400).send({data: "Bad Request"})
+    if (!data) return res.status(400).send({
+        data: {
+            errors: [departamentos_errors.WRONG_CREATE]
+        }
+    })
 
     return res.send({
         data: data
@@ -31,7 +39,11 @@ const update_departamento = async (req, res) => {
     const {body} = req
     const data = await departamentos_service.update_departamento(parseInt(req.params.departamento_id), body)
 
-    if (!data) return res.status(404).send({data: "Not Found"})
+    if (!data) return res.status(404).send({
+        data: {
+            errors: [departamentos_errors.NOT_FOUND]
+        }
+    })
 
     return res.send({
         data: data
@@ -41,7 +53,11 @@ const update_departamento = async (req, res) => {
 const delete_departamento = async (req, res) => {
     const data = await departamentos_service.delete_departamento(parseInt(req.params.departamento_id))
 
-    if (!data) return res.status(404).send({data: "Not Found"})
+    if (!data) return res.status(404).send({
+        data: {
+            errors: [departamentos_errors.NOT_FOUND]
+        }
+    })
 
     return res.send({data: data})
 }

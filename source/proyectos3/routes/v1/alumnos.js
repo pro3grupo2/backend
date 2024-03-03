@@ -15,25 +15,25 @@ router.get("/",
 )
 router.get("/:alumno_id",
     auth_middleware.get_and_verify_bearer_token,
-    premios_validators.get_alumno,
+    alumnos_validators.get_alumno,
     premios_controller.get_alumno
 )
 router.post("/",
     auth_middleware.get_and_verify_bearer_token,
     //auth_middleware.is_administrador,
-    premios_validators.create_alumno,
+    alumnos_validators.create_alumno,
     premios_controller.create_alumno
 )
 router.put("/:alumno_id",
     auth_middleware.get_and_verify_bearer_token,
     //auth_middleware.is_administrador,
-    premios_validators.update_alumno,
+    alumnos_validators.update_alumno,
     premios_controller.update_alumno
 )
 router.delete("/:alumno_id",
     auth_middleware.get_and_verify_bearer_token,
     //auth_middleware.is_administrador,
-    premios_validators.delete_alumno,
+    alumnos_validators.delete_alumno,
     premios_controller.delete_alumno
 )
 

@@ -1,0 +1,151 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en-US" data-colors-preset="contrast" data-primary-color="#307FFF"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="UTF-8"><meta name="robots" content="noindex"><meta name="built-on" content="2024-02-29T12:30:31.6537677"><title>Premios | API Documentation</title><script type="application/json" id="virtual-toc-data">[{"id":"listar-todos-los-premios","level":0,"title":"Listar todos los premios","anchor":"#listar-todos-los-premios"},{"id":"obtener-un-premio-por-su-id","level":0,"title":"Obtener un premio por su id","anchor":"#obtener-un-premio-por-su-id"},{"id":"crear-un-nuevo-premio","level":0,"title":"Crear un nuevo premio","anchor":"#crear-un-nuevo-premio"},{"id":"actualizar-un-premio","level":0,"title":"Actualizar un premio","anchor":"#actualizar-un-premio"},{"id":"eliminar-un-premio","level":0,"title":"Eliminar un premio","anchor":"#eliminar-un-premio"}]</script><script type="application/json" id="topic-shortcuts"></script><link href="https://resources.jetbrains.com/writerside/apidoc/6.6.6-b205/app.css" rel="stylesheet"><link rel="apple-touch-icon" sizes="180x180" href="https://jetbrains.com/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="https://jetbrains.com/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="https://jetbrains.com/favicon-16x16.png"><link rel="manifest" href="site.webmanifest"><meta name="msapplication-TileColor" content="#000000"><meta name="msapplication-TileImage" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-144x144.png"><meta name="msapplication-square70x70logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-70x70.png"><meta name="msapplication-square150x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-150x150.png"><meta name="msapplication-wide310x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x150.png"><meta name="msapplication-square310x310logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x310.png"><meta name="image" content=""><!-- Open Graph --><meta property="og:title" content="Premios | API Documentation"><meta property="og:description" content=""><meta property="og:image" content=""><meta property="og:site_name" content="API Documentation Help"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:url" content="/apidocs/1.0/premios.html"><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content=""><meta name="twitter:title" content="Premios | API Documentation"><meta name="twitter:description" content=""><meta name="twitter:creator" content=""><meta name="twitter:image:src" content=""><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "@id": "/apidocs/1.0/premios.html#webpage",
+    "url": "/apidocs/1.0/premios.html",
+    "name": "Premios | API Documentation",
+    "description": "",
+    "image": "",
+    "inLanguage":"en-US"
+}</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json">{
+    "@type": "WebSite",
+    "@id": "/apidocs/#website",
+    "url": "/apidocs/",
+    "name": "API Documentation Help"
+}</script><!-- End Schema.org --></head><body data-id="premios" data-main-title="Premios" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}" data-template="article" data-breadcrumbs="starter-topic.md|Documentación Express API"><div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>API Documentation 1.0 Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="premios" id="premios.md">Premios</h1><p id="6c881e1b_857">Los premios son una forma de reconocer el esfuerzo y la calidad de los proyectos. En esta secci&oacute;n se pueden ver los premios que se han otorgado a los proyectos.</p><p id="6c881e1b_858">Para ello, se han definido las siguientes rutas:</p><ul class="list _ul" id="6c881e1b_859"><li class="list__item" id="6c881e1b_860"><p><span class="control" id="6c881e1b_861">GET /api/v1/premios</span>: Listar todos los premios.</p></li><li class="list__item" id="6c881e1b_862"><p><span class="control" id="6c881e1b_863">GET /api/v1/premios/:premio_id</span>: Obtener un premio por su id.</p></li><li class="list__item" id="6c881e1b_864"><p><span class="control" id="6c881e1b_865">POST /api/v1/premios</span>: Crear un nuevo premio.</p></li><li class="list__item" id="6c881e1b_866"><p><span class="control" id="6c881e1b_867">PUT /api/v1/premios/:premio_id</span>: Actualizar un premio.</p></li><li class="list__item" id="6c881e1b_868"><p><span class="control" id="6c881e1b_869">DELETE /api/v1/premios/:premio_id</span>: Eliminar un premio.</p></li></ul><aside class="prompt" data-type="tip" data-title="" id="6c881e1b_870"><p id="6c881e1b_871">Para poder acceder a estas rutas, es necesario autenticarse.</p><p id="6c881e1b_872">Para crear, editar o eliminar un premio, es necesario ser administrador.</p></aside><section class="chapter"><h2 id="listar-todos-los-premios" data-toc="listar-todos-los-premios">Listar todos los premios</h2><section class="chapter"><h3 id="ejemplo-de-lista-de-premios" data-toc="ejemplo-de-lista-de-premios">Ejemplo de lista de premios</h3><div class="code-block" data-lang="http">
+GET /api/v1/premios/
+Authorization: Bearer tu_token_de_acceso
+</div></section><section class="chapter"><h3 id="respuesta-de-lista-de-premios" data-toc="respuesta-de-lista-de-premios">Respuesta de lista de premios</h3><div class="code-block" data-lang="http">
+X-Powered-By: Express
+Content-Type: application/json; charset=utf-8
+Content-Length: 126
+ETag: W/&quot;7e-37UiS+uHY1TTefkwc796ZeYAlbM&quot;
+Date: Wed, 21 Feb 2024 14:53:15 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{
+  &quot;data&quot;: [
+    {
+      &quot;id&quot;: 1,
+      &quot;titulo&quot;: &quot;Premio 1&quot;
+    },
+    {
+      &quot;id&quot;: 2,
+      &quot;titulo&quot;: &quot;Premio 2&quot;
+    },
+    {
+      &quot;id&quot;: 3,
+      &quot;titulo&quot;: &quot;Premio 3&quot;
+    },
+    {
+      &quot;id&quot;: 4,
+      &quot;titulo&quot;: &quot;Premio 1&quot;
+    }
+  ]
+}
+</div></section></section><section class="chapter"><h2 id="obtener-un-premio-por-su-id" data-toc="obtener-un-premio-por-su-id">Obtener un premio por su id</h2><section class="chapter"><h3 id="par-metros-de-obtenci-n-de-premio" data-toc="par-metros-de-obtenci-n-de-premio">Par&aacute;metros de obtenci&oacute;n de premio</h3><div class="code-block" data-lang="javascript">
+const get_premio = [
+    param('premio_id', 'Type: Int').exists().toInt(),
+    validate
+]
+</div></section><section class="chapter"><h3 id="ejemplo-de-obtenci-n-de-premio" data-toc="ejemplo-de-obtenci-n-de-premio">Ejemplo de obtenci&oacute;n de premio</h3><div class="code-block" data-lang="http">
+GET /api/v1/premios/1
+Authorization: Bearer tu_token_de_acceso
+</div></section><section class="chapter"><h3 id="respuesta-de-obtenci-n-de-premio" data-toc="respuesta-de-obtenci-n-de-premio">Respuesta de obtenci&oacute;n de premio</h3><div class="code-block" data-lang="http">
+X-Powered-By: Express
+Content-Type: application/json; charset=utf-8
+Content-Length: 37
+ETag: W/&quot;25-FuJwUmgG4lno46y6z9ffnghhwF4&quot;
+Date: Wed, 21 Feb 2024 14:56:57 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{
+  &quot;data&quot;: {
+    &quot;id&quot;: 1,
+    &quot;titulo&quot;: &quot;Premio 1&quot;
+  }
+}
+</div></section></section><section class="chapter"><h2 id="crear-un-nuevo-premio" data-toc="crear-un-nuevo-premio">Crear un nuevo premio</h2><section class="chapter"><h3 id="par-metros-de-creaci-n-de-premio" data-toc="par-metros-de-creaci-n-de-premio">Par&aacute;metros de creaci&oacute;n de premio</h3><div class="code-block" data-lang="javascript">
+const create_premio = [
+    body('titulo', 'Type: String, Max-Length: 50').exists().notEmpty().isString().isLength({max: 50}),
+    validate
+]
+</div></section><section class="chapter"><h3 id="ejemplo-de-creaci-n-de-premio" data-toc="ejemplo-de-creaci-n-de-premio">Ejemplo de creaci&oacute;n de premio</h3><div class="code-block" data-lang="http">
+POST /api/v1/premios/
+Authorization: Bearer tu_token_de_acceso
+Content-Type: application/json
+
+{
+  &quot;titulo&quot;: &quot;Premio 1&quot;
+}
+</div></section><section class="chapter"><h3 id="respuesta-de-creaci-n-de-premio" data-toc="respuesta-de-creaci-n-de-premio">Respuesta de creaci&oacute;n de premio</h3><div class="code-block" data-lang="http">
+X-Powered-By: Express
+Content-Type: application/json; charset=utf-8
+Content-Length: 37
+ETag: W/&quot;25-d8o+3L3DAsWjA6WLfaYovzG+THc&quot;
+Date: Wed, 21 Feb 2024 14:51:01 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{
+  &quot;data&quot;: {
+    &quot;id&quot;: 4,
+    &quot;titulo&quot;: &quot;Premio 1&quot;
+  }
+}
+</div></section></section><section class="chapter"><h2 id="actualizar-un-premio" data-toc="actualizar-un-premio">Actualizar un premio</h2><section class="chapter"><h3 id="par-metros-de-actualizaci-n-de-premio" data-toc="par-metros-de-actualizaci-n-de-premio">Par&aacute;metros de actualizaci&oacute;n de premio</h3><div class="code-block" data-lang="javascript">
+const update_premio = [
+    param('premio_id', 'Type: Int').exists().toInt(),
+    body('titulo', 'Type: String, Max-Length: 50').exists().notEmpty().isString().isLength({max: 50}).optional(),
+    validate
+]
+</div></section><section class="chapter"><h3 id="ejemplo-de-actualizaci-n-de-premio" data-toc="ejemplo-de-actualizaci-n-de-premio">Ejemplo de actualizaci&oacute;n de premio</h3><div class="code-block" data-lang="http">
+PUT /api/v1/premios/1
+Authorization: Bearer tu_token_de_acceso
+Content-Type: application/json
+
+{
+  &quot;titulo&quot;: &quot;Premio 1 mejorado&quot;
+}
+</div></section><section class="chapter"><h3 id="respuesta-de-actualizaci-n-de-premio" data-toc="respuesta-de-actualizaci-n-de-premio">Respuesta de actualizaci&oacute;n de premio</h3><div class="code-block" data-lang="http">
+X-Powered-By: Express
+Content-Type: application/json; charset=utf-8
+Content-Length: 46
+ETag: W/&quot;2e-CWz95ssQ3+4ccOM+o+iRLVLaukY&quot;
+Date: Wed, 21 Feb 2024 14:57:20 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{
+  &quot;data&quot;: {
+    &quot;id&quot;: 1,
+    &quot;titulo&quot;: &quot;Premio 1 mejorado&quot;
+  }
+}
+</div></section></section><section class="chapter"><h2 id="eliminar-un-premio" data-toc="eliminar-un-premio">Eliminar un premio</h2><section class="chapter"><h3 id="par-metros-de-eliminaci-n-de-premio" data-toc="par-metros-de-eliminaci-n-de-premio">Par&aacute;metros de eliminaci&oacute;n de premio</h3><div class="code-block" data-lang="javascript">
+const delete_premio = [
+    param('premio_id', 'Type: Int').exists().toInt(),
+    validate
+]
+</div></section><section class="chapter"><h3 id="ejemplo-de-eliminaci-n-de-premio" data-toc="ejemplo-de-eliminaci-n-de-premio">Ejemplo de eliminaci&oacute;n de premio</h3><div class="code-block" data-lang="http">
+DELETE /api/v1/premios/1
+Authorization: Bearer tu_token_de_acceso
+</div></section><section class="chapter"><h3 id="respuesta-de-eliminaci-n-de-premio" data-toc="respuesta-de-eliminaci-n-de-premio">Respuesta de eliminaci&oacute;n de premio</h3><div class="code-block" data-lang="http">
+X-Powered-By: Express
+Content-Type: application/json; charset=utf-8
+Content-Length: 38
+ETag: W/&quot;26-RR5/Bswjz8w1WLQsPkSBUZxXdnA&quot;
+Date: Sat, 24 Feb 2024 11:47:34 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{
+  &quot;data&quot;: {
+    &quot;id&quot;: 5,
+    &quot;titulo&quot;: &quot;Premio 10&quot;
+  }
+}
+</div></section></section><div class="last-modified">Last modified: 29 febrero 2024</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom"><a href="proyectos.html" class="navigation-links__prev">Proyectos</a></div></article><div id="disqus_thread"></div></div></section></main></div><script src="https://resources.jetbrains.com/writerside/apidoc/6.6.6-b205/app.js"></script></body></html>

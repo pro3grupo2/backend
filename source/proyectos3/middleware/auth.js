@@ -25,6 +25,16 @@ const verificar_JWT = (req, res, next) => {
     next()
 }
 
+const is_administrador = (req, res, next) => {
+    if (req.JWT.rol !== "coordinador") return res.status(403).send({
+        data: {
+            errors: [auth_errors.NOT_ADMININSTRADOR]
+        }
+    })
+
+    next()
+}
+
 module.exports = {
-    verificar_JWT
+    verificar_JWT, is_administrador
 }

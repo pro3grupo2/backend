@@ -4,8 +4,8 @@ const auth_errors = require("../errors/auth")
 
 // Ruta para manejar el inicio de sesion
 const signin = async (req, res) => {
-    const {matched_data} = req
-    const data = await auth_service.get_usuario_and_verify_password(matched_data.correo, matched_data.password)
+    const {MATCHED} = req
+    const data = await auth_service.signin(MATCHED.correo, MATCHED.password)
 
     if (!data) return res.status(400).send({
         data: {
@@ -22,8 +22,8 @@ const signin = async (req, res) => {
 
 // Ruta para manejar el registro de usuarios
 const signup = async (req, res) => {
-    const {matched_data} = req
-    const data = await auth_service.create_usuario(matched_data)
+    const {MATCHED} = req
+    const data = await auth_service.signup(MATCHED)
 
     if (!data) return res.status(400).send({
         data: {
@@ -38,7 +38,7 @@ const signup = async (req, res) => {
 
 // Ruta para manejar la obtencion de datos de un usuario mediante Bearer Token (JWT)
 const me = async (req, res) => {
-    return res.send({data: await auth_service.get_usuario_by_id(req.usuario_id)})
+    return res.send({data: await auth_service.me(req.JWT.id)})
 }
 
 module.exports = {

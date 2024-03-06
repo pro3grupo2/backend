@@ -65,6 +65,7 @@ model proyectos {
   ficha              String?              @db.Text
   url                String?              @db.Text
   portada            String?              @db.Text
+  validado           Boolean?             @default(false)
   usuarios           usuarios?            @relation(fields: [id_creador], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "proyectos_ibfk_1")
   asignaturas        asignaturas?         @relation(fields: [id_asignatura], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "proyectos_ibfk_2")
   proyectos_premios  proyectos_premios[]

@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.3.0, for Linux (x86_64)
 --
--- Host: localhost    Database: schemaPR3
+-- Host: localhost    Database: pr3
 -- ------------------------------------------------------
 -- Server version	8.3.0
 
@@ -14,14 +14,6 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS = @@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS = 0 */;
 /*!40101 SET @OLD_SQL_MODE = @@SQL_MODE, SQL_MODE = 'NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES = @@SQL_NOTES, SQL_NOTES = 0 */;
-
---
--- Create database
---
-
-DROP DATABASE proyectos3;
-CREATE DATABASE proyectos3;
-USE proyectos3;
 
 --
 -- Table structure for table `area`
@@ -171,6 +163,7 @@ CREATE TABLE `proyectos`
     `ficha`         text,
     `url`           text,
     `portada`       text,
+    `validado`      tinyint(1)  DEFAULT '0',
     PRIMARY KEY (`id`),
     UNIQUE KEY `titulo` (`titulo`),
     KEY `id_creador` (`id_creador`),
@@ -336,4 +329,4 @@ CREATE TABLE `usuarios_titulaciones`
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-06 12:51:41
+-- Dump completed on 2024-03-06 14:06:50

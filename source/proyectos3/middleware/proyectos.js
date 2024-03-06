@@ -1,8 +1,7 @@
 const multer = require('multer')
 const fs = require("fs");
 const proyectos_service = require("../services/proyectos")
-const auth_service = require("../services/auth");
-const proyectos_errors = require("../errors/proyectos");
+const proyectos_errors = require("../errors/proyectos")
 
 const is_propietario_or_administrador = async (req, res, next) => {
     const {MATCHED, JWT} = req

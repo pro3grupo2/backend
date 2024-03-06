@@ -8,7 +8,7 @@ const get_premios = async (skip = 0, take = 20) => {
             skip: skip,
             take: take
         }
-    );
+    )
 }
 
 const get_premio = async (id) => {

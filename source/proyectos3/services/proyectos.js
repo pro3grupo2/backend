@@ -27,7 +27,7 @@ const get_proyectos = async (skip = 0, take = 20) => {
                 }
             }
         }
-    );
+    )
 }
 
 const get_proyecto = async (id) => {

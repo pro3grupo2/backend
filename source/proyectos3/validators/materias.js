@@ -1,8 +1,8 @@
 const {body, param} = require('express-validator')
 const {validate} = require('./validation')
 
-const get_materia = [
-    param('premio_id', 'Type: Int').exists().toInt(),
+const get_id = [
+    param('id', 'Type: Int').exists().toInt(),
     validate
 ]
 
@@ -12,19 +12,13 @@ const create_materia = [
 ]
 
 const update_materia = [
-    param('premio_id', 'Type: Int').exists().toInt(),
+    param('id', 'Type: Int').exists().toInt(),
     body('titulo', 'Type: String, Max-Length: 50').exists().notEmpty().isString().isLength({max: 50}).optional(),
     validate
 ]
 
-const delete_materia = [
-    param('premio_id', 'Type: Int').exists().toInt(),
-    validate
-]
-
 module.exports = {
-    get_materia,
+    get_id,
     create_materia,
-    update_materia,
-    delete_materia
+    update_materia
 }

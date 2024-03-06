@@ -2,18 +2,15 @@ const {PrismaClient} = require('@prisma/client')
 const prisma = new PrismaClient()
 
 const get_materias = async (skip = 0, take = 20) => {
-    return prisma.materias.findMany(
-        {
-            skip: skip,
-            take: take,
-        }
-    );
+    return prisma.materias.findMany({
+        skip: skip, take: take,
+    })
 }
 
-const get_materia = async (materia_id) => {
+const get_materia = async (id) => {
     return prisma.materias.findUnique({
         where: {
-            id: materia_id
+            id: id
         }
     })
 }
@@ -28,11 +25,11 @@ const create_materia = async (materia) => {
     }
 }
 
-const update_materia = async (materia_id, materia_nueva) => {
+const update_materia = async (id, materia_nueva) => {
     try {
         return await prisma.materias.update({
             where: {
-                id: materia_id
+                id: id
             }, data: materia_nueva
         })
     } catch (e) {
@@ -40,11 +37,11 @@ const update_materia = async (materia_id, materia_nueva) => {
     }
 }
 
-const delete_materia = async (materia_id) => {
+const delete_materia = async (id) => {
     try {
         return await prisma.materias.delete({
             where: {
-                id: materia_id
+                id: id
             }
         })
     } catch (e) {
@@ -53,9 +50,5 @@ const delete_materia = async (materia_id) => {
 }
 
 module.exports = {
-    get_materias,
-    get_materia,
-    create_materia,
-    update_materia,
-    delete_materia
+    get_materias, get_materia, create_materia, update_materia, delete_materia
 }

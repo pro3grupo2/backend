@@ -7,12 +7,6 @@ datasource db {
   url      = env("MYSQL_URL")
 }
 
-model area {
-  id           Int            @id @default(autoincrement())
-  titulo       String?        @unique(map: "titulo") @db.VarChar(50)
-  titulaciones titulaciones[]
-}
-
 model asignaturas {
   id                       Int                        @id @default(autoincrement())
   titulo                   String?                    @unique(map: "titulo") @db.VarChar(50)
@@ -89,7 +83,7 @@ model titulaciones {
   id                       Int                        @id @default(autoincrement())
   id_area                  Int?
   titulo                   String?                    @unique(map: "titulo") @db.VarChar(50)
-  area                     area?                      @relation(fields: [id_area], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "titulaciones_ibfk_1")
+  area                     areas?                     @relation(fields: [id_area], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "titulaciones_ibfk_1")
   titulaciones_asignaturas titulaciones_asignaturas[]
   usuarios_titulaciones    usuarios_titulaciones[]
 
@@ -148,6 +142,12 @@ model usuarios_titulaciones {
 
   @@id([id_usuario, id_titulacion])
   @@index([id_titulacion], map: "id_titulacion")
+}
+
+model areas {
+  id           Int            @id @default(autoincrement())
+  titulo       String?        @unique(map: "titulo") @db.VarChar(50)
+  titulaciones titulaciones[]
 }
 
 enum usuarios_rol {

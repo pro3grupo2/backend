@@ -16,13 +16,13 @@
 /*!40111 SET @OLD_SQL_NOTES = @@SQL_NOTES, SQL_NOTES = 0 */;
 
 --
--- Table structure for table `area`
+-- Table structure for table `areas`
 --
 
-DROP TABLE IF EXISTS `area`;
+DROP TABLE IF EXISTS `areas`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `area`
+CREATE TABLE `areas`
 (
     `id`     int NOT NULL AUTO_INCREMENT,
     `titulo` varchar(50) DEFAULT NULL,
@@ -210,7 +210,7 @@ CREATE TABLE `titulaciones`
     PRIMARY KEY (`id`),
     UNIQUE KEY `titulo` (`titulo`),
     KEY `id_area` (`id_area`),
-    CONSTRAINT `titulaciones_ibfk_1` FOREIGN KEY (`id_area`) REFERENCES `area` (`id`)
+    CONSTRAINT `titulaciones_ibfk_1` FOREIGN KEY (`id_area`) REFERENCES `areas` (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;

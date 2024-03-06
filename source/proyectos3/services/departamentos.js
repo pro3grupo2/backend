@@ -2,18 +2,15 @@ const {PrismaClient} = require('@prisma/client')
 const prisma = new PrismaClient()
 
 const get_departamentos = async (skip = 0, take = 20) => {
-    return prisma.departamentos.findMany(
-        {
-            skip: skip,
-            take: take,
-        }
-    );
+    return prisma.departamentos.findMany({
+        skip: skip, take: take,
+    })
 }
 
-const get_departamento = async (departamento_id) => {
+const get_departamento = async (id) => {
     return prisma.departamentos.findUnique({
         where: {
-            id: departamento_id
+            id: id
         }
     })
 }
@@ -28,11 +25,11 @@ const create_departamento = async (departamento) => {
     }
 }
 
-const update_departamento = async (departamento_id, departamento_nueva) => {
+const update_departamento = async (id, departamento_nueva) => {
     try {
         return await prisma.departamentos.update({
             where: {
-                id: departamento_id
+                id: id
             }, data: departamento_nueva
         })
     } catch (e) {
@@ -40,11 +37,11 @@ const update_departamento = async (departamento_id, departamento_nueva) => {
     }
 }
 
-const delete_departamento = async (departamento_id) => {
+const delete_departamento = async (id) => {
     try {
         return await prisma.departamentos.delete({
             where: {
-                id: departamento_id
+                id: id
             }
         })
     } catch (e) {
@@ -53,9 +50,5 @@ const delete_departamento = async (departamento_id) => {
 }
 
 module.exports = {
-    get_departamentos,
-    get_departamento,
-    create_departamento,
-    update_departamento,
-    delete_departamento
+    get_departamentos, get_departamento, create_departamento, update_departamento, delete_departamento
 }

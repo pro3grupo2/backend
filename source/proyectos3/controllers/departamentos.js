@@ -2,14 +2,13 @@
 const departamentos_service = require('../services/departamentos')
 const departamentos_errors = require('../errors/departamentos')
 const get_departamentos = async (req, res) => {
-    const {body} = req
     return res.send({
-        data: await departamentos_service.get_departamentos(body.skip || 0, body.take || 20)
+        data: await departamentos_service.get_departamentos(req.MATCHED.skip || 0, req.MATCHED.take || 20)
     })
 }
 
 const get_departamento = async (req, res) => {
-    const data = await departamentos_service.get_departamento(parseInt(req.params.departamento_id))
+    const data = await departamentos_service.get_departamento(req.MATCHED.id)
 
     if (!data) return res.status(404).send({
         data: {
@@ -21,8 +20,7 @@ const get_departamento = async (req, res) => {
 }
 
 const create_departamento = async (req, res) => {
-    const {body} = req
-    const data = await departamentos_service.create_departamento(body)
+    const data = await departamentos_service.create_departamento(req.MATCHED)
 
     if (!data) return res.status(400).send({
         data: {
@@ -36,8 +34,12 @@ const create_departamento = async (req, res) => {
 }
 
 const update_departamento = async (req, res) => {
-    const {body} = req
-    const data = await departamentos_service.update_departamento(parseInt(req.params.departamento_id), body)
+    const {MATCHED} = req
+
+    const departamento_id = MATCHED.id
+    delete MATCHED.id
+
+    const data = await departamentos_service.update_departamento(departamento_id, MATCHED)
 
     if (!data) return res.status(404).send({
         data: {
@@ -51,7 +53,7 @@ const update_departamento = async (req, res) => {
 }
 
 const delete_departamento = async (req, res) => {
-    const data = await departamentos_service.delete_departamento(parseInt(req.params.departamento_id))
+    const data = await departamentos_service.delete_departamento(req.MATCHED.id)
 
     if (!data) return res.status(404).send({
         data: {
@@ -63,9 +65,5 @@ const delete_departamento = async (req, res) => {
 }
 
 module.exports = {
-    get_departamentos,
-    get_departamento,
-    create_departamento,
-    update_departamento,
-    delete_departamento
+    get_departamentos, get_departamento, create_departamento, update_departamento, delete_departamento
 }

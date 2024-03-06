@@ -7,13 +7,13 @@ const get_titulaciones = async (skip = 0, take = 20) => {
             skip: skip,
             take: take,
         }
-    );
+    )
 }
 
-const get_titulacion = async (titulacion_id) => {
+const get_titulacion = async (id) => {
     return prisma.titulaciones.findUnique({
         where: {
-            id: titulacion_id
+            id: id
         }
     })
 }
@@ -28,11 +28,11 @@ const create_titulacion = async (titulacion) => {
     }
 }
 
-const update_titulacion = async (titulacion_id, titulacion_nueva) => {
+const update_titulacion = async (id, titulacion_nueva) => {
     try {
         return await prisma.titulaciones.update({
             where: {
-                id: titulacion_id
+                id: id
             }, data: titulacion_nueva
         })
     } catch (e) {
@@ -40,11 +40,11 @@ const update_titulacion = async (titulacion_id, titulacion_nueva) => {
     }
 }
 
-const delete_titulacion = async (titulacion_id) => {
+const delete_titulacion = async (id) => {
     try {
         return await prisma.titulaciones.delete({
             where: {
-                id: titulacion_id
+                id: id
             }
         })
     } catch (e) {

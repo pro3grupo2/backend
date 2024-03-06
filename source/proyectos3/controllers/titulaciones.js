@@ -2,14 +2,13 @@
 const titulaciones_service = require('../services/titulaciones')
 const titulaciones_errors = require('../errors/titulaciones')
 const get_titulaciones = async (req, res) => {
-    const {body} = req
     return res.send({
-        data: await titulaciones_service.get_titulaciones(body.skip || 0, body.take || 20)
+        data: await titulaciones_service.get_titulaciones(req.MATCHED.skip || 0, req.MATCHED.take || 20)
     })
 }
 
 const get_titulacion = async (req, res) => {
-    const data = await titulaciones_service.get_titulacion(parseInt(req.params.titulacion_id))
+    const data = await titulaciones_service.get_titulacion(req.MATCHED.id)
 
     if (!data) return res.status(404).send({
         data: {
@@ -21,8 +20,7 @@ const get_titulacion = async (req, res) => {
 }
 
 const create_titulacion = async (req, res) => {
-    const {body} = req
-    const data = await titulaciones_service.create_titulacion(body)
+    const data = await titulaciones_service.create_titulacion(req.MATCHED)
 
     if (!data) return res.status(400).send({
         data: {
@@ -36,8 +34,12 @@ const create_titulacion = async (req, res) => {
 }
 
 const update_titulacion = async (req, res) => {
-    const {body} = req
-    const data = await titulaciones_service.update_titulacion(parseInt(req.params.titulacion_id), body)
+    const {MATCHED} = req
+
+    const titulacion_id = MATCHED.id
+    delete MATCHED.id
+
+    const data = await titulaciones_service.update_titulacion(titulacion_id, MATCHED)
 
     if (!data) return res.status(404).send({
         data: {
@@ -51,7 +53,7 @@ const update_titulacion = async (req, res) => {
 }
 
 const delete_titulacion = async (req, res) => {
-    const data = await titulaciones_service.delete_titulacion(parseInt(req.params.titulacion_id))
+    const data = await titulaciones_service.delete_titulacion(req.MATCHED.id)
 
     if (!data) return res.status(404).send({
         data: {
@@ -63,9 +65,5 @@ const delete_titulacion = async (req, res) => {
 }
 
 module.exports = {
-    get_titulaciones,
-    get_titulacion,
-    create_titulacion,
-    update_titulacion,
-    delete_titulacion
+    get_titulaciones, get_titulacion, create_titulacion, update_titulacion, delete_titulacion
 }

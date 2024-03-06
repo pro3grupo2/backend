@@ -9,31 +9,31 @@ const auth_middleware = require("../../middleware/auth")
 const router = express.Router()
 
 router.get("/",
-    auth_middleware.get_and_verify_bearer_token,
+    auth_middleware.verificar_JWT,
     global_validators.pagination,
     titulacions_controller.get_titulaciones
 )
-router.get("/:titulacion_id",
-    auth_middleware.get_and_verify_bearer_token,
-    titulaciones_validators.get_titulacion,
+router.get("/:id",
+    auth_middleware.verificar_JWT,
+    titulaciones_validators.get_id,
     titulacions_controller.get_titulacion
 )
 router.post("/",
-    auth_middleware.get_and_verify_bearer_token,
-    //auth_middleware.is_administrador,
+    auth_middleware.verificar_JWT,
+    auth_middleware.is_administrador,
     titulaciones_validators.create_titulacion,
     titulacions_controller.create_titulacion
 )
-router.put("/:titulacion_id",
-    auth_middleware.get_and_verify_bearer_token,
-    //auth_middleware.is_administrador,
+router.put("/:id",
+    auth_middleware.verificar_JWT,
+    auth_middleware.is_administrador,
     titulaciones_validators.update_titulacion,
     titulacions_controller.update_titulacion
 )
-router.delete("/:titulacion_id",
-    auth_middleware.get_and_verify_bearer_token,
-    //auth_middleware.is_administrador,
-    titulaciones_validators.delete_titulacion,
+router.delete("/:id",
+    auth_middleware.verificar_JWT,
+    auth_middleware.is_administrador,
+    titulaciones_validators.get_id,
     titulacions_controller.delete_titulacion
 )
 

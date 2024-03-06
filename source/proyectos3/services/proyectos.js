@@ -3,54 +3,37 @@ const {PrismaClient} = require('@prisma/client')
 const prisma = new PrismaClient()
 
 const get_proyectos = async (skip = 0, take = 20) => {
-    return prisma.proyectos.findMany(
-        {
-            skip: skip,
-            take: take,
-            where:{
-              validado: true
-            },
-            include: {
-                usuarios: {
-                    select: {
-                        id: true,
-                        correo: true,
-                        nombre_completo: true,
-                        alias: true
-                    }
-                },
-                proyectos_premios: {
-                    select: {
-                        premios: true,
-                        anio: true
-                    }
+    return prisma.proyectos.findMany({
+        skip: skip, take: take, where: {
+            validado: true
+        }, include: {
+            usuarios: {
+                select: {
+                    id: true, correo: true, nombre_completo: true, alias: true
+                }
+            }, proyectos_premios: {
+                select: {
+                    premios: true
                 }
             }
         }
-    )
+    })
 }
 
 const get_proyecto = async (id) => {
     return prisma.proyectos.findUnique({
         where: {
             id: id
-        },
-        include: {
+        }, include: {
             usuarios_proyectos: {
                 select: {
                     usuarios: true
                 }
-            },
-            usuarios: {
+            }, usuarios: {
                 select: {
-                    id: true,
-                    correo: true,
-                    nombre_completo: true,
-                    alias: true,
-                    rol: true
+                    id: true, correo: true, nombre_completo: true, alias: true, rol: true
                 }
-            },
-            proyectos_premios: {
+            }, proyectos_premios: {
                 select: {
                     premios: true
                 }
@@ -61,9 +44,16 @@ const get_proyecto = async (id) => {
 
 const create_proyecto = async (proyecto) => {
     try {
-        return await prisma.proyectos.create({
-            data: proyecto
+        const {participantes, ...resto} = proyecto
+        const data = await prisma.proyectos.create({
+            data: resto
         })
+
+        if (participantes) for (const participante of participantes) await prisma.usuarios_proyectos.create({
+            data: {id_usuario: participante, id_proyecto: data.id}
+        })
+
+        return data
     } catch (e) {
         return null
     }
@@ -71,11 +61,19 @@ const create_proyecto = async (proyecto) => {
 
 const update_proyecto = async (id, proyecto_nuevo) => {
     try {
-        return await prisma.proyectos.update({
+        const {participantes, ...resto} = proyecto_nuevo
+
+        const data = await prisma.proyectos.update({
             where: {
                 id: id
-            }, data: proyecto_nuevo
+            }, data: resto
         })
+
+        if (participantes) for (const participante of participantes) await prisma.usuarios_proyectos.create({
+            data: {id_usuario: participante, id_proyecto: data.id}
+        })
+
+        return data
     } catch (e) {
         return null
     }
@@ -83,6 +81,12 @@ const update_proyecto = async (id, proyecto_nuevo) => {
 
 const delete_proyecto = async (id) => {
     try {
+        await prisma.usuarios_proyectos.deleteMany({
+            where: {
+                id_proyecto: id
+            }
+        })
+
         return await prisma.proyectos.delete({
             where: {
                 id: id
@@ -94,9 +98,5 @@ const delete_proyecto = async (id) => {
 }
 
 module.exports = {
-    get_proyectos,
-    get_proyecto,
-    create_proyecto,
-    update_proyecto,
-    delete_proyecto
+    get_proyectos, get_proyecto, create_proyecto, update_proyecto, delete_proyecto
 }

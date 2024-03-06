@@ -12,6 +12,7 @@ const create_proyecto = [
     body('ficha', 'Type: String, Max-Length: None').exists().notEmpty().isString(),
     body('url', 'Type: String, Max-Length: None').exists().notEmpty().isString(),
     body('portada', 'Type: String, Max-Length: None').exists().notEmpty().isString(),
+    body('participantes', 'Type: Array[Int]').exists().notEmpty().isArray().optional(),
     validate
 ]
 
@@ -22,6 +23,7 @@ const update_proyecto = [
     body('ficha', 'Type: String, Max-Length: None').exists().notEmpty().isString().optional(),
     body('url', 'Type: String, Max-Length: None').exists().notEmpty().isString().optional(),
     body('portada', 'Type: String, Max-Length: None').exists().notEmpty().isString().optional(),
+    body('participantes', 'Type: Array[Int]').exists().notEmpty().isArray().optional(),
     validate
 ]
 

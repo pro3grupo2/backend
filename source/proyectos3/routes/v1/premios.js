@@ -9,31 +9,31 @@ const auth_middleware = require("../../middleware/auth")
 const router = express.Router()
 
 router.get("/",
-    auth_middleware.get_and_verify_bearer_token,
+    auth_middleware.verificar_JWT,
     global_validators.pagination,
     premios_controller.get_premios
 )
-router.get("/:premio_id",
-    auth_middleware.get_and_verify_bearer_token,
-    premios_validators.get_premio,
+router.get("/:id",
+    auth_middleware.verificar_JWT,
+    premios_validators.get_id,
     premios_controller.get_premio
 )
 router.post("/",
-    auth_middleware.get_and_verify_bearer_token,
+    auth_middleware.verificar_JWT,
     auth_middleware.is_administrador,
     premios_validators.create_premio,
     premios_controller.create_premio
 )
-router.put("/:premio_id",
-    auth_middleware.get_and_verify_bearer_token,
+router.put("/:id",
+    auth_middleware.verificar_JWT,
     auth_middleware.is_administrador,
     premios_validators.update_premio,
     premios_controller.update_premio
 )
-router.delete("/:premio_id",
-    auth_middleware.get_and_verify_bearer_token,
+router.delete("/:id",
+    auth_middleware.verificar_JWT,
     auth_middleware.is_administrador,
-    premios_validators.delete_premio,
+    premios_validators.get_id,
     premios_controller.delete_premio
 )
 

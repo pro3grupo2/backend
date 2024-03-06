@@ -3,14 +3,14 @@ const premios_service = require('../services/premios')
 const premios_errors = require('../errors/premios')
 
 const get_premios = async (req, res) => {
-    const {matched_data} = req
+    const {MATCHED} = req
     return res.send({
-        data: await premios_service.get_premios(matched_data.skip, matched_data.take)
+        data: await premios_service.get_premios(MATCHED.skip, MATCHED.take)
     })
 }
 
 const get_premio = async (req, res) => {
-    const data = await premios_service.get_premio(req.matched_data.premio_id)
+    const data = await premios_service.get_premio(req.MATCHED.id)
 
     if (!data) return res.status(404).send({
         data: {
@@ -22,8 +22,8 @@ const get_premio = async (req, res) => {
 }
 
 const create_premio = async (req, res) => {
-    const {matched_data} = req
-    const data = await premios_service.create_premio(matched_data)
+    const {MATCHED} = req
+    const data = await premios_service.create_premio(MATCHED)
 
     if (!data) return res.status(400).send({
         data: {
@@ -37,12 +37,12 @@ const create_premio = async (req, res) => {
 }
 
 const update_premio = async (req, res) => {
-    const {matched_data} = req
+    const {MATCHED} = req
 
-    const premio_id = matched_data.premio_id
-    delete matched_data.premio_id
+    const premio_id = MATCHED.id
+    delete MATCHED.id
 
-    const data = await premios_service.update_premio(premio_id, matched_data)
+    const data = await premios_service.update_premio(premio_id, MATCHED)
 
     if (!data) return res.status(404).send({
         data: {
@@ -56,8 +56,7 @@ const update_premio = async (req, res) => {
 }
 
 const delete_premio = async (req, res) => {
-    console.log(req.matched_data.premio_id)
-    const data = await premios_service.delete_premio(req.matched_data.premio_id)
+    const data = await premios_service.delete_premio(req.MATCHED.id)
 
     if (!data) return res.status(404).send({
         data: {

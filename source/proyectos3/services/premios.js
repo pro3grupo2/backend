@@ -11,10 +11,10 @@ const get_premios = async (skip = 0, take = 20) => {
     );
 }
 
-const get_premio = async (premio_id) => {
+const get_premio = async (id) => {
     return prisma.premios.findUnique({
         where: {
-            id: premio_id
+            id: id
         }
     })
 }
@@ -29,11 +29,11 @@ const create_premio = async (premio) => {
     }
 }
 
-const update_premio = async (premio_id, premio_nuevo) => {
+const update_premio = async (id, premio_nuevo) => {
     try {
         return await prisma.premios.update({
             where: {
-                id: premio_id
+                id: id
             }, data: premio_nuevo
         })
     } catch (e) {
@@ -41,11 +41,11 @@ const update_premio = async (premio_id, premio_nuevo) => {
     }
 }
 
-const delete_premio = async (premio_id) => {
+const delete_premio = async (id) => {
     try {
         return await prisma.premios.delete({
             where: {
-                id: premio_id
+                id: id
             }
         })
     } catch (e) {

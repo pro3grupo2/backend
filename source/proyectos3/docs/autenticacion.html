@@ -1,0 +1,113 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en-US" data-colors-preset="contrast" data-primary-color="#307FFF"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="UTF-8"><meta name="robots" content="noindex"><meta name="built-on" content="2024-02-29T12:30:31.6537677"><title>Autenticaci&oacute;n | API Documentation</title><script type="application/json" id="virtual-toc-data">[{"id":"iniciar-sesi-n","level":0,"title":"Iniciar sesión","anchor":"#iniciar-sesi-n"},{"id":"registrarse","level":0,"title":"Registrarse","anchor":"#registrarse"},{"id":"informaci-n-de-tu-usuario-me","level":0,"title":"Información de tu usuario (me)","anchor":"#informaci-n-de-tu-usuario-me"}]</script><script type="application/json" id="topic-shortcuts"></script><link href="https://resources.jetbrains.com/writerside/apidoc/6.6.6-b205/app.css" rel="stylesheet"><link rel="apple-touch-icon" sizes="180x180" href="https://jetbrains.com/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="https://jetbrains.com/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="https://jetbrains.com/favicon-16x16.png"><link rel="manifest" href="site.webmanifest"><meta name="msapplication-TileColor" content="#000000"><meta name="msapplication-TileImage" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-144x144.png"><meta name="msapplication-square70x70logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-70x70.png"><meta name="msapplication-square150x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-150x150.png"><meta name="msapplication-wide310x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x150.png"><meta name="msapplication-square310x310logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x310.png"><meta name="image" content=""><!-- Open Graph --><meta property="og:title" content="Autenticaci&oacute;n | API Documentation"><meta property="og:description" content=""><meta property="og:image" content=""><meta property="og:site_name" content="API Documentation Help"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:url" content="/apidocs/1.0/autenticacion.html"><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content=""><meta name="twitter:title" content="Autenticaci&oacute;n | API Documentation"><meta name="twitter:description" content=""><meta name="twitter:creator" content=""><meta name="twitter:image:src" content=""><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "@id": "/apidocs/1.0/autenticacion.html#webpage",
+    "url": "/apidocs/1.0/autenticacion.html",
+    "name": "Autenticaci&oacute;n | API Documentation",
+    "description": "",
+    "image": "",
+    "inLanguage":"en-US"
+}</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json">{
+    "@type": "WebSite",
+    "@id": "/apidocs/#website",
+    "url": "/apidocs/",
+    "name": "API Documentation Help"
+}</script><!-- End Schema.org --></head><body data-id="autenticacion" data-main-title="Autenticaci&oacute;n" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}" data-template="article" data-breadcrumbs="starter-topic.md|Documentación Express API"><div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>API Documentation 1.0 Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="autenticacion" id="autenticacion.md">Autenticaci&oacute;n</h1><p id="78c8d7ae_1755">Para poder acceder a los recursos de la API, es necesario autenticarse.</p><p id="78c8d7ae_1756">Existen tres rutas para completar el proceso de autenticaci&oacute;n:</p><ul class="list _ul" id="78c8d7ae_1757"><li class="list__item" id="78c8d7ae_1758"><p><span class="control" id="78c8d7ae_1759">POST /api/v1/auth/signin</span>: Iniciar sesi&oacute;n.</p></li><li class="list__item" id="78c8d7ae_1760"><p><span class="control" id="78c8d7ae_1761">POST /api/v1/auth/signup</span>: Registrarse.</p></li><li class="list__item" id="78c8d7ae_1762"><p><span class="control" id="78c8d7ae_1763">GET /api/v1/auth/me</span>: Informacion de tu usuario.</p></li></ul><aside class="prompt" data-type="tip" data-title="" id="78c8d7ae_1764"><p id="78c8d7ae_1765">Necesitaras una cuenta obligatoriamente para poder acceder a los recursos de la API.</p></aside><section class="chapter"><h2 id="iniciar-sesi-n" data-toc="iniciar-sesi-n">Iniciar sesi&oacute;n</h2><section class="chapter"><h3 id="par-metros-de-inicio-de-sesi-n" data-toc="par-metros-de-inicio-de-sesi-n">Par&aacute;metros de inicio de sesi&oacute;n</h3><div class="code-block" data-lang="javascript">
+const signin = [
+    body('correo', 'Type: String, Max-Length: 50').exists().notEmpty().isEmail().isLength({max: 50}),
+    body('password', 'Type: String, Max-Length: 102').exists().notEmpty().isString().isLength({max: 102}),
+    validate
+]
+</div></section><section class="chapter"><h3 id="ejemplo-de-inicio-de-sesi-n" data-toc="ejemplo-de-inicio-de-sesi-n">Ejemplo de inicio de sesi&oacute;n</h3><div class="code-block" data-lang="http">
+POST /api/v1/auth/signin
+Content-Type: application/json
+
+{
+    &quot;correo&quot;: &quot;tu_correo@dominio.com&quot;,
+    &quot;password&quot;: &quot;tu_password&quot;
+}
+</div></section><section class="chapter"><h3 id="respuesta-de-inicio-de-sesi-n" data-toc="respuesta-de-inicio-de-sesi-n">Respuesta de inicio de sesi&oacute;n</h3><div class="code-block" data-lang="http">
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Content-Type: application/json; charset=utf-8
+Content-Length: 158
+ETag: W/&quot;9e-8oJchP6iIGZFNG0ELPZSTjZc+6Y&quot;
+Date: Wed, 21 Feb 2024 14:43:11 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{
+  &quot;data&quot;: {
+    &quot;token&quot;: &quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzA4NTI2NTkxLCJleHAiOjE3MDg2MTI5OTF9.4oPWrdWop2JdJQloOh2lc6jsUW1tM4GC5chiSzSHr_4&quot;
+  }
+}
+</div></section></section><section class="chapter"><h2 id="registrarse" data-toc="registrarse">Registrarse</h2><section class="chapter"><h3 id="par-metros-de-registro" data-toc="par-metros-de-registro">Par&aacute;metros de registro</h3><div class="code-block" data-lang="javascript">
+const signup = [
+    body('correo', 'Type: String, Max-Length: 50').exists().notEmpty().isEmail().isLength({max: 50}),
+    body('nombre_completo', 'Type: String, Max-Length: 50').exists().notEmpty().isString().isLength({max: 50}),
+    body('alias', 'Type: String, Max-Length: 50').exists().notEmpty().isString().isLength({max: 50}),
+    body('password', 'Type: String, Max-Length: 102').exists().notEmpty().isString().isLength({max: 102}),
+    body('frase_recuperacion', 'Type: String, Max-Length: 100').exists().notEmpty().isString().isLength({max: 100}),
+    validate
+]
+</div></section><section class="chapter"><h3 id="ejemplo-de-registro" data-toc="ejemplo-de-registro">Ejemplo de registro</h3><div class="code-block" data-lang="http">
+POST /api/v1/auth/signup
+Content-Type: application/json
+
+{
+    &quot;correo&quot;: &quot;tu_corro@dominio.com&quot;,
+    &quot;nombre_completo&quot;: &quot;tu_nombre_completo&quot;,
+    &quot;alias&quot;: &quot;tu_alias&quot;,
+    &quot;password&quot;: &quot;tu_password&quot;,
+    &quot;frase_recuperacion&quot;: &quot;tu_frase_recuperacion&quot;
+}
+</div></section><section class="chapter"><h3 id="respuesta-de-registro" data-toc="respuesta-de-registro">Respuesta de registro</h3><div class="code-block" data-lang="http">
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Content-Type: application/json; charset=utf-8
+Content-Length: 166
+ETag: W/&quot;a6-jkt7T7i4sAUMTOZj2RxA+sH8SZ4&quot;
+Date: Wed, 21 Feb 2024 14:43:57 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{
+  &quot;data&quot;: {
+    &quot;id&quot;: 1,
+    &quot;correo&quot;: &quot;tu_corro@dominio.com&quot;,
+    &quot;nombre_completo&quot;: &quot;tu_nombre_completo&quot;,
+    &quot;alias&quot;: &quot;tu_alias&quot;,
+    &quot;password&quot;: &quot;tu_password&quot;,
+    &quot;frase_recuperacion&quot;: &quot;tu_frase_recuperacion&quot;
+  }
+}
+</div></section></section><section class="chapter"><h2 id="informaci-n-de-tu-usuario-me" data-toc="informaci-n-de-tu-usuario-me">Informaci&oacute;n de tu usuario (me)</h2><section class="chapter"><h3 id="ejemplo-de-informaci-n-de-tu-usuario" data-toc="ejemplo-de-informaci-n-de-tu-usuario">Ejemplo de informaci&oacute;n de tu usuario</h3><div class="code-block" data-lang="http">
+GET http://localhost:3000/api/v1/auth/me
+Authorization: Bearer tu_token_de_acceso
+</div></section><section class="chapter"><h3 id="respuesta-de-informaci-n-de-tu-usuario" data-toc="respuesta-de-informaci-n-de-tu-usuario">Respuesta de informaci&oacute;n de tu usuario</h3><div class="code-block" data-lang="http">
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Content-Type: application/json; charset=utf-8
+Content-Length: 206
+ETag: W/&quot;ce-H/ojNhNSQd2Q1pUizlTvIRuOtqQ&quot;
+Date: Wed, 21 Feb 2024 14:46:51 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{
+  &quot;data&quot;: {
+    &quot;id&quot;: 1,
+    &quot;correo&quot;: &quot;tu_corro@dominio.com&quot;,
+    &quot;nombre_completo&quot;: &quot;tu_nombre_completo&quot;,
+    &quot;alias&quot;: &quot;tu_alias&quot;,
+    &quot;proyectos&quot;: [
+      {
+        &quot;id&quot;: 1,
+        &quot;titulo&quot;: &quot;titulo_proyecto&quot;,
+        &quot;ruta_imagen&quot;: &quot;ruta_imagen&quot;
+      }
+    ]
+  }
+}
+</div></section></section><div class="last-modified">Last modified: 29 febrero 2024</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom"><a href="starter-topic.html" class="navigation-links__prev">Documentaci&oacute;n Express API</a><a href="proyectos.html" class="navigation-links__next">Proyectos</a></div></article><div id="disqus_thread"></div></div></section></main></div><script src="https://resources.jetbrains.com/writerside/apidoc/6.6.6-b205/app.js"></script></body></html>

@@ -6,7 +6,7 @@ const prisma = new PrismaClient()
 // Funciones que verifica la validez de un token
 const verify_token = (token) => {
     try {
-        return jwt.verify(token, "proyectos3")
+        return jwt.verify(token, process.env.JWT_SECRET)
     } catch (e) {
         return null
     }
@@ -54,7 +54,7 @@ const get_usuario_and_verify_password = async (correo, password) => {
     if (!data) return null
     if (data.password !== password) return null
 
-    return jwt.sign({id: data.id}, "proyectos3", {expiresIn: '1d'})
+    return jwt.sign({id: data.id}, process.env.JWT_SECRET, {expiresIn: process.env.JWT_EXPIRES_IN || "1d"})
 }
 
 // Funcion que obtiene un usuario a partir de un token
@@ -68,17 +68,10 @@ const get_usuario_by_id = async (usuario_id) => {
     return prisma.usuarios.findUnique({
         where: {
             id: usuario_id
-        },
-        select: {
-            id: true,
-            correo: true,
-            nombre_completo: true,
-            alias: true,
-            proyectos: {
+        }, select: {
+            id: true, correo: true, nombre_completo: true, alias: true, proyectos: {
                 select: {
-                    id: true,
-                    titulo: true,
-                    ruta_imagen: true,
+                    id: true, titulo: true, ruta_imagen: true,
                 }
             }
         }
@@ -89,13 +82,7 @@ const get_usuario_by_id = async (usuario_id) => {
 const create_usuario = async (usuario) => {
     try {
         return await prisma.usuarios.create({
-            data: {
-                "correo": usuario.correo,
-                "nombre_completo": usuario.nombre_completo,
-                "alias": usuario.alias,
-                "password": usuario.password,
-                "frase_recuperacion": usuario.frase_recuperacion
-            }
+            data: usuario
         })
     } catch (e) {
         return null
@@ -103,12 +90,5 @@ const create_usuario = async (usuario) => {
 }
 
 module.exports = {
-    verify_token,
-    is_administrador,
-    is_creador,
-    is_alumno,
-    get_usuario_and_verify_password,
-    get_usuario_by_token,
-    get_usuario_by_id,
-    create_usuario
+    verify_token, is_administrador, is_creador, is_alumno, get_usuario_and_verify_password, get_usuario_by_token, get_usuario_by_id, create_usuario
 }

@@ -1,0 +1,42 @@
+### /api/v1/auth/signin
+POST http://localhost:3000/api/v1/auth/signin
+Content-Type: application/json
+
+{
+  "correo": "adriantoral@live.u-tad.com",
+  "password": "12345"
+}
+
+> {%
+    client.global.set("auth_token", response.body.data.token);
+%}
+
+### /api/v1/premios/
+GET http://localhost:3000/api/v1/premios/
+Authorization: Bearer {{auth_token}}
+
+### /api/v1/premios/
+POST http://localhost:3000/api/v1/premios/
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "titulo": "Premio 1"
+}
+
+### /api/v1/premios/1
+GET http://localhost:3000/api/v1/premios/1
+Authorization: Bearer {{auth_token}}
+
+### /api/v1/premios/1
+PUT http://localhost:3000/api/v1/premios/1
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "titulo": "Premio 1 mejorado"
+}
+
+### /api/v1/premios/1
+DELETE http://localhost:3000/api/v1/premios/1
+Authorization: Bearer {{auth_token}}

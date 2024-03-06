@@ -2,6 +2,7 @@
 const express = require("express")
 const auth_controller = require("../../controllers/auth")
 const auth_middleware = require("../../middleware/auth")
+const auth_validators = require("../../validators/auth")
 
 // Rutas de autenticacion
 const router = express.Router()
@@ -11,9 +12,11 @@ router.get("/me",
     auth_controller.me
 )
 router.post("/signin",
+    auth_validators.signin,
     auth_controller.signin
 )
 router.post("/signup",
+    auth_validators.signup,
     auth_controller.signup
 )
 

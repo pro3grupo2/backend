@@ -9,7 +9,7 @@ const get_proyectos = async (req, res) => {
 }
 
 const get_proyecto = async (req, res) => {
-    const data = await proyectos_service.get_proyecto(req.matched_data.proyecto_id)
+    const data = await proyectos_service.get_proyecto(req.MATCHED.id)
 
     if (!data) return res.status(404).send({
         data: {
@@ -21,10 +21,10 @@ const get_proyecto = async (req, res) => {
 }
 
 const create_proyecto = async (req, res) => {
-    const {matched_data} = req
+    const {MATCHED, JWT} = req
 
-    matched_data.id_creador = req.usuario_id
-    const data = await proyectos_service.create_proyecto(matched_data)
+    MATCHED.id_creador = JWT.id
+    const data = await proyectos_service.create_proyecto(MATCHED)
 
     if (!data) return res.status(400).send({
         data: {
@@ -38,13 +38,12 @@ const create_proyecto = async (req, res) => {
 }
 
 const update_proyecto = async (req, res) => {
-    const {matched_data} = req
+    const {MATCHED} = req
 
-    const proyecto_id = matched_data.proyecto_id
-    delete matched_data.proyecto_id
+    const proyecto_id = MATCHED.id
+    delete MATCHED.id
 
-    matched_data.id_creador = req.usuario_id
-    const data = await proyectos_service.update_proyecto(proyecto_id, matched_data)
+    const data = await proyectos_service.update_proyecto(proyecto_id, MATCHED)
 
     if (!data) return res.status(404).send({
         data: {
@@ -58,7 +57,7 @@ const update_proyecto = async (req, res) => {
 }
 
 const delete_proyecto = async (req, res) => {
-    const data = await proyectos_service.delete_proyecto(req.matched_data.proyecto_id)
+    const data = await proyectos_service.delete_proyecto(req.MATCHED.id)
 
     if (!data) return res.status(404).send({
         data: {

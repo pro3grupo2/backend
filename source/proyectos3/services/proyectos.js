@@ -27,13 +27,13 @@ const get_proyectos = async (skip = 0, take = 20) => {
     );
 }
 
-const get_proyecto = async (proyecto_id) => {
+const get_proyecto = async (id) => {
     return prisma.proyectos.findUnique({
         where: {
-            id: proyecto_id
+            id: id
         },
         include: {
-            proyectos_usuarios: {
+            usuarios_proyectos: {
                 select: {
                     usuarios: true
                 }
@@ -43,13 +43,13 @@ const get_proyecto = async (proyecto_id) => {
                     id: true,
                     correo: true,
                     nombre_completo: true,
-                    alias: true
+                    alias: true,
+                    rol: true
                 }
             },
             proyectos_premios: {
                 select: {
-                    premios: true,
-                    anio: true
+                    premios: true
                 }
             }
         }
@@ -66,11 +66,11 @@ const create_proyecto = async (proyecto) => {
     }
 }
 
-const update_proyecto = async (proyecto_id, proyecto_nuevo) => {
+const update_proyecto = async (id, proyecto_nuevo) => {
     try {
         return await prisma.proyectos.update({
             where: {
-                id: proyecto_id
+                id: id
             }, data: proyecto_nuevo
         })
     } catch (e) {
@@ -78,11 +78,11 @@ const update_proyecto = async (proyecto_id, proyecto_nuevo) => {
     }
 }
 
-const delete_proyecto = async (proyecto_id) => {
+const delete_proyecto = async (id) => {
     try {
         return await prisma.proyectos.delete({
             where: {
-                id: proyecto_id
+                id: id
             }
         })
     } catch (e) {

@@ -15,17 +15,36 @@ Content-Type: application/json
 GET http://localhost:3000/api/v1/proyectos/
 Authorization: Bearer {{auth_token}}
 
+### /api/v1/proyectos/subir
+POST http://localhost:3000/api/v1/proyectos/subir
+Authorization: Bearer {{auth_token}}
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="url"; filename="url.zip"
+Content-Type: application/zip
+
+< premios.http
+--WebAppBoundary
+Content-Disposition: form-data; name="portada"; filename="imagen.jpg"
+Content-Type: image/jpeg
+
+< premios.http
+--WebAppBoundary
+
 ### /api/v1/proyectos/
 POST http://localhost:3000/api/v1/proyectos/
 Authorization: Bearer {{auth_token}}
 Content-Type: application/json
 
 {
-  "id_creador": 1,
-  "titulo": "proyecto.titulo",
-  "ficha_tecnica": "proyecto.ficha_tecnica",
-  "ruta_fichero": "proyecto.ruta_fichero",
-  "ruta_imagen": "proyecto.ruta_imagen"
+  "titulo": "Mi primer proyecto",
+  "ficha": "Mi primer proyecto es una aplicación web que...",
+  "url": "la url que devuleve la peticion de arriba o donde este guardado",
+  "portada": "url de la imagen que devuelve la peticion de arriba o donde este guardado",
+  "participantes": [
+    1
+  ]
 }
 
 ### /api/v1/proyectos/1
@@ -38,9 +57,16 @@ Authorization: Bearer {{auth_token}}
 Content-Type: application/json
 
 {
-  "titulo": "proyecto.titulo mejorado"
+  "participantes": [
+    1,
+    2
+  ]
 }
 
 ### /api/v1/proyectos/1
 DELETE http://localhost:3000/api/v1/proyectos/1
+Authorization: Bearer {{auth_token}}
+
+### /api/v1/proyectos/1/validar
+GET http://localhost:3000/api/v1/proyectos/1/validar
 Authorization: Bearer {{auth_token}}

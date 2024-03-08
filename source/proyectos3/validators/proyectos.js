@@ -6,6 +6,12 @@ const get_id = [
     validate
 ]
 
+const create_proyecto_files = [
+    body('url', 'Type: String, Max-Length: None').exists().notEmpty().isString().optional(),
+    body('portada', 'Type: String, Max-Length: None').exists().notEmpty().isString().optional(),
+    validate
+]
+
 const create_proyecto = [
     body('id_asignatura', 'Type: Int').exists().toInt().optional(),
     body('titulo', 'Type: String, Max-Length: 100').exists().notEmpty().isString().isLength({max: 100}),
@@ -29,6 +35,7 @@ const update_proyecto = [
 
 module.exports = {
     get_id,
+    create_proyecto_files,
     create_proyecto,
     update_proyecto
 }

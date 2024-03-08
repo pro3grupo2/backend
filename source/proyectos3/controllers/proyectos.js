@@ -20,6 +20,12 @@ const get_proyecto = async (req, res) => {
     return res.send({data: data})
 }
 
+const create_proyecto_files = async (req, res) => {
+    return res.send({
+        data: req.MATCHED
+    })
+}
+
 const create_proyecto = async (req, res) => {
     const {MATCHED, JWT} = req
 
@@ -38,12 +44,8 @@ const create_proyecto = async (req, res) => {
 }
 
 const update_proyecto = async (req, res) => {
-    const {MATCHED} = req
-
-    const proyecto_id = MATCHED.id
-    delete MATCHED.id
-
-    const data = await proyectos_service.update_proyecto(proyecto_id, MATCHED)
+    const {id, ...proyecto} = req.MATCHED
+    const data = await proyectos_service.update_proyecto(id, proyecto)
 
     if (!data) return res.status(404).send({
         data: {
@@ -68,6 +70,18 @@ const delete_proyecto = async (req, res) => {
     return res.send({data: data})
 }
 
+const validar_proyecto = async (req, res) => {
+    const data = await proyectos_service.validar_proyecto(req.MATCHED.id)
+
+    if (!data) return res.status(404).send({
+        data: {
+            errors: [proyectos_errors.NOT_FOUND]
+        }
+    })
+
+    return res.send({data: data})
+}
+
 module.exports = {
-    get_proyectos, get_proyecto, create_proyecto, update_proyecto, delete_proyecto
+    get_proyectos, get_proyecto, create_proyecto_files, create_proyecto, update_proyecto, delete_proyecto, validar_proyecto
 }

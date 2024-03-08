@@ -39,7 +39,7 @@ const inject_file_path_to_body = (req, res, next) => {
     if (!req.files) return next()
 
     Object.keys(req.files).forEach(fichero => {
-        req.body[fichero] = req.files[fichero][0].destination + req.files[fichero][0].filename
+        req.body[fichero] = req.files[fichero][0].destination + "/" + req.files[fichero][0].filename
     })
 
     next()

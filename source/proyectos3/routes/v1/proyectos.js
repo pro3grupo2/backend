@@ -19,13 +19,18 @@ router.get("/:id",
     proyectos_validators.get_id,
     proyectos_controller.get_proyecto
 )
-router.post("/",
+router.post("/subir",
     auth_middleware.verificar_JWT,
     proyectos_middleware.upload_file.fields([
-        //{name: "ruta_fichero", maxCount: 1},
+        {name: "url", maxCount: 1},
         {name: "portada", maxCount: 1}
     ]),
     proyectos_middleware.inject_file_path_to_body,
+    proyectos_validators.create_proyecto_files,
+    proyectos_controller.create_proyecto_files
+)
+router.post("/",
+    auth_middleware.verificar_JWT,
     proyectos_validators.create_proyecto,
     proyectos_controller.create_proyecto
 )
@@ -40,6 +45,12 @@ router.delete("/:id",
     proyectos_validators.get_id,
     proyectos_middleware.is_propietario_or_administrador,
     proyectos_controller.delete_proyecto
+)
+router.get("/:id/validar",
+    auth_middleware.verificar_JWT,
+    proyectos_validators.get_id,
+    auth_middleware.is_administrador,
+    proyectos_controller.validar_proyecto
 )
 
 module.exports = router

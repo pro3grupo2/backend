@@ -8,7 +8,7 @@ const auth_validators = require("../../validators/auth")
 const router = express.Router()
 
 router.get("/me",
-    auth_middleware.get_and_verify_bearer_token,
+    auth_middleware.verificar_JWT,
     auth_controller.me
 )
 router.post("/signin",

@@ -1,15 +1,15 @@
 // Dependecias necesarias para el manejo de las rutas de autenticacion
 const materias_service = require('../services/materias')
 const materias_errors = require('../errors/materias')
+
 const get_materias = async (req, res) => {
-    const {body} = req
     return res.send({
-        data: await materias_service.get_materias(body.skip || 0, body.take || 20)
+        data: await materias_service.get_materias(req.MATCHED.skip, req.MATCHED.take)
     })
 }
 
 const get_materia = async (req, res) => {
-    const data = await materias_service.get_materia(parseInt(req.params.materia_id))
+    const data = await materias_service.get_materia(req.MATCHED.id)
 
     if (!data) return res.status(404).send({
         data: {
@@ -21,8 +21,7 @@ const get_materia = async (req, res) => {
 }
 
 const create_materia = async (req, res) => {
-    const {body} = req
-    const data = await materias_service.create_materia(body)
+    const data = await materias_service.create_materia(req.MATCHED)
 
     if (!data) return res.status(400).send({
         data: {
@@ -36,8 +35,12 @@ const create_materia = async (req, res) => {
 }
 
 const update_materia = async (req, res) => {
-    const {body} = req
-    const data = await materias_service.update_materia(parseInt(req.params.materia_id), body)
+    const {MATCHED} = req
+
+    const materia_id = MATCHED.id
+    delete MATCHED.id
+
+    const data = await materias_service.update_materia(materia_id, body)
 
     if (!data) return res.status(404).send({
         data: {
@@ -51,7 +54,7 @@ const update_materia = async (req, res) => {
 }
 
 const delete_materia = async (req, res) => {
-    const data = await materias_service.delete_materia(parseInt(req.params.materia_id))
+    const data = await materias_service.delete_materia(req.MATCHED.id)
 
     if (!data) return res.status(404).send({
         data: {
@@ -63,9 +66,5 @@ const delete_materia = async (req, res) => {
 }
 
 module.exports = {
-    get_materias,
-    get_materia,
-    create_materia,
-    update_materia,
-    delete_materia
+    get_materias, get_materia, create_materia, update_materia, delete_materia
 }

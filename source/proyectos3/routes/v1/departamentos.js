@@ -9,31 +9,31 @@ const auth_middleware = require("../../middleware/auth")
 const router = express.Router()
 
 router.get("/",
-    auth_middleware.get_and_verify_bearer_token,
+    auth_middleware.verificar_JWT,
     global_validators.pagination,
     departamentos_controller.get_departamentos
 )
-router.get("/:departamento_id",
-    auth_middleware.get_and_verify_bearer_token,
-    departamentos_validators.get_departamento,
+router.get("/:id",
+    auth_middleware.verificar_JWT,
+    departamentos_validators.get_id,
     departamentos_controller.get_departamento
 )
 router.post("/",
-    auth_middleware.get_and_verify_bearer_token,
-    //auth_middleware.is_administrador,
+    auth_middleware.verificar_JWT,
+    auth_middleware.is_administrador,
     departamentos_validators.create_departamento,
     departamentos_controller.create_departamento
 )
-router.put("/:departamento_id",
-    auth_middleware.get_and_verify_bearer_token,
-    //auth_middleware.is_administrador,
+router.put("/:id",
+    auth_middleware.verificar_JWT,
+    auth_middleware.is_administrador,
     departamentos_validators.update_departamento,
     departamentos_controller.update_departamento
 )
-router.delete("/:departamento_id",
-    auth_middleware.get_and_verify_bearer_token,
-    //auth_middleware.is_administrador,
-    departamentos_validators.delete_departamento,
+router.delete("/:id",
+    auth_middleware.verificar_JWT,
+    auth_middleware.is_administrador,
+    departamentos_validators.get_id,
     departamentos_controller.delete_departamento
 )
 

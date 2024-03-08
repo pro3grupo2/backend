@@ -1,5 +1,5 @@
 const messages = {
-    NOT_FOUND: "Alumno no encontrado",
+    NOT_FOUND: "Codigo no encontrada",
     WRONG_CREATE: "Datos incorrectos",
 }
 

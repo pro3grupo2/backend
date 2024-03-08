@@ -2,8 +2,8 @@
 const {PrismaClient} = require('@prisma/client')
 const prisma = new PrismaClient()
 
-const get_premios = async (skip = 0, take = 20) => {
-    return prisma.premios.findMany(
+const get_areas = async (skip = 0, take = 20) => {
+    return prisma.areas.findMany(
         {
             skip: skip,
             take: take
@@ -11,39 +11,39 @@ const get_premios = async (skip = 0, take = 20) => {
     )
 }
 
-const get_premio = async (id) => {
-    return prisma.premios.findUnique({
+const get_area = async (id) => {
+    return prisma.areas.findUnique({
         where: {
             id: id
         }
     })
 }
 
-const create_premio = async (premio) => {
+const create_area = async (area) => {
     try {
-        return await prisma.premios.create({
-            data: premio
+        return await prisma.areas.create({
+            data: area
         })
     } catch (e) {
         return null
     }
 }
 
-const update_premio = async (id, premio_nuevo) => {
+const update_area = async (id, area_nuevo) => {
     try {
-        return await prisma.premios.update({
+        return await prisma.areas.update({
             where: {
                 id: id
-            }, data: premio_nuevo
+            }, data: area_nuevo
         })
     } catch (e) {
         return null
     }
 }
 
-const delete_premio = async (id) => {
+const delete_area = async (id) => {
     try {
-        return await prisma.premios.delete({
+        return await prisma.areas.delete({
             where: {
                 id: id
             }
@@ -54,9 +54,9 @@ const delete_premio = async (id) => {
 }
 
 module.exports = {
-    get_premios,
-    get_premio,
-    create_premio,
-    update_premio,
-    delete_premio
+    get_areas,
+    get_area,
+    create_area,
+    update_area,
+    delete_area
 }

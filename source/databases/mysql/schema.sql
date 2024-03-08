@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.3.0, for Linux (x86_64)
 --
--- Host: localhost    Database: proyectos3
+-- Host: localhost    Database: pr3
 -- ------------------------------------------------------
 -- Server version	8.3.0
 
@@ -16,80 +16,22 @@
 /*!40111 SET @OLD_SQL_NOTES = @@SQL_NOTES, SQL_NOTES = 0 */;
 
 --
--- Create database
+-- Table structure for table `areas`
 --
 
-DROP DATABASE proyectos3;
-CREATE DATABASE proyectos3;
-USE proyectos3;
-
---
--- Table structure for table `administradores`
---
-
-DROP TABLE IF EXISTS `administradores`;
+DROP TABLE IF EXISTS `areas`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `administradores`
+CREATE TABLE `areas`
 (
-    `id`         int NOT NULL AUTO_INCREMENT,
-    `id_usuario` int DEFAULT NULL,
+    `id`     int NOT NULL AUTO_INCREMENT,
+    `titulo` varchar(50) DEFAULT NULL,
     PRIMARY KEY (`id`),
-    KEY `id_usuario` (`id_usuario`),
-    CONSTRAINT `administradores_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`)
+    UNIQUE KEY `titulo` (`titulo`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `administradores`
---
-
-LOCK
-    TABLES `administradores` WRITE;
-/*!40000 ALTER TABLE `administradores`
-    DISABLE KEYS */;
-/*!40000 ALTER TABLE `administradores`
-    ENABLE KEYS */;
-UNLOCK
-    TABLES;
-
---
--- Table structure for table `alumnos`
---
-
-DROP TABLE IF EXISTS `alumnos`;
-/*!40101 SET @saved_cs_client = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `alumnos`
-(
-    `id`            int NOT NULL AUTO_INCREMENT,
-    `id_usuario`    int DEFAULT NULL,
-    `id_titulacion` int DEFAULT NULL,
-    `promocion`     int DEFAULT NULL,
-    PRIMARY KEY (`id`),
-    KEY `id_usuario` (`id_usuario`),
-    KEY `id_titulacion` (`id_titulacion`),
-    CONSTRAINT `alumnos_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`),
-    CONSTRAINT `alumnos_ibfk_2` FOREIGN KEY (`id_titulacion`) REFERENCES `titulaciones` (`id`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `alumnos`
---
-
-LOCK
-    TABLES `alumnos` WRITE;
-/*!40000 ALTER TABLE `alumnos`
-    DISABLE KEYS */;
-/*!40000 ALTER TABLE `alumnos`
-    ENABLE KEYS */;
-UNLOCK
-    TABLES;
 
 --
 -- Table structure for table `asignaturas`
@@ -104,24 +46,12 @@ CREATE TABLE `asignaturas`
     `titulo` varchar(50) DEFAULT NULL,
     `curso`  int         DEFAULT NULL,
     `letra`  char(1)     DEFAULT NULL,
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `titulo` (`titulo`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `asignaturas`
---
-
-LOCK
-    TABLES `asignaturas` WRITE;
-/*!40000 ALTER TABLE `asignaturas`
-    DISABLE KEYS */;
-/*!40000 ALTER TABLE `asignaturas`
-    ENABLE KEYS */;
-UNLOCK
-    TABLES;
 
 --
 -- Table structure for table `asignaturas_materias`
@@ -135,7 +65,6 @@ CREATE TABLE `asignaturas_materias`
     `id_asignatura` int NOT NULL,
     `id_materia`    int NOT NULL,
     PRIMARY KEY (`id_asignatura`, `id_materia`),
-    KEY `id_asignatura` (`id_asignatura`),
     KEY `id_materia` (`id_materia`),
     CONSTRAINT `asignaturas_materias_ibfk_1` FOREIGN KEY (`id_asignatura`) REFERENCES `asignaturas` (`id`),
     CONSTRAINT `asignaturas_materias_ibfk_2` FOREIGN KEY (`id_materia`) REFERENCES `materias` (`id`)
@@ -145,83 +74,23 @@ CREATE TABLE `asignaturas_materias`
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `asignaturas_materias`
+-- Table structure for table `codigos`
 --
 
-LOCK
-    TABLES `asignaturas_materias` WRITE;
-/*!40000 ALTER TABLE `asignaturas_materias`
-    DISABLE KEYS */;
-/*!40000 ALTER TABLE `asignaturas_materias`
-    ENABLE KEYS */;
-UNLOCK
-    TABLES;
-
---
--- Table structure for table `asignaturas_titulaciones`
---
-
-DROP TABLE IF EXISTS `asignaturas_titulaciones`;
+DROP TABLE IF EXISTS `codigos`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `asignaturas_titulaciones`
+CREATE TABLE `codigos`
 (
-    `id_asignatura` int NOT NULL,
-    `id_titulacion` int NOT NULL,
-    PRIMARY KEY (`id_asignatura`, `id_titulacion`),
-    KEY `id_asignatura` (`id_asignatura`),
-    KEY `id_titulacion` (`id_titulacion`),
-    CONSTRAINT `asignaturas_titulaciones_ibfk_1` FOREIGN KEY (`id_asignatura`) REFERENCES `asignaturas` (`id`),
-    CONSTRAINT `asignaturas_titulaciones_ibfk_2` FOREIGN KEY (`id_titulacion`) REFERENCES `titulaciones` (`id`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `asignaturas_titulaciones`
---
-
-LOCK
-    TABLES `asignaturas_titulaciones` WRITE;
-/*!40000 ALTER TABLE `asignaturas_titulaciones`
-    DISABLE KEYS */;
-/*!40000 ALTER TABLE `asignaturas_titulaciones`
-    ENABLE KEYS */;
-UNLOCK
-    TABLES;
-
---
--- Table structure for table `creadores`
---
-
-DROP TABLE IF EXISTS `creadores`;
-/*!40101 SET @saved_cs_client = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `creadores`
-(
-    `id`         int NOT NULL AUTO_INCREMENT,
-    `id_usuario` int DEFAULT NULL,
+    `id`    int NOT NULL AUTO_INCREMENT,
+    `token` varchar(50) DEFAULT NULL,
+    `usos`  int         DEFAULT '1',
     PRIMARY KEY (`id`),
-    KEY `id_usuario` (`id_usuario`),
-    CONSTRAINT `creadores_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`)
+    UNIQUE KEY `token` (`token`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `creadores`
---
-
-LOCK
-    TABLES `creadores` WRITE;
-/*!40000 ALTER TABLE `creadores`
-    DISABLE KEYS */;
-/*!40000 ALTER TABLE `creadores`
-    ENABLE KEYS */;
-UNLOCK
-    TABLES;
 
 --
 -- Table structure for table `departamentos`
@@ -234,58 +103,12 @@ CREATE TABLE `departamentos`
 (
     `id`     int NOT NULL AUTO_INCREMENT,
     `titulo` varchar(50) DEFAULT NULL,
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `titulo` (`titulo`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `departamentos`
---
-
-LOCK
-    TABLES `departamentos` WRITE;
-/*!40000 ALTER TABLE `departamentos`
-    DISABLE KEYS */;
-/*!40000 ALTER TABLE `departamentos`
-    ENABLE KEYS */;
-UNLOCK
-    TABLES;
-
---
--- Table structure for table `departamentos_usuarios`
---
-
-DROP TABLE IF EXISTS `departamentos_usuarios`;
-/*!40101 SET @saved_cs_client = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `departamentos_usuarios`
-(
-    `id_usuario`      int NOT NULL,
-    `id_departamento` int NOT NULL,
-    PRIMARY KEY (`id_usuario`, `id_departamento`),
-    KEY `id_usuario` (`id_usuario`),
-    KEY `id_departamento` (`id_departamento`),
-    CONSTRAINT `departamentos_usuarios_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`),
-    CONSTRAINT `departamentos_usuarios_ibfk_2` FOREIGN KEY (`id_departamento`) REFERENCES `departamentos` (`id`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `departamentos_usuarios`
---
-
-LOCK
-    TABLES `departamentos_usuarios` WRITE;
-/*!40000 ALTER TABLE `departamentos_usuarios`
-    DISABLE KEYS */;
-/*!40000 ALTER TABLE `departamentos_usuarios`
-    ENABLE KEYS */;
-UNLOCK
-    TABLES;
 
 --
 -- Table structure for table `materias`
@@ -298,24 +121,13 @@ CREATE TABLE `materias`
 (
     `id`     int NOT NULL AUTO_INCREMENT,
     `titulo` varchar(50) DEFAULT NULL,
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `titulo` (`titulo`),
+    UNIQUE KEY `titulo_2` (`titulo`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `materias`
---
-
-LOCK
-    TABLES `materias` WRITE;
-/*!40000 ALTER TABLE `materias`
-    DISABLE KEYS */;
-/*!40000 ALTER TABLE `materias`
-    ENABLE KEYS */;
-UNLOCK
-    TABLES;
 
 --
 -- Table structure for table `premios`
@@ -328,24 +140,12 @@ CREATE TABLE `premios`
 (
     `id`     int NOT NULL AUTO_INCREMENT,
     `titulo` varchar(50) DEFAULT NULL,
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `titulo` (`titulo`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `premios`
---
-
-LOCK
-    TABLES `premios` WRITE;
-/*!40000 ALTER TABLE `premios`
-    DISABLE KEYS */;
-/*!40000 ALTER TABLE `premios`
-    ENABLE KEYS */;
-UNLOCK
-    TABLES;
 
 --
 -- Table structure for table `proyectos`
@@ -357,13 +157,15 @@ DROP TABLE IF EXISTS `proyectos`;
 CREATE TABLE `proyectos`
 (
     `id`            int NOT NULL AUTO_INCREMENT,
-    `id_creador`    int          DEFAULT NULL,
-    `id_asignatura` int          DEFAULT NULL,
-    `titulo`        varchar(100) DEFAULT NULL,
-    `ficha_tecnica` text,
-    `ruta_fichero`  varchar(100) DEFAULT NULL,
-    `ruta_imagen`   varchar(100) DEFAULT NULL,
+    `id_creador`    int         DEFAULT NULL,
+    `id_asignatura` int         DEFAULT NULL,
+    `titulo`        varchar(50) DEFAULT NULL,
+    `ficha`         text,
+    `url`           text,
+    `portada`       text,
+    `validado`      tinyint(1)  DEFAULT '0',
     PRIMARY KEY (`id`),
+    UNIQUE KEY `titulo` (`titulo`),
     KEY `id_creador` (`id_creador`),
     KEY `id_asignatura` (`id_asignatura`),
     CONSTRAINT `proyectos_ibfk_1` FOREIGN KEY (`id_creador`) REFERENCES `usuarios` (`id`),
@@ -372,19 +174,6 @@ CREATE TABLE `proyectos`
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `proyectos`
---
-
-LOCK
-    TABLES `proyectos` WRITE;
-/*!40000 ALTER TABLE `proyectos`
-    DISABLE KEYS */;
-/*!40000 ALTER TABLE `proyectos`
-    ENABLE KEYS */;
-UNLOCK
-    TABLES;
 
 --
 -- Table structure for table `proyectos_premios`
@@ -397,9 +186,7 @@ CREATE TABLE `proyectos_premios`
 (
     `id_proyecto` int NOT NULL,
     `id_premio`   int NOT NULL,
-    `anio`        int DEFAULT NULL,
     PRIMARY KEY (`id_proyecto`, `id_premio`),
-    KEY `id_proyecto` (`id_proyecto`),
     KEY `id_premio` (`id_premio`),
     CONSTRAINT `proyectos_premios_ibfk_1` FOREIGN KEY (`id_proyecto`) REFERENCES `proyectos` (`id`),
     CONSTRAINT `proyectos_premios_ibfk_2` FOREIGN KEY (`id_premio`) REFERENCES `premios` (`id`)
@@ -407,53 +194,6 @@ CREATE TABLE `proyectos_premios`
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `proyectos_premios`
---
-
-LOCK
-    TABLES `proyectos_premios` WRITE;
-/*!40000 ALTER TABLE `proyectos_premios`
-    DISABLE KEYS */;
-/*!40000 ALTER TABLE `proyectos_premios`
-    ENABLE KEYS */;
-UNLOCK
-    TABLES;
-
---
--- Table structure for table `proyectos_usuarios`
---
-
-DROP TABLE IF EXISTS `proyectos_usuarios`;
-/*!40101 SET @saved_cs_client = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `proyectos_usuarios`
-(
-    `id_proyecto` int NOT NULL,
-    `id_usuario`  int NOT NULL,
-    PRIMARY KEY (`id_proyecto`, `id_usuario`),
-    KEY `id_proyecto` (`id_proyecto`),
-    KEY `id_usuario` (`id_usuario`),
-    CONSTRAINT `proyectos_usuarios_ibfk_1` FOREIGN KEY (`id_proyecto`) REFERENCES `proyectos` (`id`),
-    CONSTRAINT `proyectos_usuarios_ibfk_2` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `proyectos_usuarios`
---
-
-LOCK
-    TABLES `proyectos_usuarios` WRITE;
-/*!40000 ALTER TABLE `proyectos_usuarios`
-    DISABLE KEYS */;
-/*!40000 ALTER TABLE `proyectos_usuarios`
-    ENABLE KEYS */;
-UNLOCK
-    TABLES;
 
 --
 -- Table structure for table `titulaciones`
@@ -464,26 +204,37 @@ DROP TABLE IF EXISTS `titulaciones`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `titulaciones`
 (
-    `id`     int NOT NULL AUTO_INCREMENT,
-    `titulo` varchar(50) DEFAULT NULL,
-    PRIMARY KEY (`id`)
+    `id`      int NOT NULL AUTO_INCREMENT,
+    `id_area` int         DEFAULT NULL,
+    `titulo`  varchar(50) DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `titulo` (`titulo`),
+    KEY `id_area` (`id_area`),
+    CONSTRAINT `titulaciones_ibfk_1` FOREIGN KEY (`id_area`) REFERENCES `areas` (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `titulaciones`
+-- Table structure for table `titulaciones_asignaturas`
 --
 
-LOCK
-    TABLES `titulaciones` WRITE;
-/*!40000 ALTER TABLE `titulaciones`
-    DISABLE KEYS */;
-/*!40000 ALTER TABLE `titulaciones`
-    ENABLE KEYS */;
-UNLOCK
-    TABLES;
+DROP TABLE IF EXISTS `titulaciones_asignaturas`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `titulaciones_asignaturas`
+(
+    `id_titulacion` int NOT NULL,
+    `id_asignatura` int NOT NULL,
+    PRIMARY KEY (`id_titulacion`, `id_asignatura`),
+    KEY `id_asignatura` (`id_asignatura`),
+    CONSTRAINT `titulaciones_asignaturas_ibfk_1` FOREIGN KEY (`id_titulacion`) REFERENCES `titulaciones` (`id`),
+    CONSTRAINT `titulaciones_asignaturas_ibfk_2` FOREIGN KEY (`id_asignatura`) REFERENCES `asignaturas` (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `usuarios`
@@ -495,11 +246,12 @@ DROP TABLE IF EXISTS `usuarios`;
 CREATE TABLE `usuarios`
 (
     `id`                 int NOT NULL AUTO_INCREMENT,
-    `correo`             varchar(50)  DEFAULT NULL,
-    `nombre_completo`    varchar(50)  DEFAULT NULL,
-    `alias`              varchar(50)  DEFAULT NULL,
-    `password`           varchar(102) DEFAULT NULL,
-    `frase_recuperacion` varchar(100) DEFAULT NULL,
+    `correo`             varchar(50)                                         DEFAULT NULL,
+    `nombre_completo`    varchar(50)                                         DEFAULT NULL,
+    `alias`              varchar(50)                                         DEFAULT NULL,
+    `password`           varchar(200)                                        DEFAULT NULL,
+    `frase_recuperacion` varchar(100)                                        DEFAULT NULL,
+    `rol`                enum ('alumno','profesor','coordinador','invitado') DEFAULT NULL,
     PRIMARY KEY (`id`),
     UNIQUE KEY `correo` (`correo`),
     UNIQUE KEY `alias` (`alias`)
@@ -509,17 +261,64 @@ CREATE TABLE `usuarios`
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `usuarios`
+-- Table structure for table `usuarios_departamentos`
 --
 
-LOCK
-    TABLES `usuarios` WRITE;
-/*!40000 ALTER TABLE `usuarios`
-    DISABLE KEYS */;
-/*!40000 ALTER TABLE `usuarios`
-    ENABLE KEYS */;
-UNLOCK
-    TABLES;
+DROP TABLE IF EXISTS `usuarios_departamentos`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `usuarios_departamentos`
+(
+    `id_usuario`      int NOT NULL,
+    `id_departamento` int NOT NULL,
+    PRIMARY KEY (`id_usuario`, `id_departamento`),
+    KEY `id_departamento` (`id_departamento`),
+    CONSTRAINT `usuarios_departamentos_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`),
+    CONSTRAINT `usuarios_departamentos_ibfk_2` FOREIGN KEY (`id_departamento`) REFERENCES `departamentos` (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `usuarios_proyectos`
+--
+
+DROP TABLE IF EXISTS `usuarios_proyectos`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `usuarios_proyectos`
+(
+    `id_usuario`  int NOT NULL,
+    `id_proyecto` int NOT NULL,
+    PRIMARY KEY (`id_usuario`, `id_proyecto`),
+    KEY `id_proyecto` (`id_proyecto`),
+    CONSTRAINT `usuarios_proyectos_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`),
+    CONSTRAINT `usuarios_proyectos_ibfk_2` FOREIGN KEY (`id_proyecto`) REFERENCES `proyectos` (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `usuarios_titulaciones`
+--
+
+DROP TABLE IF EXISTS `usuarios_titulaciones`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `usuarios_titulaciones`
+(
+    `id_usuario`    int NOT NULL,
+    `id_titulacion` int NOT NULL,
+    PRIMARY KEY (`id_usuario`, `id_titulacion`),
+    KEY `id_titulacion` (`id_titulacion`),
+    CONSTRAINT `usuarios_titulaciones_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`),
+    CONSTRAINT `usuarios_titulaciones_ibfk_2` FOREIGN KEY (`id_titulacion`) REFERENCES `titulaciones` (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE = @OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE = @OLD_SQL_MODE */;
@@ -530,4 +329,4 @@ UNLOCK
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2024-02-21 10:42:59
+-- Dump completed on 2024-03-06 14:06:50

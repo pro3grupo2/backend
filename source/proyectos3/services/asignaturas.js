@@ -2,18 +2,15 @@ const {PrismaClient} = require('@prisma/client')
 const prisma = new PrismaClient()
 
 const get_asignaturas = async (skip = 0, take = 20) => {
-    return prisma.asignaturas.findMany(
-        {
-            skip: skip,
-            take: take,
-        }
-    );
+    return prisma.asignaturas.findMany({
+        skip: skip, take: take,
+    })
 }
 
-const get_asignatura = async (asignatura_id) => {
+const get_asignatura = async (id) => {
     return prisma.asignaturas.findUnique({
         where: {
-            id: asignatura_id
+            id: id
         }
     })
 }
@@ -28,11 +25,11 @@ const create_asignatura = async (asignatura) => {
     }
 }
 
-const update_asignatura = async (asignatura_id, asignatura) => {
+const update_asignatura = async (id, asignatura) => {
     try {
         return await prisma.asignaturas.update({
             where: {
-                id: asignatura_id
+                id: id
             }, data: asignatura
         })
     } catch (e) {
@@ -40,11 +37,11 @@ const update_asignatura = async (asignatura_id, asignatura) => {
     }
 }
 
-const delete_asignatura = async (asignatura_id) => {
+const delete_asignatura = async (id) => {
     try {
         return await prisma.asignaturas.delete({
             where: {
-                id: asignatura_id
+                id: id
             }
         })
     } catch (e) {
@@ -53,9 +50,5 @@ const delete_asignatura = async (asignatura_id) => {
 }
 
 module.exports = {
-    get_asignaturas,
-    get_asignatura,
-    create_asignatura,
-    update_asignatura,
-    delete_asignatura
+    get_asignaturas, get_asignatura, create_asignatura, update_asignatura, delete_asignatura
 }

@@ -6,21 +6,19 @@ const get_id = [
     validate
 ]
 
-const create_titulacion = [
-    body('id_area', 'Type: Int').exists().toInt(),
+const create_area = [
     body('titulo', 'Type: String, Max-Length: 50').exists().notEmpty().isString().isLength({max: 50}),
     validate
 ]
 
-const update_titulacion = [
+const update_area = [
     param('id', 'Type: Int').exists().toInt(),
-    body('id_area', 'Type: Int').exists().toInt().optional(),
     body('titulo', 'Type: String, Max-Length: 50').exists().notEmpty().isString().isLength({max: 50}).optional(),
     validate
 ]
 
 module.exports = {
     get_id,
-    create_titulacion,
-    update_titulacion
+    create_area,
+    update_area
 }

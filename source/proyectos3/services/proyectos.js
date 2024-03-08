@@ -8,7 +8,15 @@ const get_proyectos = async (skip = 0, take = 20) => {
             skip: skip, take: take, where: {
                 validado: true
             }, include: {
-                usuarios: {
+                usuarios_proyectos: {
+                    select: {
+                        usuarios: {
+                            select: {
+                                id: true, correo: true, nombre_completo: true, alias: true, rol: true
+                            }
+                        }
+                    }
+                }, usuarios: {
                     select: {
                         id: true, correo: true, nombre_completo: true, alias: true, rol: true
                     }

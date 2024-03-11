@@ -14,11 +14,6 @@ router.get("/",
     global_validators.pagination,
     proyectos_controller.get_proyectos
 )
-router.get("/:id",
-    auth_middleware.verificar_JWT,
-    proyectos_validators.get_id,
-    proyectos_controller.get_proyecto
-)
 router.post("/subir",
     auth_middleware.verificar_JWT,
     proyectos_middleware.upload_file.fields([
@@ -28,6 +23,11 @@ router.post("/subir",
     proyectos_middleware.inject_file_path_to_body,
     proyectos_validators.create_proyecto_files,
     proyectos_controller.create_proyecto_files
+)
+router.get("/:id",
+    auth_middleware.verificar_JWT,
+    proyectos_validators.get_id,
+    proyectos_controller.get_proyecto
 )
 router.post("/",
     auth_middleware.verificar_JWT,

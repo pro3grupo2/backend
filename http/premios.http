@@ -1,3 +1,26 @@
+###
+### http://localhost:3000/api/v1/recuperacion/
+POST http://localhost:3000/api/v1/recuperacion/
+Content-Type: application/json
+
+{
+  "correo": "i.guio.aunon@gmail.com"
+}
+###
+
+### /api/v1/auth/signup
+POST http://localhost:3000/api/v1/auth/signup
+Content-Type: application/json
+
+{
+  "correo": "i.guio.aunon@gmail.com",
+  "nombre_completo": "ivaaan",
+  "alias": "aaaaaaaaaa",
+  "password": "1aaaa23",
+  "frase_recuperacion": "aaaaaa",
+  "rol": "coordinador"
+}
+
 ### /api/v1/auth/signin
 POST http://localhost:3000/api/v1/auth/signin
 Content-Type: application/json

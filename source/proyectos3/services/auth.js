@@ -30,12 +30,14 @@ const signin = async (correo, password) => {
 
 const signup = async (usuario) => {
     try {
+        console.log(usuario)
         return await prisma.usuarios.create({
             data: {
                 alias: usuario.alias, correo: usuario.correo, nombre_completo: usuario.nombre_completo, password: bcryptjs.hashSync(usuario.password), frase_recuperacion: usuario.frase_recuperacion, rol: usuario.rol
             }
         })
     } catch (e) {
+        console.log(e)
         return null
     }
 }

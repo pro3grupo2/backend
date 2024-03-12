@@ -12,12 +12,23 @@ const enviarCorreo = async (req, res) => {
     })
 
     var templateParams = {
-        to_name: data.nombre_completo,
-        to_link: data.correo,
+        subject: "Recuperacion contraseña repositorio utad",
+        to_email: data.correo,
+        message: `<p>Hola ${data.nombre_completo},</p>
+    <p>&nbsp;</p>
+    <p>Nos ha llegado una solicitud de tu cuenta para recuperar la contraseña.</p>
+    <p>Para realizar el cambio solicitado, accede a este link: {{to_link}}</p>
+    <p>&nbsp;</p>
+    <p>Un saludo,</p>
+    <p>Equipo Repositorio U-tad.</p>
+    <p>&nbsp;</p>
+    <p><span style="font-size: 8pt;">Este correo ha sido generado automáticamente, por favor, no responda a este. Cualquier correo enviado respondiendo será desechado.</span></p>`
     };
     
     const resultado = await recuperacion_service.enviarCorreo(templateParams)
+    //console.log("resultado: " + resultado)
     if (resultado==1){
+        //console.log("ta wapo")
         return res.send({
             data: data.correo
         });

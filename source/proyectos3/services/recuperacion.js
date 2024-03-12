@@ -1,10 +1,7 @@
+
 const {PrismaClient} = require('@prisma/client')
 const prisma = new PrismaClient()
-const emailjs = require('@emailjs/browser');
-
-const templateID='template_db5jrrk';
-const serviceID='service_2rhc0lp'
-
+const nodemailer = require('nodemailer');
 
 const obtenerUsuario = async (correo) => {
     return prisma.usuarios.findUnique({
@@ -17,16 +14,37 @@ const obtenerUsuario = async (correo) => {
 }
 
 const enviarCorreo = async (templateParams) => {
-    emailjs.send(serviceID, templateID, templateParams).then(
-        (response) => {
-        console.log('SUCCESS!', response.status, response.text);
-        return 1;
+    let transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'recuperacion.repositorio.utad@gmail.com',
+            pass: 'sfxn ucvq enin goeh',
         },
-        (error) => {
-        console.log('FAILED...', error);
-        return 2;
-        },
-    );
-}
+    });
+
+    let mailOptions = {
+        from: 'recuperacion.repositorio.utad@gmail.com',
+        to: templateParams.to_email,
+        subject: templateParams.subject,
+        html: templateParams.message,
+    };
+    
+    try {
+        await new Promise((resolve, reject) => {
+            transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    console.log('Error al enviar el correo', error);
+                    reject(error);
+                } else {
+                    console.log('Correo enviado: ' + info.response);
+                    resolve(info);
+                }
+            });
+        });
+        return 1;  // Éxito
+    } catch (error) {
+        return 2;  // Falló
+    }
+};
 
 module.exports = {obtenerUsuario,enviarCorreo};

@@ -13,11 +13,11 @@ POST http://localhost:3000/api/v1/auth/signup
 Content-Type: application/json
 
 {
-  "correo": "i.guio.aunon@gmail.com",
-  "nombre_completo": "ivaaan",
-  "alias": "aaaaaaaaaa",
-  "password": "1aaaa23",
-  "frase_recuperacion": "aaaaaa",
+  "correo": "miquel.angel.prieto@gmail.com",
+  "nombre_completo": "miquel eres tonto",
+  "alias": "miquel",
+  "password": "123",
+  "frase_recuperacion": "aaaaaaaaa",
   "rol": "coordinador"
 }
 

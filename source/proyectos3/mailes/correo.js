@@ -1,5 +1,5 @@
 const correoHtml =`
-		<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html lang="en" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:v="urn:schemas-microsoft-com:vml">
 <head>
@@ -83,7 +83,7 @@ const correoHtml =`
 
 			.desktop_hide,
 			.desktop_hide table {
-				display: table !important;
+				display: table !important; 
 				max-height: none !important;
 			}
 		}
@@ -94,11 +94,11 @@ const correoHtml =`
 <tbody>
 <tr>
 <td>
-<table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #e4eaed; background-size: auto;" width="100%">
+<table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #ffffff; background-size: auto;" width="100%">
 <tbody>
 <tr>
 <td>
-<table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #ffffff; background-size: auto; color: #000000; width: 650px; margin: 0 auto;" width="650">
+<table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #E4EAED; background-size: auto; color: #000000; width: 650px; margin: 0 auto;" width="650">
 <tbody>
 <tr>
 <td class="column column-1" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; padding-top: 45px; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;" width="100%">
@@ -186,10 +186,10 @@ const correoHtml =`
 <table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; color: #000000; background-color: #ffffff; width: 650px; margin: 0 auto;" width="650">
 <tbody>
 <tr>
-<td class="column column-1" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; padding-bottom: 5px; padding-top: 5px; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;" width="100%">
+<td class="column column-1" style="background-color: #0065F3; mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; padding-bottom: 5px; padding-top: 5px; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;" width="100%">
 <table border="0" cellpadding="0" cellspacing="0" class="icons_block block-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
 <tr>
-<td class="pad" style="vertical-align: middle; color: #0065F3; font-family: 'Inter', sans-serif; font-size: 15px; padding-bottom: 5px; padding-top: 5px; text-align: center;">
+<td class="pad" style="vertical-align: middle; color: #E4EAED; font-family: 'Inter', sans-serif; font-size: 15px; padding-bottom: 5px; padding-top: 5px; text-align: center;">
 </td>
 </tr>
 </table>

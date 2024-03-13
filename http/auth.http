@@ -31,8 +31,12 @@ Content-Type: application/json
   "password": "12345",
   "frase_recuperacion": "adriantoral",
   "rol": "alumno",
-  "promocion": "2019"
+  "promocion": 2019
 }
+
+### /api/v1/auth/signup/validate
+GET http://localhost:3000/api/v1/auth/signup/validate
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjYWNoZV9rZXkiOiJhZHJpYW4udG9yYWxAbGl2ZS51LXRhZC5jb21fMTcxMDM2MDk3NzI1NiIsImlhdCI6MTcxMDM2MDk3NywiZXhwIjoxNzEwMzYyNzc3fQ.wedjRGV9jKHGPf2TLMLCYcjxFPXeyIkNophseD9Rq54
 
 ### /api/v1/auth/me
 GET http://localhost:3000/api/v1/auth/me

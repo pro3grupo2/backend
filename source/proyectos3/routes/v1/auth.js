@@ -19,5 +19,9 @@ router.post("/signup",
     auth_validators.signup,
     auth_controller.signup
 )
+router.get("/signup/validate",
+    auth_middleware.verificar_JWT,
+    auth_controller.signup_validate
+)
 
 module.exports = router

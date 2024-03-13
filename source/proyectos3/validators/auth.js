@@ -14,6 +14,7 @@ const signup = [
     body('password', 'Type: String, Max-Length: 200').exists().notEmpty().isString().isLength({max: 200}),
     body('frase_recuperacion', 'Type: String, Max-Length: 100').exists().notEmpty().isString().isLength({max: 100}),
     body('rol', 'Type: Enum("alumno", "alumni", "profesor", "coordinador", "invitado")').exists().notEmpty().isString().isIn(["alumno", "alumni", "profesor", "coordinador", "invitado"]),
+    body('promocion', 'Type: Year (YYYY)').exists().notEmpty().isInt(),
     validate
 ]
 

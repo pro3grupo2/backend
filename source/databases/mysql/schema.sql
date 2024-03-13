@@ -16,6 +16,14 @@
 /*!40111 SET @OLD_SQL_NOTES = @@SQL_NOTES, SQL_NOTES = 0 */;
 
 --
+-- Create database
+--
+
+DROP DATABASE proyectos3;
+CREATE DATABASE proyectos3;
+USE proyectos3;
+
+--
 -- Table structure for table `areas`
 --
 
@@ -253,7 +261,6 @@ CREATE TABLE `usuarios`
     `frase_recuperacion` varchar(100)                                                 DEFAULT NULL,
     `rol`                enum ('alumno','alumni','profesor','coordinador','invitado') DEFAULT NULL,
     `promocion`          year                                                         DEFAULT (year(curdate())),
-    `validado`           tinyint(1)                                                   DEFAULT '0',
     PRIMARY KEY (`id`),
     UNIQUE KEY `correo` (`correo`),
     UNIQUE KEY `alias` (`alias`)

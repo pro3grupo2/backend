@@ -1,6 +1,6 @@
 // Dependecias necesarias para el manejo de las rutas de autenticacion
 const auth_service = require("../services/auth")
-const auth_errors = require("../errors/auth")
+const recuperacion_services = require("../services/recuperacion")
 
 // Ruta para manejar el inicio de sesion
 const signin = async (req, res) => {
@@ -22,8 +22,28 @@ const signin = async (req, res) => {
 // Ruta para manejar el registro de usuarios
 const signup = async (req, res) => {
     try {
+        await recuperacion_services.enviarCorreo({
+            subject: "Validacion de cuenta",
+            to_email: req.MATCHED.correo,
+            message: await auth_service.signup_cache(req.MATCHED)
+        })
+
         return res.send({
-            data: await auth_service.signup(req.MATCHED)
+            data: "ok"
+        })
+    } catch (e) {
+        return res.status(400).send({
+            data: {
+                errors: [e]
+            }
+        })
+    }
+}
+
+const signup_validate = async (req, res) => {
+    try {
+        return res.send({
+            data: await auth_service.signup(await auth_service.signup_validate(req.JWT.cache_key))
         })
     } catch (e) {
         return res.status(400).send({
@@ -40,5 +60,5 @@ const me = async (req, res) => {
 }
 
 module.exports = {
-    signin, signup, me
+    signin, signup, signup_validate, me
 }

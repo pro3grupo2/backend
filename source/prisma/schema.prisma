@@ -109,7 +109,6 @@ model usuarios {
   frase_recuperacion     String?                  @db.VarChar(100)
   rol                    usuarios_rol?
   promocion              Int?                     @default(dbgenerated("(year(curdate()))")) @db.Year
-  validado               Boolean?                 @default(false)
   proyectos              proyectos[]
   usuarios_departamentos usuarios_departamentos[]
   usuarios_proyectos     usuarios_proyectos[]

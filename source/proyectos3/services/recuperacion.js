@@ -1,6 +1,4 @@
-
-const {PrismaClient} = require('@prisma/client')
-const prisma = new PrismaClient()
+const prisma = require('../databases/mysql')
 const nodemailer = require('nodemailer');
 
 const obtenerUsuario = async (correo) => {

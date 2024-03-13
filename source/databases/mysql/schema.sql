@@ -246,12 +246,13 @@ DROP TABLE IF EXISTS `usuarios`;
 CREATE TABLE `usuarios`
 (
     `id`                 int NOT NULL AUTO_INCREMENT,
-    `correo`             varchar(50)                                         DEFAULT NULL,
-    `nombre_completo`    varchar(50)                                         DEFAULT NULL,
-    `alias`              varchar(50)                                         DEFAULT NULL,
-    `password`           varchar(200)                                        DEFAULT NULL,
-    `frase_recuperacion` varchar(100)                                        DEFAULT NULL,
-    `rol`                enum ('alumno','profesor','coordinador','invitado') DEFAULT NULL,
+    `correo`             varchar(50)                                                  DEFAULT NULL,
+    `nombre_completo`    varchar(50)                                                  DEFAULT NULL,
+    `alias`              varchar(50)                                                  DEFAULT NULL,
+    `password`           varchar(200)                                                 DEFAULT NULL,
+    `frase_recuperacion` varchar(100)                                                 DEFAULT NULL,
+    `rol`                enum ('alumno','alumni','profesor','coordinador','invitado') DEFAULT NULL,
+    `promocion`          year                                                         DEFAULT (year(curdate())),
     PRIMARY KEY (`id`),
     UNIQUE KEY `correo` (`correo`),
     UNIQUE KEY `alias` (`alias`)
@@ -329,4 +330,4 @@ CREATE TABLE `usuarios_titulaciones`
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-06 14:06:50
+-- Dump completed on 2024-03-13 12:33:17

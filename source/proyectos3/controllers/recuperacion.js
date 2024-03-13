@@ -1,15 +1,16 @@
 const recuperacion_service = require('../services/recuperacion')
 const correoHtml = require('../mailes/correo');
+const recuperacion_errors = require("../errors/recuperacion")
 
 const enviarCorreo = async (req, res) => {
     const {MATCHED} = req
-    console.log(req.body)
-    console.log(req.body.correo)
+    //console.log(req.body)
+    //console.log(req.body.correo)
     const data = await recuperacion_service.obtenerUsuario(req.body.correo)
 
     if (!data) return res.status(400).send({
         data: {
-            errors: ["mail no encontrado"]
+            errors: [recuperacion_errors.NOT_FOUND]
         }
     })
 
@@ -37,7 +38,7 @@ const enviarCorreo = async (req, res) => {
     else{
         return res.status(400).send({
             data: {
-                errors: ['errorrrr']
+                errors: [recuperacion_errors.WRONG_SEND]
             }
         });
     }

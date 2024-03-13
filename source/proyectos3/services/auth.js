@@ -1,8 +1,8 @@
 // Dependencias necesarias para la interacción con la base de datos y la creación de tokens
 const jwt = require('jsonwebtoken')
 const bcryptjs = require("bcryptjs")
-const {PrismaClient} = require('@prisma/client')
-const prisma = new PrismaClient()
+const prisma = require('../databases/mysql')
+const auth_errors = require("../errors/auth")
 
 // Funciones que verifica la validez de un token
 const verificar_JWT = (token) => {
@@ -18,27 +18,31 @@ const signin = async (correo, password) => {
         where: {
             correo: correo
         }, select: {
-            id: true, password: true, rol: true
+            id: true, password: true, rol: true, validado: true
         }
     })
 
-    if (!data) return null
-    if (!bcryptjs.compareSync(password, data.password)) return null
+    if (!data) throw auth_errors.WRONG_MAIL
+    if (!data.validado) throw auth_errors.USER_NOT_VALIDATED
+    if (!bcryptjs.compareSync(password, data.password)) throw auth_errors.WRONG_PASSWORD
 
     return jwt.sign({id: data.id, rol: data.rol}, process.env.JWT_SECRET, {expiresIn: process.env.JWT_EXPIRES_IN})
 }
 
 const signup = async (usuario) => {
     try {
-        console.log(usuario)
         return await prisma.usuarios.create({
             data: {
-                alias: usuario.alias, correo: usuario.correo, nombre_completo: usuario.nombre_completo, password: bcryptjs.hashSync(usuario.password), frase_recuperacion: usuario.frase_recuperacion, rol: usuario.rol
+                alias: usuario.alias,
+                correo: usuario.correo,
+                nombre_completo: usuario.nombre_completo,
+                password: bcryptjs.hashSync(usuario.password),
+                frase_recuperacion: usuario.frase_recuperacion,
+                rol: usuario.rol
             }
         })
     } catch (e) {
-        console.log(e)
-        return null
+        throw auth_errors.WRONG_SIGNUP
     }
 }
 

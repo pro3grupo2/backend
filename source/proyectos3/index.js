@@ -4,13 +4,16 @@
 
 // Importar modulos
 const express = require("express")
-const cors = require('cors');
+const cors = require('cors')
 const router_v1 = require("./routes/v1")
-const path = require('path');
+const path = require('path')
+
+require('dotenv').config()
+require('./databases')
 
 // Crear aplicacion express y definir puerto
 const app = express()
-const port = process.env.PORT || 3000
+const port = process.env.PORT
 
 // Configurar rutas y middlewares
 app.use(express.json())

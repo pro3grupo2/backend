@@ -1,5 +1,4 @@
-const {PrismaClient} = require('@prisma/client')
-const prisma = new PrismaClient()
+const prisma = require('../databases/mysql')
 
 const get_titulaciones = async (skip = 0, take = 20) => {
     return prisma.titulaciones.findMany(

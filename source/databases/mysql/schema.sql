@@ -253,6 +253,7 @@ CREATE TABLE `usuarios`
     `frase_recuperacion` varchar(100)                                                 DEFAULT NULL,
     `rol`                enum ('alumno','alumni','profesor','coordinador','invitado') DEFAULT NULL,
     `promocion`          year                                                         DEFAULT (year(curdate())),
+    `validado`           tinyint(1)                                                   DEFAULT '0',
     PRIMARY KEY (`id`),
     UNIQUE KEY `correo` (`correo`),
     UNIQUE KEY `alias` (`alias`)
@@ -330,4 +331,4 @@ CREATE TABLE `usuarios_titulaciones`
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-13 12:33:17
+-- Dump completed on 2024-03-13 14:02:44

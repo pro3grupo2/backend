@@ -1,8 +1,7 @@
 // Dependencias necesarias para la interacción con la base de datos y la creación de tokens
 const jwt = require('jsonwebtoken')
 const bcryptjs = require("bcryptjs")
-const {PrismaClient} = require('@prisma/client')
-const prisma = new PrismaClient()
+const prisma = require('../databases/mysql')
 
 // Funciones que verifica la validez de un token
 const verificar_JWT = (token) => {

@@ -1,6 +1,5 @@
 // Dependencias necesarias para la interacción con la base de datos y la creación de tokens
-const {PrismaClient} = require('@prisma/client')
-const prisma = new PrismaClient()
+const prisma = require('../databases/mysql')
 
 const get_areas = async (skip = 0, take = 20) => {
     return prisma.areas.findMany(

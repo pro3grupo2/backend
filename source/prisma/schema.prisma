@@ -108,6 +108,8 @@ model usuarios {
   password               String?                  @db.VarChar(200)
   frase_recuperacion     String?                  @db.VarChar(100)
   rol                    usuarios_rol?
+  promocion              Int?                     @default(dbgenerated("(year(curdate()))")) @db.Year
+  validado               Boolean?                 @default(false)
   proyectos              proyectos[]
   usuarios_departamentos usuarios_departamentos[]
   usuarios_proyectos     usuarios_proyectos[]
@@ -152,6 +154,7 @@ model areas {
 
 enum usuarios_rol {
   alumno
+  alumni
   profesor
   coordinador
   invitado

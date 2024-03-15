@@ -56,7 +56,7 @@ const signup_validate = async (req, res) => {
 
 // Ruta para manejar la obtencion de datos de un usuario mediante Bearer Token (JWT)
 const me = async (req, res) => {
-    return res.send({data: await auth_service.me(req.JWT.id)})
+    return res.send({data: await auth_service.me(req.JWT.correo)})
 }
 
 module.exports = {

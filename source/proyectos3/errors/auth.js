@@ -3,7 +3,6 @@ const messages = {
 
     WRONG_PASSWORD: "Contraseña incorrecta",
     WRONG_MAIL: "Correo incorrecto",
-    USER_NOT_VALIDATED: "Usuario no validado",
 
     // ======================================
 
@@ -19,6 +18,7 @@ const messages = {
 
     // ======================================
 
+    NOT_FOUND: "No encontrado",
     NOT_ADMININSTRADOR: "No eres administrador",
     NOT_CREADOR: "No eres creador",
     NOT_ALUMNO: "No eres alumno"

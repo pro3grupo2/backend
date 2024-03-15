@@ -4,7 +4,6 @@ const bcryptjs = require("bcryptjs")
 const prisma = require('../databases/mysql')
 const redis = require('../databases/redis')
 const auth_errors = require("../errors/auth")
-const {toInt} = require("validator");
 
 // Funciones que verifica la validez de un token
 const verificar_JWT = (token) => {
@@ -15,38 +14,52 @@ const verificar_JWT = (token) => {
     }
 }
 
-const existe_usuario_by_correo = async (correo) => {
-    return prisma.usuarios.findUnique({
+const get_data_by_correo = async (correo) => {
+    const data = await prisma.usuarios.findUnique({
         where: {
             correo: correo
-        }, select: {
-            id: true, password: true, rol: true
+        }, include: {
+            proyectos: {
+                select: {
+                    id: true, titulo: true, portada: true
+                }
+            }
         }
     })
+
+    if (!data) return null
+    if (!await redis.exists(`cached:${correo}`)) {
+        await redis.hSet(`cached:${correo}`, data)
+        await redis.expire(`cached:${correo}`, process.env.REDIS_SIGNIN_EXPIRES_IN)
+    }
+
+    return data
 }
 
 const signin = async (correo, password) => {
-    const data = await existe_usuario_by_correo(correo)
+    const data = await redis.exists(`cached:${correo}`)
+        ? await redis.hGetAll(`cached:${correo}`)
+        : await get_data_by_correo(correo)
 
     if (!data) {
-        if (await redis.exists(correo)) throw auth_errors.USER_NOT_VALIDATED
+        if (await redis.exists(correo)) throw auth_errors.PENDING_SIGNUP
         throw auth_errors.WRONG_MAIL
     }
     if (!bcryptjs.compareSync(password, data.password)) throw auth_errors.WRONG_PASSWORD
 
-    return jwt.sign({id: data.id, rol: data.rol}, process.env.JWT_SECRET, {expiresIn: process.env.JWT_EXPIRES_IN})
+    return jwt.sign({id: data.id, correo: data.correo, rol: data.rol}, process.env.JWT_SECRET, {expiresIn: process.env.JWT_SESSION_EXPIRES_IN})
 }
 
 const signup_cache = async (usuario) => {
     const key = usuario.correo
 
-    if (await existe_usuario_by_correo(key)) throw auth_errors.ALREADY_SIGNUP
+    if (await get_data_by_correo(key)) throw auth_errors.ALREADY_SIGNUP
     if (await redis.exists(key)) throw auth_errors.PENDING_SIGNUP
 
     try {
         await redis.hSet(key, usuario)
-        await redis.expire(key, 60 * 30)
-        return jwt.sign({cache_key: key}, process.env.JWT_SECRET, {expiresIn: "30min"})
+        await redis.expire(key, process.env.REDIS_SIGNUP_EXPIRES_IN)
+        return jwt.sign({cache_key: key}, process.env.JWT_SECRET, {expiresIn: process.env.JWT_SIGNUP_EXPIRES_IN})
     } catch (e) {
         throw auth_errors.WRONG_SIGNUP
     }
@@ -74,7 +87,7 @@ const signup = async (usuario) => {
                 password: bcryptjs.hashSync(usuario.password),
                 frase_recuperacion: usuario.frase_recuperacion,
                 rol: usuario.rol,
-                promocion: toInt(usuario.promocion)
+                promocion: parseInt(usuario.promocion)
             }, select: {
                 id: true, correo: true, nombre_completo: true, alias: true, rol: true, promocion: true
             }
@@ -85,18 +98,15 @@ const signup = async (usuario) => {
 }
 
 // Funcion que obtiene un usuario a partir de su id
-const me = async (id) => {
-    return prisma.usuarios.findUnique({
-        where: {
-            id: id
-        }, select: {
-            id: true, correo: true, nombre_completo: true, alias: true, rol: true, proyectos: {
-                select: {
-                    id: true, titulo: true, portada: true
-                }
-            }
-        }
-    })
+const me = async (correo) => {
+    const data = await redis.exists(`cached:${correo}`)
+        ? await redis.hGetAll(`cached:${correo}`)
+        : await get_data_by_correo(correo)
+
+    if (!data) throw auth_errors.NOT_FOUND
+
+    const {password, frase_recuperacion, ...user} = data
+    return user
 }
 
 module.exports = {

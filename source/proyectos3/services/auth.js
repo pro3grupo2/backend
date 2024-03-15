@@ -18,16 +18,19 @@ const get_data_by_correo = async (correo) => {
     const data = await prisma.usuarios.findUnique({
         where: {
             correo: correo
-        }, include: {
-            proyectos: {
-                select: {
-                    id: true, titulo: true, portada: true
-                }
-            }
         }
+        // }, include: {
+        //     proyectos: {
+        //         select: {
+        //             id: true, titulo: true, portada: true
+        //         }
+        //     }
+        // }
     })
 
-    if (!data) return null
+    if (!data)
+        return null
+
     if (!await redis.exists(`cached:${correo}`)) {
         await redis.hSet(`cached:${correo}`, data)
         await redis.expire(`cached:${correo}`, process.env.REDIS_SIGNIN_EXPIRES_IN)
@@ -42,10 +45,14 @@ const signin = async (correo, password) => {
         : await get_data_by_correo(correo)
 
     if (!data) {
-        if (await redis.exists(correo)) throw auth_errors.PENDING_SIGNUP
-        throw auth_errors.WRONG_MAIL
+        if (await redis.exists(correo))
+            throw new Error(auth_errors.PENDING_SIGNUP)
+
+        throw new Error(auth_errors.WRONG_MAIL)
     }
-    if (!bcryptjs.compareSync(password, data.password)) throw auth_errors.WRONG_PASSWORD
+
+    if (!bcryptjs.compareSync(password, data.password))
+        throw new Error(auth_errors.WRONG_PASSWORD)
 
     return jwt.sign({id: data.id, correo: data.correo, rol: data.rol}, process.env.JWT_SECRET, {expiresIn: process.env.JWT_SESSION_EXPIRES_IN})
 }
@@ -53,27 +60,33 @@ const signin = async (correo, password) => {
 const signup_cache = async (usuario) => {
     const key = `pending:${usuario.correo}`
 
-    if (await get_data_by_correo(usuario.correo)) throw auth_errors.ALREADY_SIGNUP
-    if (await redis.exists(key)) throw auth_errors.PENDING_SIGNUP
+    if (await get_data_by_correo(usuario.correo))
+        throw new Error(`${auth_errors.ALREADY_SIGNUP} : ${usuario.correo}`)
+
+    if (await redis.exists(key))
+        throw new Error(`${auth_errors.PENDING_SIGNUP} : ${usuario.correo}`)
 
     try {
         await redis.hSet(key, usuario)
         await redis.expire(key, process.env.REDIS_SIGNUP_EXPIRES_IN)
+
         return jwt.sign({cache_key: key}, process.env.JWT_SECRET, {expiresIn: process.env.JWT_SIGNUP_EXPIRES_IN})
     } catch (e) {
-        throw auth_errors.WRONG_SIGNUP
+        throw new Error(`${auth_errors.WRONG_SIGNUP} : ${usuario.correo}`)
     }
 }
 
 const signup_validate = async (cache_key) => {
-    if (!await redis.exists(cache_key)) throw auth_errors.INVALID_SIGNUP_TOKEN
+    if (!await redis.exists(cache_key))
+        throw new Error(`${auth_errors.INVALID_SIGNUP_TOKEN} : ${cache_key}`)
 
     try {
         const data = await redis.hGetAll(cache_key)
         await redis.del(cache_key)
+
         return await signup(data)
     } catch (e) {
-        throw auth_errors.WRONG_SIGNUP
+        throw new Error(`${auth_errors.WRONG_SIGNUP} : ${cache_key}`)
     }
 }
 
@@ -93,7 +106,7 @@ const signup = async (usuario) => {
             }
         })
     } catch (e) {
-        throw auth_errors.WRONG_SIGNUP
+        throw new Error(`${auth_errors.WRONG_SIGNUP} : ${usuario.correo}`)
     }
 }
 
@@ -103,7 +116,8 @@ const me = async (correo) => {
         ? await redis.hGetAll(`cached:${correo}`)
         : await get_data_by_correo(correo)
 
-    if (!data) throw auth_errors.NOT_FOUND
+    if (!data)
+        throw new Error(`${auth_errors.NOT_FOUND} : ${correo}`)
 
     const {password, frase_recuperacion, ...user} = data
     return user

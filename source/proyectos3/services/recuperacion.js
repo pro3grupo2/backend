@@ -26,7 +26,7 @@ const enviarCorreo = async (templateParams) => {
         subject: templateParams.subject,
         html: templateParams.message,
     };
-    
+
     try {
         await new Promise((resolve, reject) => {
             transporter.sendMail(mailOptions, (error, info) => {
@@ -39,10 +39,10 @@ const enviarCorreo = async (templateParams) => {
                 }
             });
         });
-        return 1;  // Éxito
+        return "Correo enviado";  // Éxito
     } catch (error) {
-        return 2;  // Falló
+        throw new Error(`Error al enviar correo : ${templateParams.to_email}`);  // Falló
     }
 };
 
-module.exports = {obtenerUsuario,enviarCorreo};
+module.exports = {obtenerUsuario, enviarCorreo};

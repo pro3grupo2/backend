@@ -4,21 +4,12 @@ Content-Type: application/json
 
 {
   "correo": "adrian.toral@live.u-tad.com",
-  "password": "12345"
+  "password": "Adriantoral@12345"
 }
 
 > {%
-    client.global.set("auth_token", response.body.data.token);
+    client.global.set("auth_token", response.body.data);
 %}
-
-### /api/v1/auth/signin - FAIL
-POST http://localhost:3000/api/v1/auth/signin
-Content-Type: application/json
-
-{
-  "correo": "adrian.toral.copia@live.u-tad.com",
-  "password": "12345"
-}
 
 ### /api/v1/auth/signup
 POST http://localhost:3000/api/v1/auth/signup
@@ -28,7 +19,7 @@ Content-Type: application/json
   "correo": "adrian.toral@live.u-tad.com",
   "nombre_completo": "Adrian Toral",
   "alias": "adriantoral",
-  "password": "12345",
+  "password": "Adriantoral@12345",
   "frase_recuperacion": "adriantoral",
   "rol": "alumno",
   "promocion": 2019
@@ -36,12 +27,8 @@ Content-Type: application/json
 
 ### /api/v1/auth/signup/validate
 GET http://localhost:3000/api/v1/auth/signup/validate
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjYWNoZV9rZXkiOiJhZHJpYW4udG9yYWxAbGl2ZS51LXRhZC5jb21fMTcxMDM2MDk3NzI1NiIsImlhdCI6MTcxMDM2MDk3NywiZXhwIjoxNzEwMzYyNzc3fQ.wedjRGV9jKHGPf2TLMLCYcjxFPXeyIkNophseD9Rq54
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjYWNoZV9rZXkiOiJwZW5kaW5nOmFkcmlhbi50b3JhbEBsaXZlLnUtdGFkLmNvbSIsImlhdCI6MTcxMDUzODY2NywiZXhwIjoxNzEwNTQwNDY3fQ.Z-vARy2FFs9a_2NCTY4OXRqKHYj7L1dd_0KbF-M_QI0
 
 ### /api/v1/auth/me
 GET http://localhost:3000/api/v1/auth/me
 Authorization: Bearer {{auth_token}}
-
-### /api/v1/auth/me - FAIl
-GET http://localhost:3000/api/v1/auth/me
-Authorization: Bearer xx{{auth_token}}xx

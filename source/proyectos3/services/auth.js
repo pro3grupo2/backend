@@ -100,7 +100,7 @@ const signup = async (usuario) => {
                 password: bcryptjs.hashSync(usuario.password),
                 frase_recuperacion: usuario.frase_recuperacion,
                 rol: usuario.rol,
-                promocion: parseInt(usuario.promocion)
+                promocion: usuario.promocion
             }, select: {
                 id: true, correo: true, nombre_completo: true, alias: true, rol: true, promocion: true
             }

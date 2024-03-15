@@ -1,64 +1,57 @@
 // Dependencias necesarias para la interacción con la base de datos y la creación de tokens
 const prisma = require('../databases/mysql')
+const proyectos_errors = require('../errors/proyectos')
 
 const get_proyectos = async (skip = 0, take = 20) => {
-    try {
-        return prisma.proyectos.findMany({
-            skip: skip, take: take, where: {
-                validado: true
-            }, include: {
-                usuarios_proyectos: {
-                    select: {
-                        usuarios: {
-                            select: {
-                                id: true, correo: true, nombre_completo: true, alias: true, rol: true
-                            }
+    return prisma.proyectos.findMany({
+        skip: skip, take: take, where: {
+            validado: true
+        }, include: {
+            usuarios_proyectos: {
+                select: {
+                    usuarios: {
+                        select: {
+                            id: true, correo: true, nombre_completo: true, alias: true, rol: true
                         }
                     }
-                }, usuarios: {
-                    select: {
-                        id: true, correo: true, nombre_completo: true, alias: true, rol: true
-                    }
-                }, proyectos_premios: {
-                    select: {
-                        premios: true
-                    }
+                }
+            }, usuarios: {
+                select: {
+                    id: true, correo: true, nombre_completo: true, alias: true, rol: true
+                }
+            }, proyectos_premios: {
+                select: {
+                    premios: true
                 }
             }
-        })
-    } catch (e) {
-        return null
-    }
+        }
+    })
 }
 
 const get_proyecto = async (id) => {
-    try {
-        return prisma.proyectos.findUnique({
-            where: {
-                id: id
-            }, include: {
-                usuarios_proyectos: {
-                    select: {
-                        usuarios: {
-                            select: {
-                                id: true, correo: true, nombre_completo: true, alias: true, rol: true
-                            }
+    return prisma.proyectos.findUnique({
+        where: {
+            id: id
+        }, include: {
+            usuarios_proyectos: {
+                select: {
+                    usuarios: {
+                        select: {
+                            id: true, correo: true, nombre_completo: true, alias: true, rol: true
                         }
                     }
-                }, usuarios: {
-                    select: {
-                        id: true, correo: true, nombre_completo: true, alias: true, rol: true
-                    }
-                }, proyectos_premios: {
-                    select: {
-                        premios: true
-                    }
+                }
+            }, usuarios: {
+                select: {
+                    id: true, correo: true, nombre_completo: true, alias: true, rol: true
+                }
+            }, proyectos_premios: {
+                select: {
+                    premios: true
                 }
             }
-        })
-    } catch (e) {
-        return null
-    }
+        }
+    })
 }
 
 const create_proyecto = async (proyecto) => {
@@ -74,7 +67,7 @@ const create_proyecto = async (proyecto) => {
 
         return await get_proyecto(data.id)
     } catch (e) {
-        return null
+        throw new Error(`${proyectos_errors.WRONG_CREATE}: ${e.message}`)
     }
 }
 
@@ -99,7 +92,7 @@ const update_proyecto = async (id, proyecto_nuevo) => {
 
         return await get_proyecto(id)
     } catch (e) {
-        return null
+        throw new Error(`${proyectos_errors.WRONG_UPDATE}: ${e.message}`)
     }
 }
 
@@ -117,7 +110,7 @@ const delete_proyecto = async (id) => {
             }
         })
     } catch (e) {
-        return null
+        throw new Error(`${proyectos_errors.WRONG_DELETE}: ${e.message}`)
     }
 }
 
@@ -131,7 +124,7 @@ const validar_proyecto = async (id) => {
             }
         })
     } catch (e) {
-        return null
+        throw new Error(`${proyectos_errors.WRONG_VALIDATION}: ${e.message}`)
     }
 }
 

@@ -51,9 +51,9 @@ const signin = async (correo, password) => {
 }
 
 const signup_cache = async (usuario) => {
-    const key = usuario.correo
+    const key = `pending:${usuario.correo}`
 
-    if (await get_data_by_correo(key)) throw auth_errors.ALREADY_SIGNUP
+    if (await get_data_by_correo(usuario.correo)) throw auth_errors.ALREADY_SIGNUP
     if (await redis.exists(key)) throw auth_errors.PENDING_SIGNUP
 
     try {

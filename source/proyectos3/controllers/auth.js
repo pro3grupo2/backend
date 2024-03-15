@@ -43,7 +43,7 @@ const signup = async (req, res) => {
 const signup_validate = async (req, res) => {
     try {
         return res.send({
-            data: await auth_service.signup(await auth_service.signup_validate(req.JWT.cache_key))
+            data: await auth_service.signup_validate(req.JWT.cache_key)
         })
     } catch (e) {
         return res.status(400).send({

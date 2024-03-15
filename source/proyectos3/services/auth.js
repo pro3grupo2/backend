@@ -15,24 +15,35 @@ const verificar_JWT = (token) => {
     }
 }
 
-const signin = async (correo, password) => {
-    const data = await prisma.usuarios.findUnique({
+const existe_usuario_by_correo = async (correo) => {
+    return prisma.usuarios.findUnique({
         where: {
             correo: correo
         }, select: {
             id: true, password: true, rol: true
         }
     })
+}
 
-    if (!data) throw auth_errors.WRONG_MAIL
+const signin = async (correo, password) => {
+    const data = await existe_usuario_by_correo(correo)
+
+    if (!data) {
+        if (await redis.exists(correo)) throw auth_errors.USER_NOT_VALIDATED
+        throw auth_errors.WRONG_MAIL
+    }
     if (!bcryptjs.compareSync(password, data.password)) throw auth_errors.WRONG_PASSWORD
 
     return jwt.sign({id: data.id, rol: data.rol}, process.env.JWT_SECRET, {expiresIn: process.env.JWT_EXPIRES_IN})
 }
 
 const signup_cache = async (usuario) => {
+    const key = usuario.correo
+
+    if (await existe_usuario_by_correo(key)) throw auth_errors.ALREADY_SIGNUP
+    if (await redis.exists(key)) throw auth_errors.PENDING_SIGNUP
+
     try {
-        const key = `${usuario.correo}_${Date.now()}`
         await redis.hSet(key, usuario)
         await redis.expire(key, 60 * 30)
         return jwt.sign({cache_key: key}, process.env.JWT_SECRET, {expiresIn: "30min"})
@@ -45,7 +56,9 @@ const signup_validate = async (cache_key) => {
     if (!await redis.exists(cache_key)) throw auth_errors.INVALID_SIGNUP_TOKEN
 
     try {
-        return await redis.hGetAll(cache_key)
+        const data = await redis.hGetAll(cache_key)
+        await redis.del(cache_key)
+        return await signup(data)
     } catch (e) {
         throw auth_errors.WRONG_SIGNUP
     }
@@ -62,6 +75,8 @@ const signup = async (usuario) => {
                 frase_recuperacion: usuario.frase_recuperacion,
                 rol: usuario.rol,
                 promocion: toInt(usuario.promocion)
+            }, select: {
+                id: true, correo: true, nombre_completo: true, alias: true, rol: true, promocion: true
             }
         })
     } catch (e) {

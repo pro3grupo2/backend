@@ -9,6 +9,8 @@ const messages = {
 
     INVALID_SIGNUP_TOKEN: "Token de registro inválido",
     WRONG_SIGNUP: "Datos incorrectos",
+    ALREADY_SIGNUP: "Usuario ya registrado",
+    PENDING_SIGNUP: "Usuario pendiente de registro",
 
     // ======================================
 

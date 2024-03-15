@@ -37,12 +37,8 @@ const create_premio = async (req, res) => {
 }
 
 const update_premio = async (req, res) => {
-    const {MATCHED} = req
-
-    const premio_id = MATCHED.id
-    delete MATCHED.id
-
-    const data = await premios_service.update_premio(premio_id, MATCHED)
+    const {id, ...datos} = req.MATCHED
+    const data = await premios_service.update_premio(id, datos)
 
     if (!data) return res.status(404).send({
         data: {

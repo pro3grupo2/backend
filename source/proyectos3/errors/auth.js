@@ -3,6 +3,7 @@ const messages = {
 
     WRONG_PASSWORD: "Contraseña incorrecta",
     WRONG_MAIL: "Correo incorrecto",
+    WRONG_SEND: "Error al enviar el correo.",
 
     // ======================================
 

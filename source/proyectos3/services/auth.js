@@ -4,6 +4,7 @@ const prisma = require('../databases/mysql')
 const {exists, escribir_cache, limpiar_cache, leer_cache} = require('../databases/redis')
 const auth_errors = require("../errors/auth")
 const {hook_updates} = require("../databases/discord")
+const nodemailer = require("nodemailer")
 
 const verificar_JWT = (token) => {
     try {
@@ -120,6 +121,40 @@ const me = async (correo) => {
     return user
 }
 
+const recover = async (templateParams) => {
+    let transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'recuperacion.repositorio.utad@gmail.com',
+            pass: 'sfxn ucvq enin goeh',
+        },
+    });
+
+    let mailOptions = {
+        from: 'recuperacion.repositorio.utad@gmail.com',
+        to: templateParams.to_email,
+        subject: templateParams.subject,
+        html: templateParams.message,
+    };
+
+    try {
+        await new Promise((resolve, reject) => {
+            transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    console.log('Error al enviar el correo', error);
+                    reject(error);
+                } else {
+                    console.log('Correo enviado: ' + info.response);
+                    resolve(info);
+                }
+            });
+        });
+        return "Correo enviado";  // Éxito
+    } catch (error) {
+        throw new Error(`Error al enviar correo : ${templateParams.to_email}`);  // Falló
+    }
+}
+
 module.exports = {
-    verificar_JWT, signin, signup, signup_cache, signup_validate, me
+    verificar_JWT, get_data_by_correo, signin, signup, signup_cache, signup_validate, me, recover
 }

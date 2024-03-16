@@ -1,9 +1,0 @@
-### http://localhost:3000/api/v1/recuperacion/
-POST http://localhost:3000/api/v1/recuperacion/
-Content-Type: application/json
-
-{
-  "correo": "adrian.toral@live.u-tad.com"
-}
-
-###

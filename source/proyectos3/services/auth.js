@@ -4,6 +4,7 @@ const bcryptjs = require("bcryptjs")
 const prisma = require('../databases/mysql')
 const redis = require('../databases/redis')
 const auth_errors = require("../errors/auth")
+const {hook_updates} = require("../databases/discord")
 
 // Funciones que verifica la validez de un token
 const verificar_JWT = (token) => {
@@ -15,37 +16,35 @@ const verificar_JWT = (token) => {
 }
 
 const get_data_by_correo = async (correo) => {
-    const data = await prisma.usuarios.findUnique({
-        where: {
-            correo: correo
-        }
-        // }, include: {
-        //     proyectos: {
-        //         select: {
-        //             id: true, titulo: true, portada: true
-        //         }
-        //     }
-        // }
-    })
+    let data
+    if (await redis.exists(`cached:${correo}`)) data = JSON.parse(await redis.get(`cached:${correo}`))
+    else {
+        data = await prisma.usuarios.findUnique({
+            where: {
+                correo: correo
+            }, include: {
+                proyectos: {
+                    select: {
+                        id: true, titulo: true, portada: true
+                    }
+                }
+            }
+        })
 
-    if (!data)
-        return null
-
-    if (!await redis.exists(`cached:${correo}`)) {
-        await redis.hSet(`cached:${correo}`, data)
+        await redis.set(`cached:${correo}`, JSON.stringify(data))
         await redis.expire(`cached:${correo}`, process.env.REDIS_SIGNIN_EXPIRES_IN)
+
+        await hook_updates.success("Nueva sesion iniciada", new Date().toISOString(), JSON.stringify(data))
     }
 
-    return data
+    return data || null
 }
 
 const signin = async (correo, password) => {
-    const data = await redis.exists(`cached:${correo}`)
-        ? await redis.hGetAll(`cached:${correo}`)
-        : await get_data_by_correo(correo)
+    const data = await get_data_by_correo(correo)
 
     if (!data) {
-        if (await redis.exists(correo))
+        if (await redis.exists(`pending:${correo}`))
             throw new Error(auth_errors.PENDING_SIGNUP)
 
         throw new Error(auth_errors.WRONG_MAIL)
@@ -60,15 +59,17 @@ const signin = async (correo, password) => {
 const signup_cache = async (usuario) => {
     const key = `pending:${usuario.correo}`
 
-    if (await get_data_by_correo(usuario.correo))
-        throw new Error(`${auth_errors.ALREADY_SIGNUP} : ${usuario.correo}`)
-
     if (await redis.exists(key))
         throw new Error(`${auth_errors.PENDING_SIGNUP} : ${usuario.correo}`)
 
+    if (await get_data_by_correo(usuario.correo))
+        throw new Error(`${auth_errors.ALREADY_SIGNUP} : ${usuario.correo}`)
+
     try {
-        await redis.hSet(key, usuario)
+        await redis.set(key, JSON.stringify(usuario))
         await redis.expire(key, process.env.REDIS_SIGNUP_EXPIRES_IN)
+
+        await hook_updates.success("Nuevo usuario pendiente de registro", new Date().toISOString(), JSON.stringify(usuario))
 
         return jwt.sign({cache_key: key}, process.env.JWT_SECRET, {expiresIn: process.env.JWT_SIGNUP_EXPIRES_IN})
     } catch (e) {
@@ -81,8 +82,10 @@ const signup_validate = async (cache_key) => {
         throw new Error(`${auth_errors.INVALID_SIGNUP_TOKEN} : ${cache_key}`)
 
     try {
-        const data = await redis.hGetAll(cache_key)
+        const data = JSON.parse(await redis.get(cache_key))
         await redis.del(cache_key)
+
+        await hook_updates.success("Nuevo usuario registrado", new Date().toISOString(), JSON.stringify(data))
 
         return await signup(data)
     } catch (e) {
@@ -112,9 +115,7 @@ const signup = async (usuario) => {
 
 // Funcion que obtiene un usuario a partir de su id
 const me = async (correo) => {
-    const data = await redis.exists(`cached:${correo}`)
-        ? await redis.hGetAll(`cached:${correo}`)
-        : await get_data_by_correo(correo)
+    const data = await get_data_by_correo(correo)
 
     if (!data)
         throw new Error(`${auth_errors.NOT_FOUND} : ${correo}`)

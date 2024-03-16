@@ -5,6 +5,7 @@ const {exists, escribir_cache, limpiar_cache, leer_cache} = require('../database
 const auth_errors = require("../errors/auth")
 const {hook_updates} = require("../databases/discord")
 const nodemailer = require("nodemailer")
+const recover_mail = require("../mails/recover")
 
 const verificar_JWT = (token) => {
     try {
@@ -121,21 +122,26 @@ const me = async (correo) => {
     return user
 }
 
-const recover = async (templateParams) => {
-    let transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: 'recuperacion.repositorio.utad@gmail.com',
-            pass: 'sfxn ucvq enin goeh',
-        },
-    });
+const recover = async (correo) => {
+    const data = await get_data_by_correo(correo)
+    if (!data) throw new Error(`${auth_errors.NOT_FOUND} : ${correo}`)
 
-    let mailOptions = {
-        from: 'recuperacion.repositorio.utad@gmail.com',
-        to: templateParams.to_email,
-        subject: templateParams.subject,
-        html: templateParams.message,
-    };
+    const
+        transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: 'recuperacion.repositorio.utad@gmail.com',
+                pass: 'sfxn ucvq enin goeh',
+            },
+        }),
+        mailOptions = {
+            from: 'recuperacion.repositorio.utad@gmail.com',
+            to: correo,
+            subject: "Recuperacion de contraseña U-Tad",
+            html: recover_mail
+                .replace('{{nombre_completo}}', data.nombre_completo)
+                .replace(/{{to_link}}/g, "https://reservorio-u-tad.com/recover/" + jwt.sign({id: data.id}, process.env.JWT_SECRET, {expiresIn: process.env.JWT_RECOVER_EXPIRES_IN}))
+        }
 
     try {
         await new Promise((resolve, reject) => {
@@ -147,11 +153,11 @@ const recover = async (templateParams) => {
                     console.log('Correo enviado: ' + info.response);
                     resolve(info);
                 }
-            });
-        });
+            })
+        })
         return "Correo enviado";  // Éxito
     } catch (error) {
-        throw new Error(`Error al enviar correo : ${templateParams.to_email}`);  // Falló
+        throw new Error(`${auth_errors.WRONG_SEND} : ${correo}`);  // Falló
     }
 }
 

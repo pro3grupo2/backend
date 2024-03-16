@@ -1,7 +1,7 @@
-const correoHtml =`
+const mail = `
 <!DOCTYPE html>
 
-<html lang="en" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:v="urn:schemas-microsoft-com:vml">
+<html lang="en"  >
 <head>
 <title></title>
 <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
@@ -209,6 +209,4 @@ const correoHtml =`
 </html>
 `
 
-module.exports = {
-    correoHtml
-}
+module.exports = mail

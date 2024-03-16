@@ -35,12 +35,8 @@ const create_area = async (req, res) => {
 }
 
 const update_area = async (req, res) => {
-    const {MATCHED} = req
-
-    const area_id = MATCHED.id
-    delete MATCHED.id
-
-    const data = await areas_service.update_area(area_id, MATCHED)
+    const {id, ...datos} = req.MATCHED
+    const data = await areas_service.update_area(id, datos)
 
     if (!data) return res.status(404).send({
         data: {

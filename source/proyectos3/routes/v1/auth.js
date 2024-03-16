@@ -4,6 +4,7 @@ const auth_controller = require("../../controllers/auth")
 const auth_middleware = require("../../middleware/auth")
 const auth_validators = require("../../validators/auth")
 
+
 // Rutas de autenticacion
 const router = express.Router()
 
@@ -18,6 +19,14 @@ router.post("/signin",
 router.post("/signup",
     auth_validators.signup,
     auth_controller.signup
+)
+router.get("/signup/validate",
+    auth_middleware.verificar_JWT,
+    auth_controller.signup_validate
+)
+router.post("/recover",
+    auth_validators.recover,
+    auth_controller.recover
 )
 
 module.exports = router

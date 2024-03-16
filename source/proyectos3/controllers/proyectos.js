@@ -1,85 +1,58 @@
 const proyectos_service = require("../services/proyectos")
-const proyectos_errors = require("../errors/proyectos")
+const {good_response, bad_response} = require("../errors");
 
 const get_proyectos = async (req, res) => {
-    const {body} = req
-    return res.send({
-        data: await proyectos_service.get_proyectos(body.skip, body.take)
-    })
+    try {
+        return good_response(res, await proyectos_service.get_proyectos(req.MATCHED.skip, req.MATCHED.take))
+    } catch (e) {
+        return bad_response(res, 400, e)
+    }
 }
 
 const get_proyecto = async (req, res) => {
-    const data = await proyectos_service.get_proyecto(req.MATCHED.id)
-
-    if (!data) return res.status(404).send({
-        data: {
-            errors: [proyectos_errors.NOT_FOUND]
-        }
-    })
-
-    return res.send({data: data})
+    try {
+        return good_response(res, await proyectos_service.get_proyecto(req.MATCHED.id))
+    } catch (e) {
+        return bad_response(res, 400, e)
+    }
 }
 
 const create_proyecto_files = async (req, res) => {
-    return res.send({
-        data: req.MATCHED
-    })
+    return good_response(res, req.MATCHED)
 }
 
 const create_proyecto = async (req, res) => {
-    const {MATCHED, JWT} = req
-
-    MATCHED.id_creador = JWT.id
-    const data = await proyectos_service.create_proyecto(MATCHED)
-
-    if (!data) return res.status(400).send({
-        data: {
-            errors: [proyectos_errors.WRONG_CREATE]
-        }
-    })
-
-    return res.send({
-        data: data
-    })
+    try {
+        req.MATCHED.id_creador = req.JWT.id
+        return good_response(res, await proyectos_service.create_proyecto(req.MATCHED))
+    } catch (e) {
+        return bad_response(res, 400, e)
+    }
 }
 
 const update_proyecto = async (req, res) => {
-    const {id, ...proyecto} = req.MATCHED
-    const data = await proyectos_service.update_proyecto(id, proyecto)
-
-    if (!data) return res.status(404).send({
-        data: {
-            errors: [proyectos_errors.NOT_FOUND]
-        }
-    })
-
-    return res.send({
-        data: data
-    })
+    try {
+        const {id, ...proyecto} = req.MATCHED
+        return good_response(res, await proyectos_service.update_proyecto(id, proyecto))
+    } catch (e) {
+        return bad_response(res, 400, e)
+    }
 }
 
 const delete_proyecto = async (req, res) => {
-    const data = await proyectos_service.delete_proyecto(req.MATCHED.id)
-
-    if (!data) return res.status(404).send({
-        data: {
-            errors: [proyectos_errors.NOT_FOUND]
-        }
-    })
-
-    return res.send({data: data})
+    try {
+        return good_response(res, await proyectos_service.delete_proyecto(req.MATCHED.id))
+    } catch (e) {
+        return bad_response(res, 400, e)
+    }
 }
 
 const validar_proyecto = async (req, res) => {
-    const data = await proyectos_service.validar_proyecto(req.MATCHED.id)
-
-    if (!data) return res.status(404).send({
-        data: {
-            errors: [proyectos_errors.NOT_FOUND]
-        }
-    })
-
-    return res.send({data: data})
+    try {
+        return good_response(res, await proyectos_service.validar_proyecto(req.MATCHED.id))
+    } catch (e) {
+        return bad_response(res, 400, e)
+    }
 }
 
 module.exports = {

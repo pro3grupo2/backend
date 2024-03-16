@@ -1,66 +1,45 @@
-// Dependecias necesarias para el manejo de las rutas de autenticacion
 const premios_service = require('../services/premios')
-const premios_errors = require('../errors/premios')
+const {good_response, bad_response} = require("../errors");
 
 const get_premios = async (req, res) => {
-    const {MATCHED} = req
-    return res.send({
-        data: await premios_service.get_premios(MATCHED.skip, MATCHED.take)
-    })
+    try {
+        return good_response(res, await premios_service.get_premios(req.MATCHED.skip, req.MATCHED.take))
+    } catch (e) {
+        return bad_response(res, 404, e)
+    }
 }
 
 const get_premio = async (req, res) => {
-    const data = await premios_service.get_premio(req.MATCHED.id)
-
-    if (!data) return res.status(404).send({
-        data: {
-            errors: [premios_errors.NOT_FOUND]
-        }
-    })
-
-    return res.send({data: data})
+    try {
+        return good_response(res, await premios_service.get_premio(req.MATCHED.id))
+    } catch (e) {
+        return bad_response(res, 404, e)
+    }
 }
 
 const create_premio = async (req, res) => {
-    const {MATCHED} = req
-    const data = await premios_service.create_premio(MATCHED)
-
-    if (!data) return res.status(400).send({
-        data: {
-            errors: [premios_errors.WRONG_CREATE]
-        }
-    })
-
-    return res.send({
-        data: data
-    })
+    try {
+        return good_response(res, await premios_service.create_premio(req.MATCHED))
+    } catch (e) {
+        return bad_response(res, 400, e)
+    }
 }
 
 const update_premio = async (req, res) => {
-    const {id, ...datos} = req.MATCHED
-    const data = await premios_service.update_premio(id, datos)
-
-    if (!data) return res.status(404).send({
-        data: {
-            errors: [premios_errors.NOT_FOUND]
-        }
-    })
-
-    return res.send({
-        data: data
-    })
+    try {
+        const {id, ...datos} = req.MATCHED
+        return good_response(res, await premios_service.update_premio(id, datos))
+    } catch (e) {
+        return bad_response(res, 404, e)
+    }
 }
 
 const delete_premio = async (req, res) => {
-    const data = await premios_service.delete_premio(req.MATCHED.id)
-
-    if (!data) return res.status(404).send({
-        data: {
-            errors: [premios_errors.NOT_FOUND]
-        }
-    })
-
-    return res.send({data: data})
+    try {
+        return good_response(res, await premios_service.delete_premio(req.MATCHED.id))
+    } catch (e) {
+        return bad_response(res, 404, e)
+    }
 }
 
 module.exports = {

@@ -19,9 +19,9 @@ const get_proyectos = async (skip = 0, take = 20) => {
                 select: {
                     id: true, correo: true, nombre_completo: true, alias: true, rol: true
                 }
-            }, proyectos_premios: {
+            }, premios: {
                 select: {
-                    premios: true
+                    id: true, titulo: true, anio: true
                 }
             }
         }
@@ -45,9 +45,9 @@ const get_proyecto = async (id) => {
                 select: {
                     id: true, correo: true, nombre_completo: true, alias: true, rol: true
                 }
-            }, proyectos_premios: {
+            }, premios: {
                 select: {
-                    premios: true
+                    id: true, titulo: true, anio: true
                 }
             }
         }

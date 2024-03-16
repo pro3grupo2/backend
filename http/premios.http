@@ -1,37 +1,14 @@
-###
-### http://localhost:3000/api/v1/recuperacion/
-POST http://localhost:3000/api/v1/recuperacion/
-Content-Type: application/json
-
-{
-  "correo": "i.guio.aunon@gmail.com"
-}
-###
-
-### /api/v1/auth/signup
-POST http://localhost:3000/api/v1/auth/signup
-Content-Type: application/json
-
-{
-  "correo": "miquel.angel.prieto@gmail.com",
-  "nombre_completo": "miquel eres tonto",
-  "alias": "miquel",
-  "password": "123",
-  "frase_recuperacion": "aaaaaaaaa",
-  "rol": "coordinador"
-}
-
 ### /api/v1/auth/signin
 POST http://localhost:3000/api/v1/auth/signin
 Content-Type: application/json
 
 {
-  "correo": "adriantoral@live.u-tad.com",
-  "password": "12345"
+  "correo": "adrian.toral@live.u-tad.com",
+  "password": "Adriantoral@12345"
 }
 
 > {%
-    client.global.set("auth_token", response.body.data.token);
+    client.global.set("auth_token", response.body.data);
 %}
 
 ### /api/v1/premios/
@@ -44,7 +21,9 @@ Authorization: Bearer {{auth_token}}
 Content-Type: application/json
 
 {
-  "titulo": "Premio 1"
+  "titulo": "Premio 3",
+  "anio": 2021,
+  "id_proyecto": 1
 }
 
 ### /api/v1/premios/1
@@ -57,7 +36,7 @@ Authorization: Bearer {{auth_token}}
 Content-Type: application/json
 
 {
-  "titulo": "Premio 1 mejorado"
+  "titulo": "Premio 1 mejorado2"
 }
 
 ### /api/v1/premios/1

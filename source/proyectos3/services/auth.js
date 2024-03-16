@@ -31,13 +31,15 @@ const get_data_by_correo = async (correo) => {
             }
         })
 
-        await redis.set(`cached:${correo}`, JSON.stringify(data))
-        await redis.expire(`cached:${correo}`, process.env.REDIS_SIGNIN_EXPIRES_IN)
+        if (data) {
+            await redis.set(`cached:${correo}`, JSON.stringify(data))
+            await redis.expire(`cached:${correo}`, process.env.REDIS_SIGNIN_EXPIRES_IN)
 
-        await hook_updates.success("Nueva sesion iniciada", new Date().toISOString(), JSON.stringify(data))
+            await hook_updates.success("Nueva sesion iniciada", new Date().toISOString(), JSON.stringify(data))
+        }
     }
 
-    return data || null
+    return data
 }
 
 const signin = async (correo, password) => {
@@ -89,7 +91,7 @@ const signup_validate = async (cache_key) => {
 
         return await signup(data)
     } catch (e) {
-        throw new Error(`${auth_errors.WRONG_SIGNUP} : ${cache_key}`)
+        throw new Error(`${auth_errors.WRONG_SIGNUP} : ${cache_key} : ${e.message}`)
     }
 }
 
@@ -109,7 +111,7 @@ const signup = async (usuario) => {
             }
         })
     } catch (e) {
-        throw new Error(`${auth_errors.WRONG_SIGNUP} : ${usuario.correo}`)
+        throw new Error(`${auth_errors.WRONG_SIGNUP} : ${usuario.correo} : ${e.message}`)
     }
 }
 

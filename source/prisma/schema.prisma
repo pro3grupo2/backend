@@ -46,9 +46,14 @@ model materias {
 }
 
 model premios {
-  id                Int                 @id @default(autoincrement())
-  titulo            String?             @unique(map: "titulo") @db.VarChar(50)
-  proyectos_premios proyectos_premios[]
+  id          Int        @id @default(autoincrement())
+  titulo      String?    @db.VarChar(100)
+  anio        Int?       @default(dbgenerated("(year(curdate()))")) @db.Year
+  id_proyecto Int?
+  proyectos   proyectos? @relation(fields: [id_proyecto], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "premios_ibfk_1")
+
+  @@unique([titulo, anio], map: "titulo")
+  @@index([id_proyecto], map: "id_proyecto")
 }
 
 model proyectos {
@@ -60,23 +65,13 @@ model proyectos {
   url                String?              @db.Text
   portada            String?              @db.Text
   validado           Boolean?             @default(false)
+  premios            premios[]
   usuarios           usuarios?            @relation(fields: [id_creador], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "proyectos_ibfk_1")
   asignaturas        asignaturas?         @relation(fields: [id_asignatura], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "proyectos_ibfk_2")
-  proyectos_premios  proyectos_premios[]
   usuarios_proyectos usuarios_proyectos[]
 
   @@index([id_asignatura], map: "id_asignatura")
   @@index([id_creador], map: "id_creador")
-}
-
-model proyectos_premios {
-  id_proyecto Int
-  id_premio   Int
-  proyectos   proyectos @relation(fields: [id_proyecto], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "proyectos_premios_ibfk_1")
-  premios     premios   @relation(fields: [id_premio], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "proyectos_premios_ibfk_2")
-
-  @@id([id_proyecto, id_premio])
-  @@index([id_premio], map: "id_premio")
 }
 
 model titulaciones {

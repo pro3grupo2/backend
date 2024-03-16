@@ -1,4 +1,3 @@
-// Dependencias necesarias para la interacción con la base de datos y la creación de tokens
 const jwt = require('jsonwebtoken')
 const bcryptjs = require("bcryptjs")
 const prisma = require('../databases/mysql')
@@ -6,7 +5,6 @@ const {exists, escribir_cache, limpiar_cache, leer_cache} = require('../database
 const auth_errors = require("../errors/auth")
 const {hook_updates} = require("../databases/discord")
 
-// Funciones que verifica la validez de un token
 const verificar_JWT = (token) => {
     try {
         return jwt.verify(token, process.env.JWT_SECRET)
@@ -112,7 +110,6 @@ const signup = async (usuario) => {
     }
 }
 
-// Funcion que obtiene un usuario a partir de su id
 const me = async (correo) => {
     const data = await get_data_by_correo(correo)
 

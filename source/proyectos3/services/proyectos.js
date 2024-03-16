@@ -1,9 +1,13 @@
-// Dependencias necesarias para la interacción con la base de datos y la creación de tokens
 const prisma = require('../databases/mysql')
 const proyectos_errors = require('../errors/proyectos')
+const {leer_cache, escribir_cache, limpiar_cache} = require("../databases/redis");
+const {hook_updates} = require("../databases/discord");
 
 const get_proyectos = async (skip = 0, take = 20) => {
-    return prisma.proyectos.findMany({
+    let data = await leer_cache('cached:proyectos')
+    if (data) return data
+
+    data = prisma.proyectos.findMany({
         skip: skip, take: take, where: {
             validado: true
         }, include: {
@@ -26,10 +30,23 @@ const get_proyectos = async (skip = 0, take = 20) => {
             }
         }
     })
+
+    await escribir_cache([
+        {
+            key: 'cached:proyectos',
+            data: data
+        }
+    ], process.env.REDIS_SIGNIN_EXPIRES_IN)
+    await hook_updates.success("Proyectos cacheados", new Date().toISOString(), JSON.stringify(data))
+
+    return data
 }
 
 const get_proyecto = async (id) => {
-    return prisma.proyectos.findUnique({
+    let data = await leer_cache(`cached:proyectos:${id}`)
+    if (data) return data
+
+    data = prisma.proyectos.findUnique({
         where: {
             id: id
         }, include: {
@@ -52,18 +69,36 @@ const get_proyecto = async (id) => {
             }
         }
     })
+
+    if (!data)
+        throw new Error(proyectos_errors.NOT_FOUND)
+
+    await escribir_cache([
+        {
+            key: `cached:proyectos:${id}`,
+            data: data
+        }
+    ], process.env.REDIS_SIGNIN_EXPIRES_IN)
+    await hook_updates.success("Proyecto cacheado", new Date().toISOString(), JSON.stringify(data))
+
+    return data
 }
 
 const create_proyecto = async (proyecto) => {
     try {
+        await limpiar_cache([
+            'cached:proyectos',
+        ])
+
         const {participantes, ...resto} = proyecto
         const data = await prisma.proyectos.create({
             data: resto
         })
 
-        if (participantes) for (const participante of participantes) await prisma.usuarios_proyectos.create({
-            data: {id_usuario: participante, id_proyecto: data.id}
-        })
+        if (participantes) for (const participante of participantes)
+            await prisma.usuarios_proyectos.create({
+                data: {id_usuario: participante, id_proyecto: data.id}
+            })
 
         return await get_proyecto(data.id)
     } catch (e) {
@@ -73,6 +108,11 @@ const create_proyecto = async (proyecto) => {
 
 const update_proyecto = async (id, proyecto_nuevo) => {
     try {
+        await limpiar_cache([
+            'cached:proyectos',
+            `cached:proyectos:${id}`
+        ])
+
         const {participantes, ...resto} = proyecto_nuevo
         const data = await prisma.proyectos.update({
             where: {
@@ -86,9 +126,10 @@ const update_proyecto = async (id, proyecto_nuevo) => {
             }
         })
 
-        if (participantes) for (const participante of participantes) await prisma.usuarios_proyectos.create({
-            data: {id_usuario: participante, id_proyecto: data.id}
-        })
+        if (participantes) for (const participante of participantes)
+            await prisma.usuarios_proyectos.create({
+                data: {id_usuario: participante, id_proyecto: data.id}
+            })
 
         return await get_proyecto(id)
     } catch (e) {
@@ -98,6 +139,11 @@ const update_proyecto = async (id, proyecto_nuevo) => {
 
 const delete_proyecto = async (id) => {
     try {
+        await limpiar_cache([
+            'cached:proyectos',
+            `cached:proyectos:${id}`
+        ])
+
         await prisma.usuarios_proyectos.deleteMany({
             where: {
                 id_proyecto: id
@@ -116,6 +162,11 @@ const delete_proyecto = async (id) => {
 
 const validar_proyecto = async (id) => {
     try {
+        await limpiar_cache([
+            'cached:proyectos',
+            `cached:proyectos:${id}`
+        ])
+
         return prisma.proyectos.update({
             where: {
                 id: id

@@ -1,4 +1,3 @@
-// Dependencias necesarias para la interacción con la base de datos y la creación de tokens
 const prisma = require('../databases/mysql')
 const {escribir_cache, leer_cache, limpiar_cache} = require('../databases/redis')
 const {hook_updates} = require('../databases/discord')

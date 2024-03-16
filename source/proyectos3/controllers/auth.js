@@ -14,9 +14,7 @@ const signin = async (req, res) => {
 // Ruta para manejar el registro de usuarios
 const signup = async (req, res) => {
     try {
-        return good_response(res, await auth_service.recover({
-            subject: "Validacion de cuenta", to_email: req.MATCHED.correo, message: await auth_service.signup_cache(req.MATCHED)
-        }))
+        return good_response(res, await auth_service.signup_cache(req.MATCHED))
     } catch (e) {
         return bad_response(res, 400, e)
     }

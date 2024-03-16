@@ -70,6 +70,35 @@ const signup_cache = async (usuario) => {
         throw new Error(`${auth_errors.ALREADY_SIGNUP} : ${usuario.correo}`)
 
     try {
+        const
+            transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                    user: 'recuperacion.repositorio.utad@gmail.com',
+                    pass: 'sfxn ucvq enin goeh',
+                },
+            }),
+            mailOptions = {
+                from: 'recuperacion.repositorio.utad@gmail.com',
+                to: usuario.correo,
+                subject: "Verificacion de tu cuenta U-Tad",
+                html: recover_mail
+                    .replace('{{nombre_completo}}', usuario.nombre_completo)
+                    .replace(/{{to_link}}/g, "https://reservorio-u-tad.com/validate/" + jwt.sign({cache_key: key}, process.env.JWT_SECRET, {expiresIn: process.env.JWT_SIGNUP_EXPIRES_IN}))
+            }
+
+        await new Promise((resolve, reject) => {
+            transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    console.log('Error al enviar el correo', error);
+                    reject(error);
+                } else {
+                    console.log('Correo enviado: ' + info.response);
+                    resolve(info);
+                }
+            })
+        })
+
         await escribir_cache([
             {
                 key: key,
@@ -78,7 +107,8 @@ const signup_cache = async (usuario) => {
         ], process.env.REDIS_SIGNUP_EXPIRES_IN)
         await hook_updates.success("Nuevo usuario pendiente de registro", new Date().toISOString(), JSON.stringify(usuario))
 
-        return jwt.sign({cache_key: key}, process.env.JWT_SECRET, {expiresIn: process.env.JWT_SIGNUP_EXPIRES_IN})
+        return "Correo enviado"
+
     } catch (e) {
         throw new Error(`${auth_errors.WRONG_SIGNUP} : ${usuario.correo}`)
     }

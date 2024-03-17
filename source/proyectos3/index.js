@@ -20,6 +20,7 @@ app.use(express.json())
 app.use(cors())
 app.use("/api/v1", router_v1)
 app.use("/docs", express.static(path.join(__dirname, 'docs')))
+app.use('/files', express.static('/files'))
 
 // Iniciar servidor
 app.listen(port, () => {

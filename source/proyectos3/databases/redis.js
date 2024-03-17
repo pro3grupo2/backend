@@ -21,7 +21,7 @@ const leer_cache = async (key) => {
         : null
 }
 
-const escribir_cache = (data, expires = null) => {
+const escribir_cache = async (data, expires = null) => {
     data.map(
         async (d) => {
             await redis.set(d.key, JSON.stringify(d.data))

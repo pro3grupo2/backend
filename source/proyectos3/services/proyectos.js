@@ -5,9 +5,10 @@ const {hook_updates} = require("../databases/discord");
 
 const get_proyectos = async (skip = 0, take = 20) => {
     let data = await leer_cache('cached:proyectos')
+    console.log(1, data)
     if (data) return data
 
-    data = prisma.proyectos.findMany({
+    data = await prisma.proyectos.findMany({
         skip: skip, take: take, where: {
             validado: true
         }, include: {
@@ -30,6 +31,7 @@ const get_proyectos = async (skip = 0, take = 20) => {
             }
         }
     })
+    console.log(2, data)
 
     await escribir_cache([
         {
@@ -46,7 +48,7 @@ const get_proyecto = async (id) => {
     let data = await leer_cache(`cached:proyectos:${id}`)
     if (data) return data
 
-    data = prisma.proyectos.findUnique({
+    data = await prisma.proyectos.findUnique({
         where: {
             id: id
         }, include: {
@@ -167,7 +169,7 @@ const validar_proyecto = async (id) => {
             `cached:proyectos:${id}`
         ])
 
-        return prisma.proyectos.update({
+        return await prisma.proyectos.update({
             where: {
                 id: id
             }, data: {

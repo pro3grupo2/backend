@@ -121,8 +121,11 @@ const signup_validate = async (cache_key) => {
     try {
         const data = await leer_cache(cache_key)
         await limpiar_cache([cache_key])
-        await signup(data)
+
+        const d = await signup(data)
         await hook_updates.success("Nuevo usuario registrado", new Date().toISOString(), JSON.stringify(data))
+
+        return d
     } catch (e) {
         throw new Error(`${auth_errors.WRONG_SIGNUP} : ${cache_key} : ${e.message}`)
     }

@@ -5,7 +5,7 @@ const {exists, escribir_cache, limpiar_cache, leer_cache} = require('../database
 const auth_errors = require("../errors/auth")
 const {hook_updates} = require("../databases/discord")
 const nodemailer = require("nodemailer")
-const recover_mail = require("../mails/recover")
+const validation_mail = require("../mails/validation")
 
 const verificar_JWT = (token) => {
     try {
@@ -82,7 +82,7 @@ const signup_cache = async (usuario) => {
                 from: 'recuperacion.repositorio.utad@gmail.com',
                 to: usuario.correo,
                 subject: "Verificacion de tu cuenta U-Tad",
-                html: recover_mail
+                html: validation_mail
                     .replace('{{nombre_completo}}', usuario.nombre_completo)
                     .replace(/{{to_link}}/g, "https://reservorio-u-tad.com/validate/" + jwt.sign({cache_key: key}, process.env.JWT_SECRET, {expiresIn: process.env.JWT_SIGNUP_EXPIRES_IN}))
             }
@@ -171,7 +171,7 @@ const recover = async (correo) => {
             from: 'recuperacion.repositorio.utad@gmail.com',
             to: correo,
             subject: "Recuperacion de contraseña U-Tad",
-            html: recover_mail
+            html: validation_mail
                 .replace('{{nombre_completo}}', data.nombre_completo)
                 .replace(/{{to_link}}/g, "https://reservorio-u-tad.com/recover/" + jwt.sign({id: data.id}, process.env.JWT_SECRET, {expiresIn: process.env.JWT_RECOVER_EXPIRES_IN}))
         }

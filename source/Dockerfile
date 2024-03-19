@@ -14,8 +14,8 @@ RUN npm install
 RUN npx prisma generate
 
 # Comando para iniciar la aplicacion
-#CMD ["npm", "start"]
+CMD ["npm", "start"]
 
 # Comando para iniciar la aplicacion en modo desarrollo
 # Quitar en produccion y descomentar el comando anterior
- CMD ["npm", "run", "dev"]
+# CMD ["npm", "run", "dev"]

@@ -10,7 +10,7 @@ COPY prisma prisma
 COPY .env .
 
 # Instalar las dependencias de la aplicacion
-RUN npm install
+RUN npm install --loglevel verbose
 RUN npx prisma generate
 
 # Comando para iniciar la aplicacion

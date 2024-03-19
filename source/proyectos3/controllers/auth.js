@@ -1,44 +1,50 @@
 // Dependecias necesarias para el manejo de las rutas de autenticacion
 const auth_service = require("../services/auth")
-const auth_errors = require("../errors/auth")
+const {good_response, bad_response} = require("../errors")
 
 // Ruta para manejar el inicio de sesion
 const signin = async (req, res) => {
     try {
-        return res.send({
-            data: {
-                token: await auth_service.signin(req.MATCHED.correo, req.MATCHED.password)
-            }
-        })
+        return good_response(res, await auth_service.signin(req.MATCHED.correo, req.MATCHED.password))
     } catch (e) {
-        return res.status(400).send({
-            data: {
-                errors: [e]
-            }
-        })
+        return bad_response(res, 400, e)
     }
 }
 
 // Ruta para manejar el registro de usuarios
 const signup = async (req, res) => {
     try {
-        return res.send({
-            data: await auth_service.signup(req.MATCHED)
-        })
+        return good_response(res, await auth_service.signup_cache(req.MATCHED))
     } catch (e) {
-        return res.status(400).send({
-            data: {
-                errors: [e]
-            }
-        })
+        return bad_response(res, 400, e)
+    }
+}
+
+const signup_validate = async (req, res) => {
+    try {
+        return good_response(res, await auth_service.signup_validate(req.JWT.cache_key))
+    } catch (e) {
+        return bad_response(res, 400, e)
     }
 }
 
 // Ruta para manejar la obtencion de datos de un usuario mediante Bearer Token (JWT)
 const me = async (req, res) => {
-    return res.send({data: await auth_service.me(req.JWT.id)})
+    try {
+        return good_response(res, await auth_service.me(req.JWT.correo))
+    } catch (e) {
+        return bad_response(res, 400, e)
+    }
+}
+
+const recover = async (req, res) => {
+    try {
+        return good_response(res, await auth_service.recover(req.MATCHED.correo))
+    } catch (e) {
+        return bad_response(res, 400, e)
+    }
 }
 
 module.exports = {
-    signin, signup, me
+    signin, signup, signup_validate, me, recover
 }

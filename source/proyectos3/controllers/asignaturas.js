@@ -34,12 +34,8 @@ const create_asignatura = async (req, res) => {
 }
 
 const update_asignatura = async (req, res) => {
-    const {MATCHED} = req
-
-    const asignatura_id = MATCHED.id
-    delete MATCHED.id
-
-    const data = await asignaturas_service.update_asignatura(asignatura_id, MATCHED)
+    const {id, ...datos} = req.MATCHED
+    const data = await asignaturas_service.update_asignatura(id, datos)
 
     if (!data) return res.status(404).send({
         data: {

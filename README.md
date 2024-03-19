@@ -12,7 +12,9 @@ Por tanto, consideramos que existe una necesidad de centralizar toda esta inform
 - [Node.js](https://nodejs.org/en) : Entorno de ejecución para JavaScript construido con el motor de JavaScript V8 de Chrome.
 - [Express](https://expressjs.com/) : Framework de Node.js que nos permite crear aplicaciones web y APIs de manera sencilla.
 - [MySQL](https://www.mysql.com/) : Sistema de gestión de bases de datos relacional.
+- [Redis](https://redis.io/) : Motor de almacenamiento en memoria de código abierto.
 - [Prisma](https://www.prisma.io/) : ORM para Node.js que acelera el acceso a la base de datos.
+- [Nodemailer](https://www.nodemailer.com/) : Módulo para Node.js que nos permite enviar correos electrónicos.
 - [Docker](https://www.docker.com/) : Plataforma de software que proporciona contenedores, capa de abstracción que permite la virtualización a nivel de sistema operativo.
 - [Docker Compose](https://docs.docker.com/compose/migrate/) : Herramienta para definir y ejecutar aplicaciones Docker de múltiples contenedores.
 

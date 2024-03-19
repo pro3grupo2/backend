@@ -3,12 +3,12 @@ POST http://localhost:3000/api/v1/auth/signin
 Content-Type: application/json
 
 {
-  "correo": "adriantoral@live.u-tad.com",
-  "password": "12345"
+  "correo": "adrian.toral@live.u-tad.com",
+  "password": "Adriantoral@12345"
 }
 
 > {%
-    client.global.set("auth_token", response.body.data.token);
+    client.global.set("auth_token", response.body.data);
 %}
 
 ### /api/v1/premios/
@@ -21,7 +21,9 @@ Authorization: Bearer {{auth_token}}
 Content-Type: application/json
 
 {
-  "titulo": "Premio 1"
+  "titulo": "Premio 3",
+  "anio": 2021,
+  "id_proyecto": 1
 }
 
 ### /api/v1/premios/1
@@ -34,7 +36,7 @@ Authorization: Bearer {{auth_token}}
 Content-Type: application/json
 
 {
-  "titulo": "Premio 1 mejorado"
+  "titulo": "Premio 1 mejorado2"
 }
 
 ### /api/v1/premios/1

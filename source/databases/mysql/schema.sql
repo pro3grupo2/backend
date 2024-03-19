@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.3.0, for Linux (x86_64)
 --
--- Host: localhost    Database: pr3
+-- Host: localhost    Database: proyectos3
 -- ------------------------------------------------------
 -- Server version	8.3.0
 
@@ -14,6 +14,14 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS = @@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS = 0 */;
 /*!40101 SET @OLD_SQL_MODE = @@SQL_MODE, SQL_MODE = 'NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES = @@SQL_NOTES, SQL_NOTES = 0 */;
+
+--
+-- Create database
+--
+
+DROP DATABASE proyectos3;
+CREATE DATABASE proyectos3;
+USE proyectos3;
 
 --
 -- Table structure for table `areas`
@@ -138,10 +146,14 @@ DROP TABLE IF EXISTS `premios`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `premios`
 (
-    `id`     int NOT NULL AUTO_INCREMENT,
-    `titulo` varchar(50) DEFAULT NULL,
+    `id`          int NOT NULL AUTO_INCREMENT,
+    `titulo`      varchar(100) DEFAULT NULL,
+    `anio`        year         DEFAULT (year(curdate())),
+    `id_proyecto` int          DEFAULT NULL,
     PRIMARY KEY (`id`),
-    UNIQUE KEY `titulo` (`titulo`)
+    UNIQUE KEY `titulo` (`titulo`, `anio`),
+    KEY `id_proyecto` (`id_proyecto`),
+    CONSTRAINT `premios_ibfk_1` FOREIGN KEY (`id_proyecto`) REFERENCES `proyectos` (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
@@ -170,26 +182,6 @@ CREATE TABLE `proyectos`
     KEY `id_asignatura` (`id_asignatura`),
     CONSTRAINT `proyectos_ibfk_1` FOREIGN KEY (`id_creador`) REFERENCES `usuarios` (`id`),
     CONSTRAINT `proyectos_ibfk_2` FOREIGN KEY (`id_asignatura`) REFERENCES `asignaturas` (`id`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `proyectos_premios`
---
-
-DROP TABLE IF EXISTS `proyectos_premios`;
-/*!40101 SET @saved_cs_client = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `proyectos_premios`
-(
-    `id_proyecto` int NOT NULL,
-    `id_premio`   int NOT NULL,
-    PRIMARY KEY (`id_proyecto`, `id_premio`),
-    KEY `id_premio` (`id_premio`),
-    CONSTRAINT `proyectos_premios_ibfk_1` FOREIGN KEY (`id_proyecto`) REFERENCES `proyectos` (`id`),
-    CONSTRAINT `proyectos_premios_ibfk_2` FOREIGN KEY (`id_premio`) REFERENCES `premios` (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
@@ -253,7 +245,6 @@ CREATE TABLE `usuarios`
     `frase_recuperacion` varchar(100)                                                 DEFAULT NULL,
     `rol`                enum ('alumno','alumni','profesor','coordinador','invitado') DEFAULT NULL,
     `promocion`          year                                                         DEFAULT (year(curdate())),
-    `validado`           tinyint(1)                                                   DEFAULT '0',
     PRIMARY KEY (`id`),
     UNIQUE KEY `correo` (`correo`),
     UNIQUE KEY `alias` (`alias`)
@@ -331,4 +322,4 @@ CREATE TABLE `usuarios_titulaciones`
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-13 14:02:44
+-- Dump completed on 2024-03-16 11:50:59

@@ -34,12 +34,8 @@ const create_titulacion = async (req, res) => {
 }
 
 const update_titulacion = async (req, res) => {
-    const {MATCHED} = req
-
-    const titulacion_id = MATCHED.id
-    delete MATCHED.id
-
-    const data = await titulaciones_service.update_titulacion(titulacion_id, MATCHED)
+    const {id, ...datos} = req.MATCHED
+    const data = await titulaciones_service.update_titulacion(id, datos)
 
     if (!data) return res.status(404).send({
         data: {

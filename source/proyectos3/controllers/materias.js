@@ -35,12 +35,8 @@ const create_materia = async (req, res) => {
 }
 
 const update_materia = async (req, res) => {
-    const {MATCHED} = req
-
-    const materia_id = MATCHED.id
-    delete MATCHED.id
-
-    const data = await materias_service.update_materia(materia_id, body)
+    const {id, ...datos} = req.MATCHED
+    const data = await materias_service.update_materia(id, datos)
 
     if (!data) return res.status(404).send({
         data: {

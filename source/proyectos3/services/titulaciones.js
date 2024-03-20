@@ -1,12 +1,11 @@
 const prisma = require('../databases/mysql')
 
+const titulaciones_errors = require('../errors/titulaciones')
+
 const get_titulaciones = async (skip = 0, take = 20) => {
-    return prisma.titulaciones.findMany(
-        {
-            skip: skip,
-            take: take,
-        }
-    )
+    return prisma.titulaciones.findMany({
+        skip: skip, take: take,
+    })
 }
 
 const get_titulacion = async (id) => {
@@ -23,7 +22,7 @@ const create_titulacion = async (titulacion) => {
             data: titulacion
         })
     } catch (e) {
-        return null
+        throw new Error(`${titulaciones_errors.WRONG_CREATE} : ${e.message}`)
     }
 }
 
@@ -35,26 +34,10 @@ const update_titulacion = async (id, titulacion_nueva) => {
             }, data: titulacion_nueva
         })
     } catch (e) {
-        return null
-    }
-}
-
-const delete_titulacion = async (id) => {
-    try {
-        return await prisma.titulaciones.delete({
-            where: {
-                id: id
-            }
-        })
-    } catch (e) {
-        return null
+        throw new Error(`${titulaciones_errors.WRONG_UPDATE} : ${e.message}`)
     }
 }
 
 module.exports = {
-    get_titulaciones,
-    get_titulacion,
-    create_titulacion,
-    update_titulacion,
-    delete_titulacion
+    get_titulaciones, get_titulacion, create_titulacion, update_titulacion
 }

@@ -1,5 +1,6 @@
-// Dependencias necesarias para la interacción con la base de datos y la creación de tokens
 const prisma = require('../databases/mysql')
+
+const codigos_errors = require('../errors/codigos')
 
 const get_codigos = async (skip = 0, take = 20) => {
     return prisma.codigos.findMany({
@@ -13,7 +14,7 @@ const create_codigo = async (codigo) => {
             data: codigo
         })
     } catch (e) {
-        return null
+        throw new Error(`${codigos_errors.WRONG_CREATE}: ${e.message}`)
     }
 }
 

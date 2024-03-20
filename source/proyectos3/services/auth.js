@@ -47,7 +47,7 @@ const signin = async (correo, password) => {
         if (await exists(`pending:${correo}`))
             throw new Error(auth_errors.PENDING_SIGNUP)
 
-        throw new Error(auth_errors.WRONG_MAIL)
+        throw new Error(`${auth_errors.WRONG_MAIL} : ${correo}`)
     }
 
     if (!bcryptjs.compareSync(password, data.password))

@@ -1,9 +1,8 @@
-// Dependencias necesarias para el manejo de tokens
-const auth_service = require("../services/auth")
-const auth_errors = require("../errors/auth")
 const {bad_response} = require("../errors");
 
-// Middleware para obtener y verificar el token de autorización
+const auth_service = require("../services/auth")
+const auth_errors = require("../errors/auth")
+
 const verificar_JWT = (req, res, next) => {
     const {authorization} = req.headers
     if (!authorization)

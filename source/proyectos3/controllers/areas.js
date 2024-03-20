@@ -1,66 +1,40 @@
-// Dependecias necesarias para el manejo de las rutas de autenticacion
+const {good_response, bad_response} = require("../errors");
+
 const areas_service = require('../services/areas')
-const areas_errors = require('../errors/areas')
 
 const get_areas = async (req, res) => {
-    return res.send({
-        data: await areas_service.get_areas(req.MATCHED.skip, req.MATCHED.take)
-    })
+    try {
+        return good_response(res, await areas_service.get_areas(req.MATCHED.skip, req.MATCHED.take))
+    } catch (e) {
+        return bad_response(res, 400, e)
+    }
 }
 
 const get_area = async (req, res) => {
-    const data = await areas_service.get_area(req.MATCHED.id)
-
-    if (!data) return res.status(404).send({
-        data: {
-            errors: [areas_errors.NOT_FOUND]
-        }
-    })
-
-    return res.send({data: data})
+    try {
+        return good_response(res, await areas_service.get_area(req.MATCHED.id))
+    } catch (e) {
+        return bad_response(res, 400, e)
+    }
 }
 
 const create_area = async (req, res) => {
-    const data = await areas_service.create_area(req.MATCHED)
-
-    if (!data) return res.status(400).send({
-        data: {
-            errors: [areas_errors.WRONG_CREATE]
-        }
-    })
-
-    return res.send({
-        data: data
-    })
+    try {
+        return good_response(res, await areas_service.create_area(req.MATCHED))
+    } catch (e) {
+        return bad_response(res, 400, e)
+    }
 }
 
 const update_area = async (req, res) => {
-    const {id, ...datos} = req.MATCHED
-    const data = await areas_service.update_area(id, datos)
-
-    if (!data) return res.status(404).send({
-        data: {
-            errors: [areas_errors.NOT_FOUND]
-        }
-    })
-
-    return res.send({
-        data: data
-    })
-}
-
-const delete_area = async (req, res) => {
-    const data = await areas_service.delete_area(req.MATCHED.id)
-
-    if (!data) return res.status(404).send({
-        data: {
-            errors: [areas_errors.NOT_FOUND]
-        }
-    })
-
-    return res.send({data: data})
+    try {
+        const [id, ...resto] = req.MATCHED
+        return good_response(res, await areas_service.update_area(id, resto))
+    } catch (e) {
+        return bad_response(res, 400, e)
+    }
 }
 
 module.exports = {
-    get_areas, get_area, create_area, update_area, delete_area
+    get_areas, get_area, create_area, update_area
 }

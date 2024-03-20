@@ -1,13 +1,11 @@
-// Dependencias necesarias para la interacción con la base de datos y la creación de tokens
 const prisma = require('../databases/mysql')
 
+const areas_errors = require('../errors/areas')
+
 const get_areas = async (skip = 0, take = 20) => {
-    return prisma.areas.findMany(
-        {
-            skip: skip,
-            take: take
-        }
-    )
+    return prisma.areas.findMany({
+        skip: skip, take: take
+    })
 }
 
 const get_area = async (id) => {
@@ -24,7 +22,7 @@ const create_area = async (area) => {
             data: area
         })
     } catch (e) {
-        return null
+        throw new Error(`${areas_errors.WRONG_CREATE}: ${e.message}`)
     }
 }
 
@@ -36,26 +34,10 @@ const update_area = async (id, area_nuevo) => {
             }, data: area_nuevo
         })
     } catch (e) {
-        return null
-    }
-}
-
-const delete_area = async (id) => {
-    try {
-        return await prisma.areas.delete({
-            where: {
-                id: id
-            }
-        })
-    } catch (e) {
-        return null
+        throw new Error(`${areas_errors.WRONG_UPDATE}: ${e.message}`)
     }
 }
 
 module.exports = {
-    get_areas,
-    get_area,
-    create_area,
-    update_area,
-    delete_area
+    get_areas, get_area, create_area, update_area
 }

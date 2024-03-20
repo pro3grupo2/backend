@@ -7,80 +7,66 @@ datasource db {
   url      = env("MYSQL_URL")
 }
 
+model areas {
+  id           Int            @id @default(autoincrement())
+  titulo       String?        @unique(map: "titulo") @db.VarChar(200)
+  titulaciones titulaciones[]
+}
+
 model asignaturas {
   id                       Int                        @id @default(autoincrement())
-  titulo                   String?                    @unique(map: "titulo") @db.VarChar(50)
+  titulo                   String?                    @unique(map: "titulo") @db.VarChar(200)
   curso                    Int?
-  letra                    String?                    @db.Char(1)
-  asignaturas_materias     asignaturas_materias[]
-  proyectos                proyectos[]
+  proyectos_asignaturas    proyectos_asignaturas[]
   titulaciones_asignaturas titulaciones_asignaturas[]
 }
 
-model asignaturas_materias {
-  id_asignatura Int
-  id_materia    Int
-  asignaturas   asignaturas @relation(fields: [id_asignatura], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "asignaturas_materias_ibfk_1")
-  materias      materias    @relation(fields: [id_materia], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "asignaturas_materias_ibfk_2")
-
-  @@id([id_asignatura, id_materia])
-  @@index([id_materia], map: "id_materia")
-}
-
 model codigos {
-  id    Int     @id @default(autoincrement())
-  token String? @unique(map: "token") @db.VarChar(50)
-  usos  Int?    @default(1)
+  id     Int     @id @default(autoincrement())
+  codigo String? @unique(map: "codigo") @db.VarChar(10)
+  usos   Int?    @default(1)
 }
 
-model departamentos {
-  id                     Int                      @id @default(autoincrement())
-  titulo                 String?                  @unique(map: "titulo") @db.VarChar(50)
-  usuarios_departamentos usuarios_departamentos[]
-}
+model participantes {
+  id          Int        @id @default(autoincrement())
+  id_proyecto Int?
+  correo      String?    @db.VarChar(200)
+  proyectos   proyectos? @relation(fields: [id_proyecto], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "participantes_ibfk_1")
 
-model materias {
-  id                   Int                    @id @default(autoincrement())
-  titulo               String?                @unique(map: "titulo") @db.VarChar(50)
-  asignaturas_materias asignaturas_materias[]
+  @@index([id_proyecto], map: "id_proyecto")
 }
 
 model premios {
   id          Int        @id @default(autoincrement())
-  titulo      String?    @db.VarChar(100)
-  anio        Int?       @default(dbgenerated("(year(curdate()))")) @db.Year
   id_proyecto Int?
+  titulo      String?    @unique(map: "titulo") @db.VarChar(200)
   proyectos   proyectos? @relation(fields: [id_proyecto], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "premios_ibfk_1")
 
-  @@unique([titulo, anio], map: "titulo")
   @@index([id_proyecto], map: "id_proyecto")
 }
 
 model proyectos {
-  id                 Int                  @id @default(autoincrement())
-  id_creador         Int?
-  id_asignatura      Int?
-  titulo             String?              @unique(map: "titulo") @db.VarChar(50)
-  ficha              String?              @db.Text
-  url                String?              @db.Text
-  portada            String?              @db.Text
-  validado           Boolean?             @default(false)
-  premios            premios[]
-  usuarios           usuarios?            @relation(fields: [id_creador], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "proyectos_ibfk_1")
-  asignaturas        asignaturas?         @relation(fields: [id_asignatura], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "proyectos_ibfk_2")
-  usuarios_proyectos usuarios_proyectos[]
+  id                    Int                     @id @default(autoincrement())
+  id_creador            Int?
+  titulo                String?                 @unique(map: "titulo") @db.VarChar(200)
+  ficha                 String?                 @db.Text
+  url                   String?                 @db.Text
+  portada               String?                 @db.Text
+  estado                proyectos_estado?       @default(pendiente)
+  participantes         participantes[]
+  premios               premios[]
+  usuarios              usuarios?               @relation(fields: [id_creador], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "proyectos_ibfk_1")
+  proyectos_asignaturas proyectos_asignaturas[]
 
-  @@index([id_asignatura], map: "id_asignatura")
   @@index([id_creador], map: "id_creador")
 }
 
 model titulaciones {
   id                       Int                        @id @default(autoincrement())
   id_area                  Int?
-  titulo                   String?                    @unique(map: "titulo") @db.VarChar(50)
-  area                     areas?                     @relation(fields: [id_area], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "titulaciones_ibfk_1")
+  titulo                   String?                    @unique(map: "titulo") @db.VarChar(200)
+  areas                    areas?                     @relation(fields: [id_area], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "titulaciones_ibfk_1")
   titulaciones_asignaturas titulaciones_asignaturas[]
-  usuarios_titulaciones    usuarios_titulaciones[]
 
   @@index([id_area], map: "id_area")
 }
@@ -96,54 +82,34 @@ model titulaciones_asignaturas {
 }
 
 model usuarios {
-  id                     Int                      @id @default(autoincrement())
-  correo                 String?                  @unique(map: "correo") @db.VarChar(50)
-  nombre_completo        String?                  @db.VarChar(50)
-  alias                  String?                  @unique(map: "alias") @db.VarChar(50)
-  password               String?                  @db.VarChar(200)
-  frase_recuperacion     String?                  @db.VarChar(100)
-  rol                    usuarios_rol?
-  promocion              Int?                     @default(dbgenerated("(year(curdate()))")) @db.Year
-  proyectos              proyectos[]
-  usuarios_departamentos usuarios_departamentos[]
-  usuarios_proyectos     usuarios_proyectos[]
-  usuarios_titulaciones  usuarios_titulaciones[]
+  id              Int           @id @default(autoincrement())
+  correo          String?       @unique(map: "correo") @db.VarChar(200)
+  alias           String?       @unique(map: "alias") @db.VarChar(200)
+  nombre_completo String?       @db.VarChar(200)
+  password        String?       @db.VarChar(200)
+  descripcion     String?       @db.Text
+  portfolio       String?       @db.VarChar(200)
+  foto            String?       @db.VarChar(200)
+  rol             usuarios_rol?
+  promocion       Int?          @default(dbgenerated("(year(curdate()))")) @db.Year
+  proyectos       proyectos[]
 }
 
-model usuarios_departamentos {
-  id_usuario      Int
-  id_departamento Int
-  usuarios        usuarios      @relation(fields: [id_usuario], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "usuarios_departamentos_ibfk_1")
-  departamentos   departamentos @relation(fields: [id_departamento], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "usuarios_departamentos_ibfk_2")
+model proyectos_asignaturas {
+  id_proyecto   Int
+  id_asignatura Int
+  proyectos     proyectos   @relation(fields: [id_proyecto], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "proyectos_asignaturas_ibfk_1")
+  asignaturas   asignaturas @relation(fields: [id_asignatura], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "proyectos_asignaturas_ibfk_2")
 
-  @@id([id_usuario, id_departamento])
-  @@index([id_departamento], map: "id_departamento")
-}
-
-model usuarios_proyectos {
-  id_usuario  Int
-  id_proyecto Int
-  usuarios    usuarios  @relation(fields: [id_usuario], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "usuarios_proyectos_ibfk_1")
-  proyectos   proyectos @relation(fields: [id_proyecto], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "usuarios_proyectos_ibfk_2")
-
-  @@id([id_usuario, id_proyecto])
+  @@id([id_proyecto, id_asignatura])
+  @@index([id_asignatura], map: "id_asignatura")
   @@index([id_proyecto], map: "id_proyecto")
 }
 
-model usuarios_titulaciones {
-  id_usuario    Int
-  id_titulacion Int
-  usuarios      usuarios     @relation(fields: [id_usuario], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "usuarios_titulaciones_ibfk_1")
-  titulaciones  titulaciones @relation(fields: [id_titulacion], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "usuarios_titulaciones_ibfk_2")
-
-  @@id([id_usuario, id_titulacion])
-  @@index([id_titulacion], map: "id_titulacion")
-}
-
-model areas {
-  id           Int            @id @default(autoincrement())
-  titulo       String?        @unique(map: "titulo") @db.VarChar(50)
-  titulaciones titulaciones[]
+enum proyectos_estado {
+  pendiente
+  aceptado
+  rechazado
 }
 
 enum usuarios_rol {
@@ -151,5 +117,5 @@ enum usuarios_rol {
   alumni
   profesor
   coordinador
-  invitado
+  externo
 }

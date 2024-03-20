@@ -121,8 +121,10 @@ DROP TABLE IF EXISTS `participantes`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `participantes`
 (
+    `id`          int NOT NULL AUTO_INCREMENT,
     `id_proyecto` int          DEFAULT NULL,
     `correo`      varchar(200) DEFAULT NULL,
+    PRIMARY KEY (`id`),
     KEY `id_proyecto` (`id_proyecto`),
     CONSTRAINT `participantes_ibfk_1` FOREIGN KEY (`id_proyecto`) REFERENCES `proyectos` (`id`)
 ) ENGINE = InnoDB
@@ -218,8 +220,9 @@ DROP TABLE IF EXISTS `proyectos_asignaturas`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `proyectos_asignaturas`
 (
-    `id_proyecto`   int DEFAULT NULL,
-    `id_asignatura` int DEFAULT NULL,
+    `id_proyecto`   int NOT NULL,
+    `id_asignatura` int NOT NULL,
+    PRIMARY KEY (`id_proyecto`, `id_asignatura`),
     KEY `id_proyecto` (`id_proyecto`),
     KEY `id_asignatura` (`id_asignatura`),
     CONSTRAINT `proyectos_asignaturas_ibfk_1` FOREIGN KEY (`id_proyecto`) REFERENCES `proyectos` (`id`),
@@ -350,4 +353,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-20 11:01:30
+-- Dump completed on 2024-03-20 12:15:40

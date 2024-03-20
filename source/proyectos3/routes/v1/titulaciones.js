@@ -15,6 +15,4 @@ router.post("/", auth_middleware.verificar_JWT, auth_middleware.is_administrador
 
 router.put("/:id", auth_middleware.verificar_JWT, auth_middleware.is_administrador, global_validators.params_id, titulaciones_validators.titulacion, titulacions_controller.update_titulacion)
 
-router.delete("/:id", auth_middleware.verificar_JWT, auth_middleware.is_administrador, global_validators.params_id, titulacions_controller.delete_titulacion)
-
 module.exports = router

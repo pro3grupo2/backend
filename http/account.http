@@ -1,0 +1,26 @@
+### /api/v1/auth/signin
+POST http://localhost:3000/api/v1/auth/signin
+Content-Type: application/json
+
+{
+  "correo": "adrian.toral@live.u-tad.com",
+  "password": "Adriantoral@12345"
+}
+
+> {%
+    client.global.set("auth_token", response.body.data);
+%}
+
+### /api/v1/account
+PUT http://localhost:3000/api/v1/account
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "nombre_completo": "Adrian Toral",
+  "password": "Adriantoral@12345",
+  "descripcion": "None",
+  "portfolio": "None",
+  "foto": "None",
+  "promocion": 2019
+}

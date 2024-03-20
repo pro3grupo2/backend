@@ -24,12 +24,12 @@ Content-Type: multipart/form-data; boundary=WebAppBoundary
 Content-Disposition: form-data; name="url"; filename="url.zip"
 Content-Type: application/zip
 
-< premios.http
+< auth.http
 --WebAppBoundary
 Content-Disposition: form-data; name="portada"; filename="imagen.jpg"
 Content-Type: image/jpeg
 
-< premios.http
+< auth.http
 --WebAppBoundary
 
 ### /api/v1/proyectos/

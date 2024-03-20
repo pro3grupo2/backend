@@ -1,0 +1,38 @@
+### /api/v1/auth/signin
+POST http://localhost:3000/api/v1/auth/signin
+Content-Type: application/json
+
+{
+  "correo": "adrian.toral@live.u-tad.com",
+  "password": "Adriantoral@12345"
+}
+
+> {%
+    client.global.set("auth_token", response.body.data);
+%}
+
+### /api/v1/areas
+GET http://localhost:3000/api/v1/areas
+Authorization: Bearer {{auth_token}}
+
+### /api/v1/areas/1
+GET http://localhost:3000/api/v1/areas
+Authorization: Bearer {{auth_token}}
+
+### /api/v1/areas
+POST http://localhost:3000/api/v1/areas
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "titulo": "Area 1"
+}
+
+### /api/v1/areas/1
+PUT http://localhost:3000/api/v1/areas
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "titulo": "Area 1"
+}

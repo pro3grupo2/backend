@@ -156,7 +156,6 @@ CREATE TABLE `premios`
     `id_proyecto` int          DEFAULT NULL,
     `titulo`      varchar(200) DEFAULT NULL,
     PRIMARY KEY (`id`),
-    UNIQUE KEY `titulo` (`titulo`),
     KEY `id_proyecto` (`id_proyecto`),
     CONSTRAINT `premios_ibfk_1` FOREIGN KEY (`id_proyecto`) REFERENCES `proyectos` (`id`)
 ) ENGINE = InnoDB
@@ -353,4 +352,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-20 12:15:40
+-- Dump completed on 2024-03-20 15:27:31

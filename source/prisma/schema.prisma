@@ -39,7 +39,7 @@ model participantes {
 model premios {
   id          Int        @id @default(autoincrement())
   id_proyecto Int?
-  titulo      String?    @unique(map: "titulo") @db.VarChar(200)
+  titulo      String?    @db.VarChar(200)
   proyectos   proyectos? @relation(fields: [id_proyecto], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "premios_ibfk_1")
 
   @@index([id_proyecto], map: "id_proyecto")

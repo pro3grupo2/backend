@@ -1,5 +1,5 @@
 const {body, param} = require('express-validator')
-const {validate} = require('./validation')
+const {validate} = require('.')
 
 const get_id = [
     param('id', 'Type: Int').exists().toInt(),

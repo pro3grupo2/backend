@@ -1,5 +1,5 @@
 const {body} = require('express-validator')
-const {validate} = require('./validation')
+const {validate} = require('.')
 
 const update_account = [
     body('nombre_completo', 'Type: String, Max-Length: 200').exists().notEmpty().isString().isLength({max: 200}).optional(),

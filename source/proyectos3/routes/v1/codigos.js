@@ -2,7 +2,7 @@
 const express = require("express")
 const codigos_controller = require("../../controllers/codigos")
 const codigos_validators = require("../../validators/codigos")
-const global_validators = require("../../validators/validation")
+const global_validators = require("../../validators")
 const auth_middleware = require("../../middleware/auth")
 
 // Rutas de autenticacion

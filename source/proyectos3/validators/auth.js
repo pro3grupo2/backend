@@ -1,5 +1,5 @@
 const {body} = require('express-validator')
-const {validate} = require('./validation')
+const {validate} = require('.')
 
 const password_validator = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
 

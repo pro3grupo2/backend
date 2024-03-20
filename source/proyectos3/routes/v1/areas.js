@@ -2,7 +2,7 @@
 const express = require("express")
 const areas_controller = require("../../controllers/areas")
 const areas_validators = require("../../validators/areas")
-const global_validators = require("../../validators/validation")
+const global_validators = require("../../validators")
 const auth_middleware = require("../../middleware/auth")
 
 // Rutas de autenticacion

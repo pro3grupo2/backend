@@ -2,7 +2,7 @@
 const express = require("express")
 const titulacions_controller = require("../../controllers/titulaciones")
 const titulaciones_validators = require("../../validators/titulaciones")
-const global_validators = require("../../validators/validation")
+const global_validators = require("../../validators")
 const auth_middleware = require("../../middleware/auth")
 
 // Rutas de autenticacion

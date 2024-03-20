@@ -17,10 +17,13 @@ Content-Type: application/json
 
 {
   "correo": "adrian.toral@live.u-tad.com",
-  "nombre_completo": "Adrian Toral",
   "alias": "adriantoral",
+  "nombre_completo": "Adrian Toral",
   "password": "Adriantoral@12345",
   "frase_recuperacion": "adriantoral",
+  "descripcion": "None",
+  "portfolio": "None",
+  "foto": "None",
   "rol": "alumno",
   "promocion": 2019
 }

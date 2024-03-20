@@ -1,65 +1,40 @@
-// Dependecias necesarias para el manejo de las rutas de autenticacion
+const {good_response, bad_response} = require("../errors");
+
 const asignaturas_service = require('../services/asignaturas')
-const asignaturas_errors = require('../errors/asignaturas')
+
 const get_asignaturas = async (req, res) => {
-    return res.send({
-        data: await asignaturas_service.get_asignaturas(req.MATCHED.skip || 0, req.MATCHED.take || 20)
-    })
+    try {
+        return good_response(res, await asignaturas_service.get_asignaturas(req.MATCHED.skip, req.MATCHED.take))
+    } catch (e) {
+        return bad_response(res, 400, e)
+    }
 }
 
 const get_asignatura = async (req, res) => {
-    const data = await asignaturas_service.get_asignatura(req.MATCHED.id)
-
-    if (!data) return res.status(404).send({
-        data: {
-            errors: [asignaturas_errors.NOT_FOUND]
-        }
-    })
-
-    return res.send({data: data})
+    try {
+        return good_response(res, await asignaturas_service.get_asignatura(req.MATCHED.id))
+    } catch (e) {
+        return bad_response(res, 400, e)
+    }
 }
 
 const create_asignatura = async (req, res) => {
-    const data = await asignaturas_service.create_asignatura(req.MATCHED)
-
-    if (!data) return res.status(400).send({
-        data: {
-            errors: [asignaturas_errors.WRONG_CREATE]
-        }
-    })
-
-    return res.send({
-        data: data
-    })
+    try {
+        return good_response(res, await asignaturas_service.create_asignatura(req.MATCHED))
+    } catch (e) {
+        return bad_response(res, 400, e)
+    }
 }
 
 const update_asignatura = async (req, res) => {
-    const {id, ...datos} = req.MATCHED
-    const data = await asignaturas_service.update_asignatura(id, datos)
-
-    if (!data) return res.status(404).send({
-        data: {
-            errors: [asignaturas_errors.NOT_FOUND]
-        }
-    })
-
-    return res.send({
-        data: data
-    })
-}
-
-const delete_asignatura = async (req, res) => {
-    const data = await asignaturas_service.delete_asignatura(req.MATCHED.id)
-
-    if (!data) return res.status(404).send({
-        data: {
-            errors: [asignaturas_errors.NOT_FOUND]
-        }
-    })
-
-    return res.send({data: data})
+    try {
+        const {id, ...resto} = req.MATCHED
+        return good_response(res, await asignaturas_service.update_asignatura(id, resto))
+    } catch (e) {
+        return bad_response(res, 400, e)
+    }
 }
 
 module.exports = {
-    get_asignaturas, get_asignatura, create_asignatura, update_asignatura, delete_asignatura
+    get_asignaturas, get_asignatura, create_asignatura, update_asignatura
 }

@@ -1,5 +1,7 @@
 const prisma = require('../databases/mysql')
 
+const asignaturas_errors = require('../errors/asignaturas')
+
 const get_asignaturas = async (skip = 0, take = 20) => {
     return prisma.asignaturas.findMany({
         skip: skip, take: take,
@@ -20,7 +22,7 @@ const create_asignatura = async (asignatura) => {
             data: asignatura
         })
     } catch (e) {
-        return null
+        throw new Error(`${asignaturas_errors.WRONG_CREATE}: ${e.message}`)
     }
 }
 
@@ -32,22 +34,10 @@ const update_asignatura = async (id, asignatura) => {
             }, data: asignatura
         })
     } catch (e) {
-        return null
-    }
-}
-
-const delete_asignatura = async (id) => {
-    try {
-        return await prisma.asignaturas.delete({
-            where: {
-                id: id
-            }
-        })
-    } catch (e) {
-        return null
+        throw new Error(`${asignaturas_errors.WRONG_UPDATE}: ${e.message}`)
     }
 }
 
 module.exports = {
-    get_asignaturas, get_asignatura, create_asignatura, update_asignatura, delete_asignatura
+    get_asignaturas, get_asignatura, create_asignatura, update_asignatura
 }

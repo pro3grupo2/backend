@@ -131,6 +131,7 @@ const create_proyecto = async (proyecto) => {
                 ficha: proyecto.ficha,
                 url: proyecto.url,
                 portada: proyecto.portada,
+                premiado: proyecto.premiado,
                 estado: 'pendiente',
 
                 participantes: {

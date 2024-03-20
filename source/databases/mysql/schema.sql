@@ -190,6 +190,7 @@ CREATE TABLE `proyectos`
     `url`        text,
     `portada`    text,
     `estado`     enum ('pendiente','aceptado','rechazado') DEFAULT 'pendiente',
+    `premiado`   tinyint(1)                                DEFAULT '0',
     PRIMARY KEY (`id`),
     UNIQUE KEY `titulo` (`titulo`),
     KEY `id_creador` (`id_creador`),
@@ -352,4 +353,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-20 15:27:31
+-- Dump completed on 2024-03-20 18:58:51

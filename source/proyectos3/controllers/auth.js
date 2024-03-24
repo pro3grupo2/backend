@@ -1,8 +1,7 @@
-// Dependecias necesarias para el manejo de las rutas de autenticacion
-const auth_service = require("../services/auth")
 const {good_response, bad_response} = require("../errors")
 
-// Ruta para manejar el inicio de sesion
+const auth_service = require("../services/auth")
+
 const signin = async (req, res) => {
     try {
         return good_response(res, await auth_service.signin(req.MATCHED.correo, req.MATCHED.password))
@@ -11,7 +10,6 @@ const signin = async (req, res) => {
     }
 }
 
-// Ruta para manejar el registro de usuarios
 const signup = async (req, res) => {
     try {
         return good_response(res, await auth_service.signup_cache(req.MATCHED))
@@ -28,7 +26,6 @@ const signup_validate = async (req, res) => {
     }
 }
 
-// Ruta para manejar la obtencion de datos de un usuario mediante Bearer Token (JWT)
 const me = async (req, res) => {
     try {
         return good_response(res, await auth_service.me(req.JWT.correo))

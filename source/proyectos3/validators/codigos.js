@@ -1,10 +1,5 @@
-const {body, param} = require('express-validator')
-const {validate} = require('./validation')
-
-const get_id = [
-    param('id', 'Type: Int').exists().toInt(),
-    validate
-]
+const {body} = require('express-validator')
+const {validate} = require('.')
 
 const create_codigo = [
     body('usos', 'Type: Int').exists().toInt(),
@@ -12,6 +7,5 @@ const create_codigo = [
 ]
 
 module.exports = {
-    get_id,
     create_codigo
 }

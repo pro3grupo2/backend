@@ -1,5 +1,6 @@
-const account_services = require("../services/account")
 const {good_response, bad_response} = require("../errors")
+
+const account_services = require("../services/account")
 
 const update = async (req, res) => {
     try {

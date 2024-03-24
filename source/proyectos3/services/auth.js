@@ -1,10 +1,12 @@
 const jwt = require('jsonwebtoken')
 const bcryptjs = require("bcryptjs")
-const prisma = require('../databases/mysql')
-const {exists, escribir_cache, limpiar_cache, leer_cache} = require('../databases/redis')
-const auth_errors = require("../errors/auth")
-const {hook_updates} = require("../databases/discord")
 const nodemailer = require("nodemailer")
+
+const prisma = require('../databases/mysql')
+const {hook_updates} = require("../databases/discord")
+const {exists, escribir_cache, limpiar_cache, leer_cache} = require('../databases/redis')
+
+const auth_errors = require("../errors/auth")
 const validation_mail = require("../mails/validation")
 
 const verificar_JWT = (token) => {
@@ -22,12 +24,6 @@ const get_data_by_correo = async (correo) => {
     data = await prisma.usuarios.findUnique({
         where: {
             correo: correo
-        }, include: {
-            proyectos: {
-                select: {
-                    id: true, titulo: true, portada: true
-                }
-            }
         }
     })
 
@@ -51,7 +47,7 @@ const signin = async (correo, password) => {
         if (await exists(`pending:${correo}`))
             throw new Error(auth_errors.PENDING_SIGNUP)
 
-        throw new Error(auth_errors.WRONG_MAIL)
+        throw new Error(`${auth_errors.WRONG_MAIL} : ${correo}`)
     }
 
     if (!bcryptjs.compareSync(password, data.password))
@@ -89,13 +85,8 @@ const signup_cache = async (usuario) => {
 
         await new Promise((resolve, reject) => {
             transporter.sendMail(mailOptions, (error, info) => {
-                if (error) {
-                    console.log('Error al enviar el correo', error);
-                    reject(error);
-                } else {
-                    console.log('Correo enviado: ' + info.response);
-                    resolve(info);
-                }
+                if (error) reject(error)
+                else resolve(info)
             })
         })
 
@@ -137,7 +128,7 @@ const signup = async (usuario) => {
         return await prisma.usuarios.create({
             data: usuario,
             select: {
-                id: true, correo: true, nombre_completo: true, alias: true, rol: true, promocion: true
+                id: true, correo: true, alias: true, nombre_completo: true, descripcion: true, portfolio: true, foto: true, promocion: true, rol: true
             }
         })
     } catch (e) {
@@ -151,13 +142,15 @@ const me = async (correo) => {
     if (!data)
         throw new Error(`${auth_errors.NOT_FOUND} : ${correo}`)
 
-    const {password, frase_recuperacion, ...user} = data
+    const {password, ...user} = data
     return user
 }
 
 const recover = async (correo) => {
     const data = await get_data_by_correo(correo)
-    if (!data) throw new Error(`${auth_errors.NOT_FOUND} : ${correo}`)
+
+    if (!data)
+        throw new Error(`${auth_errors.NOT_FOUND} : ${correo}`)
 
     const
         transporter = nodemailer.createTransport({
@@ -179,18 +172,15 @@ const recover = async (correo) => {
     try {
         await new Promise((resolve, reject) => {
             transporter.sendMail(mailOptions, (error, info) => {
-                if (error) {
-                    console.log('Error al enviar el correo', error);
-                    reject(error);
-                } else {
-                    console.log('Correo enviado: ' + info.response);
-                    resolve(info);
-                }
+                if (error) reject(error)
+                else resolve(info)
             })
         })
-        return "Correo enviado";  // Éxito
+
+        return "Correo enviado"
+
     } catch (error) {
-        throw new Error(`${auth_errors.WRONG_SEND} : ${correo}`);  // Falló
+        throw new Error(`${auth_errors.WRONG_SEND} : ${correo}`)
     }
 }
 

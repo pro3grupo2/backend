@@ -1,27 +1,24 @@
-// Dependecias necesarias para el manejo de las rutas de autenticacion
+const crypto = require("crypto")
+
+const {good_response, bad_response} = require("../errors")
+
 const codigos_service = require('../services/codigos')
-const codigos_errors = require('../errors/codigos')
-const crypto = require("crypto");
 
 const get_codigos = async (req, res) => {
-    return res.send({
-        data: await codigos_service.get_codigos(req.MATCHED.skip, req.MATCHED.take)
-    })
+    try {
+        return good_response(res, await codigos_service.get_codigos(req.MATCHED.skip, req.MATCHED.take))
+    } catch (e) {
+        return bad_response(res, 400, e)
+    }
 }
 
 const create_codigo = async (req, res) => {
-    req.MATCHED.token = crypto.randomBytes(10).toString('hex')
-    const data = await codigos_service.create_codigo(req.MATCHED)
-
-    if (!data) return res.status(400).send({
-        data: {
-            errors: [codigos_errors.WRONG_CREATE]
-        }
-    })
-
-    return res.send({
-        data: data
-    })
+    try {
+        req.MATCHED.codigo = crypto.randomBytes(6).toString('hex')
+        return good_response(res, await codigos_service.create_codigo(req.MATCHED))
+    } catch (e) {
+        return bad_response(res, 400, e)
+    }
 }
 
 module.exports = {

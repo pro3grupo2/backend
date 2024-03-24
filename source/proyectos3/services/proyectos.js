@@ -1,44 +1,62 @@
 const prisma = require('../databases/mysql')
+const {hook_updates} = require("../databases/discord")
+const {leer_cache, escribir_cache, limpiar_cache} = require("../databases/redis")
+
 const proyectos_errors = require('../errors/proyectos')
-const {leer_cache, escribir_cache, limpiar_cache} = require("../databases/redis");
-const {hook_updates} = require("../databases/discord");
 
 const get_proyectos = async (skip = 0, take = 20) => {
     let data = await leer_cache('cached:proyectos')
-    console.log(1, data)
     if (data) return data
 
     data = await prisma.proyectos.findMany({
         skip: skip, take: take, where: {
-            validado: true
+            estado: 'aceptado'
         }, include: {
-            usuarios_proyectos: {
+            usuarios: {
                 select: {
-                    usuarios: {
+                    id: true, correo: true, alias: true, nombre_completo: true, descripcion: true, portfolio: true, foto: true, rol: true, promocion: true
+                }
+            },
+
+            premios: {
+                select: {id: true, titulo: true}
+            },
+
+            participantes: {
+                select: {
+                    id: true, correo: true
+                }
+            },
+
+            proyectos_asignaturas: {
+                select: {
+                    asignaturas: {
                         select: {
-                            id: true, correo: true, nombre_completo: true, alias: true, rol: true
+                            id: true, titulo: true, curso: true, titulaciones_asignaturas: {
+                                select: {
+                                    titulaciones: {
+                                        select: {
+                                            id: true, titulo: true, areas: {
+                                                select: {
+                                                    id: true, titulo: true
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
-                }
-            }, usuarios: {
-                select: {
-                    id: true, correo: true, nombre_completo: true, alias: true, rol: true
-                }
-            }, premios: {
-                select: {
-                    id: true, titulo: true, anio: true
                 }
             }
         }
     })
-    console.log(2, data)
 
-    await escribir_cache([
-        {
-            key: 'cached:proyectos',
-            data: data
-        }
-    ], process.env.REDIS_SIGNIN_EXPIRES_IN)
+    if (!data.length) return data
+
+    await escribir_cache([{
+        key: 'cached:proyectos', data: data
+    }], process.env.REDIS_SIGNIN_EXPIRES_IN)
     await hook_updates.success("Proyectos cacheados", new Date().toISOString(), JSON.stringify(data))
 
     return data
@@ -52,35 +70,51 @@ const get_proyecto = async (id) => {
         where: {
             id: id
         }, include: {
-            usuarios_proyectos: {
+            usuarios: {
                 select: {
-                    usuarios: {
+                    id: true, correo: true, alias: true, nombre_completo: true, descripcion: true, portfolio: true, foto: true, rol: true, promocion: true
+                }
+            },
+
+            premios: {
+                select: {id: true, titulo: true}
+            },
+
+            participantes: {
+                select: {
+                    id: true, correo: true
+                }
+            },
+
+            proyectos_asignaturas: {
+                select: {
+                    asignaturas: {
                         select: {
-                            id: true, correo: true, nombre_completo: true, alias: true, rol: true
+                            id: true, titulo: true, curso: true, titulaciones_asignaturas: {
+                                select: {
+                                    titulaciones: {
+                                        select: {
+                                            id: true, titulo: true, areas: {
+                                                select: {
+                                                    id: true, titulo: true
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
-                }
-            }, usuarios: {
-                select: {
-                    id: true, correo: true, nombre_completo: true, alias: true, rol: true
-                }
-            }, premios: {
-                select: {
-                    id: true, titulo: true, anio: true
                 }
             }
         }
     })
 
-    if (!data)
-        throw new Error(proyectos_errors.NOT_FOUND)
+    if (!data) throw new Error(proyectos_errors.NOT_FOUND)
 
-    await escribir_cache([
-        {
-            key: `cached:proyectos:${id}`,
-            data: data
-        }
-    ], process.env.REDIS_SIGNIN_EXPIRES_IN)
+    await escribir_cache([{
+        key: `cached:proyectos:${id}`, data: data
+    }], process.env.REDIS_SIGNIN_EXPIRES_IN)
     await hook_updates.success("Proyecto cacheado", new Date().toISOString(), JSON.stringify(data))
 
     return data
@@ -88,19 +122,38 @@ const get_proyecto = async (id) => {
 
 const create_proyecto = async (proyecto) => {
     try {
-        await limpiar_cache([
-            'cached:proyectos',
-        ])
+        await limpiar_cache(['cached:proyectos'])
 
-        const {participantes, ...resto} = proyecto
         const data = await prisma.proyectos.create({
-            data: resto
-        })
+            data: {
+                id_creador: proyecto.id_creador,
+                titulo: proyecto.titulo,
+                ficha: proyecto.ficha,
+                url: proyecto.url,
+                portada: proyecto.portada,
+                premiado: proyecto.premiado,
+                estado: 'pendiente',
+                anio: proyecto.anio,
 
-        if (participantes) for (const participante of participantes)
-            await prisma.usuarios_proyectos.create({
-                data: {id_usuario: participante, id_proyecto: data.id}
-            })
+                participantes: {
+                    createMany: {
+                        data: proyecto.participantes.map((correo) => ({correo: correo})), skipDuplicates: true
+                    }
+                },
+
+                proyectos_asignaturas: {
+                    createMany: {
+                        data: proyecto.asignaturas.map((id) => ({id_asignatura: id})), skipDuplicates: true
+                    }
+                },
+
+                premios: {
+                    createMany: {
+                        data: proyecto.premios.map((titulo) => ({titulo: titulo})), skipDuplicates: true
+                    }
+                }
+            }
+        })
 
         return await get_proyecto(data.id)
     } catch (e) {
@@ -108,45 +161,23 @@ const create_proyecto = async (proyecto) => {
     }
 }
 
-const update_proyecto = async (id, proyecto_nuevo) => {
+const delete_proyecto = async (id) => {
     try {
-        await limpiar_cache([
-            'cached:proyectos',
-            `cached:proyectos:${id}`
-        ])
+        await limpiar_cache(['cached:proyectos', `cached:proyectos:${id}`])
 
-        const {participantes, ...resto} = proyecto_nuevo
-        const data = await prisma.proyectos.update({
-            where: {
-                id: id
-            }, data: resto
-        })
-
-        await prisma.usuarios_proyectos.deleteMany({
+        await prisma.participantes.deleteMany({
             where: {
                 id_proyecto: id
             }
         })
 
-        if (participantes) for (const participante of participantes)
-            await prisma.usuarios_proyectos.create({
-                data: {id_usuario: participante, id_proyecto: data.id}
-            })
+        await prisma.proyectos_asignaturas.deleteMany({
+            where: {
+                id_proyecto: id
+            }
+        })
 
-        return await get_proyecto(id)
-    } catch (e) {
-        throw new Error(`${proyectos_errors.WRONG_UPDATE}: ${e.message}`)
-    }
-}
-
-const delete_proyecto = async (id) => {
-    try {
-        await limpiar_cache([
-            'cached:proyectos',
-            `cached:proyectos:${id}`
-        ])
-
-        await prisma.usuarios_proyectos.deleteMany({
+        await prisma.premios.deleteMany({
             where: {
                 id_proyecto: id
             }
@@ -162,18 +193,33 @@ const delete_proyecto = async (id) => {
     }
 }
 
-const validar_proyecto = async (id) => {
+const aceptar_proyecto = async (id) => {
     try {
-        await limpiar_cache([
-            'cached:proyectos',
-            `cached:proyectos:${id}`
-        ])
+        await limpiar_cache(['cached:proyectos', `cached:proyectos:${id}`])
 
         return await prisma.proyectos.update({
             where: {
                 id: id
-            }, data: {
-                validado: true
+            },
+            data: {
+                estado: 'aceptado'
+            }
+        })
+    } catch (e) {
+        throw new Error(`${proyectos_errors.WRONG_VALIDATION}: ${e.message}`)
+    }
+}
+
+const rechazar_proyecto = async (id) => {
+    try {
+        await limpiar_cache(['cached:proyectos', `cached:proyectos:${id}`])
+
+        return await prisma.proyectos.update({
+            where: {
+                id: id
+            },
+            data: {
+                estado: 'rechazado'
             }
         })
     } catch (e) {
@@ -182,5 +228,5 @@ const validar_proyecto = async (id) => {
 }
 
 module.exports = {
-    get_proyectos, get_proyecto, create_proyecto, update_proyecto, delete_proyecto, validar_proyecto
+    get_proyectos, get_proyecto, create_proyecto, delete_proyecto, aceptar_proyecto, rechazar_proyecto
 }

@@ -42,6 +42,7 @@ Content-Type: application/json
   "ficha": "Mi primer proyecto es una aplicación web que...",
   "url": "la url que devuleve la peticion de arriba o donde este guardado",
   "portada": "url de la imagen que devuelve la peticion de arriba o donde este guardado",
+  "anio": 2021,
   "participantes": [
     "correo1@gmail.com",
     "..."

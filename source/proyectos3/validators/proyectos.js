@@ -16,6 +16,7 @@ const create_proyecto = [
     body('asignaturas', 'Type: Array[Int]').default([]).exists().notEmpty().isArray(),
     body('premios', 'Type: Array[String]').default([]).exists().notEmpty().isArray(),
     body('premiado', 'Type: Bool').exists().notEmpty().isBoolean(),
+    body('anio', 'Type: Year (YYYY)').exists().notEmpty().isInt(),
     validate
 ]
 

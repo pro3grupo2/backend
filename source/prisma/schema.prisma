@@ -54,6 +54,7 @@ model proyectos {
   portada               String?                 @db.Text
   estado                proyectos_estado?       @default(pendiente)
   premiado              Boolean?                @default(false)
+  anio                  Int?                    @default(dbgenerated("(year(curdate()))")) @db.Year
   participantes         participantes[]
   premios               premios[]
   usuarios              usuarios?               @relation(fields: [id_creador], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "proyectos_ibfk_1")

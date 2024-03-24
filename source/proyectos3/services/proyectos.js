@@ -133,6 +133,7 @@ const create_proyecto = async (proyecto) => {
                 portada: proyecto.portada,
                 premiado: proyecto.premiado,
                 estado: 'pendiente',
+                anio: proyecto.anio,
 
                 participantes: {
                     createMany: {

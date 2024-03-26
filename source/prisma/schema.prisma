@@ -66,10 +66,11 @@ model proyectos {
 model titulaciones {
   id                       Int                        @id @default(autoincrement())
   id_area                  Int?
-  titulo                   String?                    @unique(map: "titulo") @db.VarChar(200)
+  titulo                   String?                    @db.VarChar(200)
   areas                    areas?                     @relation(fields: [id_area], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "titulaciones_ibfk_1")
   titulaciones_asignaturas titulaciones_asignaturas[]
 
+  @@unique([id_area, titulo], map: "titulo")
   @@index([id_area], map: "id_area")
 }
 

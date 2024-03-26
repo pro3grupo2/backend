@@ -5,6 +5,17 @@ const asignaturas_errors = require('../errors/asignaturas')
 const get_asignaturas = async (skip = 0, take = 20) => {
     return prisma.asignaturas.findMany({
         skip: skip, take: take,
+        include: {
+            titulaciones_asignaturas: {
+                select: {
+                    titulaciones: {
+                        select: {
+                            id: true, titulo: true, areas: true
+                        }
+                    }
+                }
+            }
+        }
     })
 }
 
@@ -12,6 +23,17 @@ const get_asignatura = async (id) => {
     return prisma.asignaturas.findUnique({
         where: {
             id: id
+        },
+        include: {
+            titulaciones_asignaturas: {
+                select: {
+                    titulaciones: {
+                        select: {
+                            id: true, titulo: true, areas: true
+                        }
+                    }
+                }
+            }
         }
     })
 }

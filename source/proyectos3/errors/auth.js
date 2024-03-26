@@ -4,6 +4,7 @@ const messages = {
     WRONG_PASSWORD: "Contraseña incorrecta",
     WRONG_MAIL: "Correo incorrecto",
     WRONG_SEND: "Error al enviar el correo.",
+    WRONG_DOMAIN_ROL: "Dominio de correo incorrecto para el rol",
 
     // ======================================
 

@@ -58,6 +58,16 @@ const signin = async (correo, password) => {
 
 const signup_cache = async (usuario) => {
     const key = `pending:${usuario.correo}`
+    const verificacion_correo = {
+        'alumno': '@live.u-tad.com',
+        'alumni': '@live.u-tad.com',
+        'profesor': '@u-tad.com',
+        'coordinador': '@u-tad.com',
+        'externo': '@ext.u-tad.com'
+    }
+
+    if (!usuario.correo.endsWith(verificacion_correo[usuario.rol]))
+        throw new Error(`${auth_errors.WRONG_DOMAIN_ROL} : ${usuario.correo} : ${usuario.rol}`)
 
     if (await exists(key))
         throw new Error(`${auth_errors.PENDING_SIGNUP} : ${usuario.correo}`)

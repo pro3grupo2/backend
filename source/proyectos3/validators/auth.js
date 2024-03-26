@@ -19,6 +19,7 @@ const signup = [
     body('foto', 'Type: String, Max-Length: 200').exists().notEmpty().isString().isLength({max: 200}),
     body('rol', 'Type: Enum("alumno", "alumni", "profesor", "coordinador", "externo")').exists().notEmpty().isString().isIn(["alumno", "alumni", "profesor", "coordinador", "externo"]),
     body('promocion', 'Type: Year (YYYY)').exists().notEmpty().isInt().optional(),
+    body('codigo', 'Type: String, Max-Length: 10').exists().notEmpty().isString().isLength({max: 10}).optional(),
     validate
 ]
 

@@ -14,6 +14,12 @@ const messages = {
 
     // ======================================
 
+    NEED_CODIGO: "Código de coordinador necesario",
+    INVALID_CODIGO: "Código de coordinador inválido",
+    USED_CODIGO: "Código de coordinador usado",
+
+    // ======================================
+
     TOKEN_NEEDED: "Token JWT necesario",
     TOKEN_EXPIRED_OR_INVALID: "Token JWT expirado o inválido",
 

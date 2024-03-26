@@ -43,6 +43,7 @@ Content-Type: application/json
   "url": "la url que devuleve la peticion de arriba o donde este guardado",
   "portada": "url de la imagen que devuelve la peticion de arriba o donde este guardado",
   "anio": 2021,
+  "premiado": true,
   "participantes": [
     "correo1@gmail.com",
     "..."

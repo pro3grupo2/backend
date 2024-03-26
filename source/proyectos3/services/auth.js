@@ -65,6 +65,30 @@ const signup_cache = async (usuario) => {
     if (await get_data_by_correo(usuario.correo))
         throw new Error(`${auth_errors.ALREADY_SIGNUP} : ${usuario.correo}`)
 
+    if (usuario.rol === "coordinador") {
+        if (!usuario.codigo) throw new Error(`${auth_errors.NEED_CODIGO} : ${usuario.correo}`)
+
+        const codigo = await prisma.codigos.findUnique({
+            where: {
+                codigo: usuario.codigo
+            }
+        })
+
+        if (!codigo) throw new Error(`${auth_errors.INVALID_CODIGO} : ${usuario.correo} : ${usuario.codigo}`)
+        if (codigo.usos === 0) throw new Error(`${auth_errors.USED_CODIGO} : ${usuario.correo} : ${usuario.codigo}`)
+
+        await prisma.codigos.update({
+            where: {
+                codigo: usuario.codigo
+            },
+            data: {
+                usos: {
+                    decrement: 1
+                }
+            }
+        })
+    }
+
     try {
         const
             transporter = nodemailer.createTransport({

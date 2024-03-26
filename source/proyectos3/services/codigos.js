@@ -2,10 +2,8 @@ const prisma = require('../databases/mysql')
 
 const codigos_errors = require('../errors/codigos')
 
-const get_codigos = async (skip = 0, take = 20) => {
-    return prisma.codigos.findMany({
-        skip: skip, take: take
-    })
+const get_codigos = async () => {
+    return prisma.codigos.findMany({})
 }
 
 const create_codigo = async (codigo) => {

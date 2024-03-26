@@ -160,7 +160,17 @@ const signup = async (usuario) => {
     try {
         usuario.password = bcryptjs.hashSync(usuario.password)
         return await prisma.usuarios.create({
-            data: usuario,
+            data: {
+                correo: usuario.correo,
+                alias: usuario.alias,
+                nombre_completo: usuario.nombre_completo,
+                password: usuario.password,
+                descripcion: usuario.descripcion,
+                portfolio: usuario.portfolio,
+                foto: usuario.foto,
+                rol: usuario.rol,
+                promocion: usuario.promocion
+            },
             select: {
                 id: true, correo: true, alias: true, nombre_completo: true, descripcion: true, portfolio: true, foto: true, promocion: true, rol: true
             }

@@ -2,9 +2,8 @@ const prisma = require('../databases/mysql')
 
 const asignaturas_errors = require('../errors/asignaturas')
 
-const get_asignaturas = async (skip = 0, take = 20) => {
+const get_asignaturas = async () => {
     return prisma.asignaturas.findMany({
-        skip: skip, take: take,
         include: {
             titulaciones_asignaturas: {
                 select: {
@@ -23,8 +22,7 @@ const get_asignatura = async (id) => {
     return prisma.asignaturas.findUnique({
         where: {
             id: id
-        },
-        include: {
+        }, include: {
             titulaciones_asignaturas: {
                 select: {
                     titulaciones: {

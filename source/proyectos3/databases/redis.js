@@ -32,9 +32,12 @@ const escribir_cache = async (data, expires = null) => {
 }
 
 const limpiar_cache = async (keys = null) => {
-    if (!keys) await redis.flushAll()
-    for (let key of keys) if (await redis.exists(key))
-        await redis.del(key)
+    if (!keys) return await redis.flushAll()
+    for (let key of keys) await redis.del(key)
+}
+
+const limpiar_cache_pattern = async (pattern) => {
+    for (let key of await redis.keys(pattern)) await redis.del(key)
 }
 
 module.exports = {
@@ -42,5 +45,6 @@ module.exports = {
     exists,
     leer_cache,
     escribir_cache,
-    limpiar_cache
+    limpiar_cache,
+    limpiar_cache_pattern
 }

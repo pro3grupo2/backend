@@ -1,15 +1,16 @@
 const prisma = require('../databases/mysql')
 const {hook_updates} = require("../databases/discord")
-const {leer_cache, escribir_cache, limpiar_cache} = require("../databases/redis")
+const {leer_cache, escribir_cache, limpiar_cache, limpiar_cache_pattern} = require("../databases/redis")
 
 const proyectos_errors = require('../errors/proyectos')
 
-const get_proyectos = async (skip = 0, take = 20) => {
-    let data = await leer_cache('cached:proyectos')
+const get_proyectos = async (page) => {
+    let data = await leer_cache(`cached:proyectos:page:${page}`)
     if (data) return data
 
+    const pagination_size = parseInt(process.env.PAGINATION_SIZE)
     data = await prisma.proyectos.findMany({
-        skip: skip, take: take, where: {
+        skip: pagination_size * page, take: pagination_size, where: {
             estado: 'aceptado'
         }, include: {
             usuarios: {
@@ -55,9 +56,9 @@ const get_proyectos = async (skip = 0, take = 20) => {
     if (!data.length) return data
 
     await escribir_cache([{
-        key: 'cached:proyectos', data: data
+        key: `cached:proyectos:page:${page}`, data: data
     }], process.env.REDIS_PROYECTOS_EXPIRES_IN)
-    await hook_updates.success("Proyectos cacheados", new Date().toISOString(), JSON.stringify(data))
+    await hook_updates.success("Proyectos cacheados", new Date().toISOString(), JSON.stringify(data).substring(0, 1024))
 
     return data
 }
@@ -115,25 +116,18 @@ const get_proyecto = async (id) => {
     await escribir_cache([{
         key: `cached:proyectos:${id}`, data: data
     }], process.env.REDIS_PROYECTOS_EXPIRES_IN)
-    await hook_updates.success("Proyecto cacheado", new Date().toISOString(), JSON.stringify(data))
+    await hook_updates.success("Proyecto cacheado", new Date().toISOString(), JSON.stringify(data).substring(0, 1024))
 
     return data
 }
 
 const create_proyecto = async (proyecto) => {
     try {
-        await limpiar_cache(['cached:proyectos'])
+        await limpiar_cache_pattern('cached:proyectos:page:*')
 
         const data = await prisma.proyectos.create({
             data: {
-                id_creador: proyecto.id_creador,
-                titulo: proyecto.titulo,
-                ficha: proyecto.ficha,
-                url: proyecto.url,
-                portada: proyecto.portada,
-                premiado: proyecto.premiado,
-                estado: 'pendiente',
-                anio: proyecto.anio,
+                id_creador: proyecto.id_creador, titulo: proyecto.titulo, ficha: proyecto.ficha, url: proyecto.url, portada: proyecto.portada, premiado: proyecto.premiado, estado: 'pendiente', anio: proyecto.anio,
 
                 participantes: {
                     createMany: {
@@ -163,7 +157,8 @@ const create_proyecto = async (proyecto) => {
 
 const delete_proyecto = async (id) => {
     try {
-        await limpiar_cache(['cached:proyectos', `cached:proyectos:${id}`])
+        await limpiar_cache_pattern('cached:proyectos:page:*')
+        await limpiar_cache([`cached:proyectos:${id}`])
 
         await prisma.participantes.deleteMany({
             where: {
@@ -195,13 +190,13 @@ const delete_proyecto = async (id) => {
 
 const aceptar_proyecto = async (id) => {
     try {
-        await limpiar_cache(['cached:proyectos', `cached:proyectos:${id}`])
+        await limpiar_cache_pattern('cached:proyectos:page:*')
+        await limpiar_cache([`cached:proyectos:${id}`])
 
         return await prisma.proyectos.update({
             where: {
                 id: id
-            },
-            data: {
+            }, data: {
                 estado: 'aceptado'
             }
         })
@@ -212,13 +207,13 @@ const aceptar_proyecto = async (id) => {
 
 const rechazar_proyecto = async (id) => {
     try {
-        await limpiar_cache(['cached:proyectos', `cached:proyectos:${id}`])
+        await limpiar_cache_pattern('cached:proyectos:page:*')
+        await limpiar_cache([`cached:proyectos:${id}`])
 
         return await prisma.proyectos.update({
             where: {
                 id: id
-            },
-            data: {
+            }, data: {
                 estado: 'rechazado'
             }
         })

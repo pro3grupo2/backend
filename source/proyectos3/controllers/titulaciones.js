@@ -4,7 +4,7 @@ const titulaciones_service = require('../services/titulaciones')
 
 const get_titulaciones = async (req, res) => {
     try {
-        return good_response(res, await titulaciones_service.get_titulaciones(req.MATCHED.skip, req.MATCHED.take))
+        return good_response(res, await titulaciones_service.get_titulaciones())
     } catch (e) {
         return bad_response(res, 400, e)
     }

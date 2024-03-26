@@ -37,6 +37,7 @@ CREATE TABLE `areas`
     PRIMARY KEY (`id`),
     UNIQUE KEY `titulo` (`titulo`)
 ) ENGINE = InnoDB
+  AUTO_INCREMENT = 5
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -48,6 +49,11 @@ CREATE TABLE `areas`
 LOCK TABLES `areas` WRITE;
 /*!40000 ALTER TABLE `areas`
     DISABLE KEYS */;
+INSERT INTO `areas`
+VALUES (3, 'Animación'),
+       (2, 'Diseño digital'),
+       (1, 'Ingeniería del software'),
+       (4, 'Videojuegos');
 /*!40000 ALTER TABLE `areas`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -257,10 +263,11 @@ CREATE TABLE `titulaciones`
     `id_area` int          DEFAULT NULL,
     `titulo`  varchar(200) DEFAULT NULL,
     PRIMARY KEY (`id`),
-    UNIQUE KEY `titulo` (`titulo`),
+    UNIQUE KEY `titulo` (`id_area`, `titulo`),
     KEY `id_area` (`id_area`),
     CONSTRAINT `titulaciones_ibfk_1` FOREIGN KEY (`id_area`) REFERENCES `areas` (`id`)
 ) ENGINE = InnoDB
+  AUTO_INCREMENT = 42
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -272,6 +279,48 @@ CREATE TABLE `titulaciones`
 LOCK TABLES `titulaciones` WRITE;
 /*!40000 ALTER TABLE `titulaciones`
     DISABLE KEYS */;
+INSERT INTO `titulaciones`
+VALUES (6, 1, 'Certificado de formación permanente en Desarrollo para Realidad Virtual, Aumentada y Mixta'),
+       (9, 1, 'Ciclo de Grado Superior en Administración de Sistemas Informáticos en Red'),
+       (7, 1, 'Ciclo de Grado Superior en Desarrollo de Aplicaciones Multiplataforma'),
+       (10, 1, 'Ciclo de Grado Superior en Desarrollo de Aplicaciones Multiplataforma Dual'),
+       (8, 1, 'Ciclo de Grado Superior en Desarrollo de Aplicaciones Web'),
+       (3, 1, 'Doble Grado en Física Computacional e Ingeniería del Software'),
+       (2, 1, 'Doble Grado en Matemática Computacional e Ingeniería del Software'),
+       (1, 1, 'Grado en Ingeniería del Software'),
+       (5, 1, 'Máster Universitario en Computación Gráfica, Realidad Virtual y Simulación'),
+       (4, 1, 'Programa Avanzado en Programación de Videojuegos'),
+       (13, 2, 'Ciclo de Grado Superior en Artes Plásticas y Diseño en Animación'),
+       (14, 2, 'Ciclo de Grado Superior en Artes Plásticas y Diseño en Ilustración'),
+       (15, 2, 'Grado en Diseño Digital'),
+       (12, 2, 'Máster Universitario en Tecnologías Digitales para el Arte'),
+       (11, 2, 'Programa Avanzado en Ilustración'),
+       (16, 3, 'Arte para Videojuegos'),
+       (28, 3, 'Ciclo de Grado Superior en Animaciones 3D, Juegos y Entornos Interactivos'),
+       (18, 3, 'Grado en Animación'),
+       (17, 3, 'Programa Avanzado en Animación 2D'),
+       (23, 3, 'Programa Avanzado en Animación 3D de Personajes'),
+       (25, 3, 'Programa Avanzado en Composición Digital para VFX'),
+       (21, 3, 'Programa Avanzado en Concept Art'),
+       (26, 3, 'Programa Avanzado en Dirección de Producción para Animación, VFX y Videojuegos'),
+       (27, 3, 'Programa Avanzado en Diseño de Personajes'),
+       (22, 3, 'Programa avanzado en Modelado 3D de Personajes'),
+       (20, 3, 'Programa Avanzado en Previs y Layout'),
+       (24, 3, 'Programa Avanzado en Rigging y Character FX'),
+       (19, 3, 'Programa Avanzado en Story Art'),
+       (30, 4, 'Arte para Videojuegos'),
+       (41, 4, 'Ciclo de Grado Superior en Animaciones 3D, Juegos y Entornos Interactivos'),
+       (31, 4, 'Curso de Especialización en Desarrollo de Videojuegos y Realidad Virtual'),
+       (29, 4, 'Desarrollo de Videojuegos'),
+       (33, 4, 'Grado en Diseño de Productos Interactivos'),
+       (39, 4, 'Máster Universitario en Computación Gráfica, Realidad Virtual y Simulación'),
+       (38, 4, 'Programa Avanzado en Arte y Diseño Visual de Videojuegos'),
+       (34, 4, 'Programa Avanzado en Concept Art'),
+       (40, 4, 'Programa Avanzado en Dirección de Producción para Animación, VFX y Videojuegos'),
+       (32, 4, 'Programa Avanzado en Environment y Prop Art para Videojuegos'),
+       (37, 4, 'Programa Avanzado en Game Design'),
+       (35, 4, 'Programa avanzado en Modelado 3D de Personajes'),
+       (36, 4, 'Programa Avanzado en Programación de Videojuegos');
 /*!40000 ALTER TABLE `titulaciones`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -354,4 +403,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-24  9:21:25
+-- Dump completed on 2024-03-26 11:17:14

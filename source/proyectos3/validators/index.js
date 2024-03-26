@@ -1,4 +1,4 @@
-const {validationResult, body, matchedData, param} = require("express-validator")
+const {validationResult, matchedData, param, query} = require("express-validator")
 
 const validate = (req, res, next) => {
     try {
@@ -11,7 +11,7 @@ const validate = (req, res, next) => {
 }
 
 const pagination = [
-    body('page').default(0).isInt(),
+    query('page').default(0).toInt(),
     validate
 ]
 

@@ -4,7 +4,7 @@ const proyectos_service = require("../services/proyectos")
 
 const get_proyectos = async (req, res) => {
     try {
-        return good_response(res, await proyectos_service.get_proyectos(req.MATCHED.skip, req.MATCHED.take))
+        return good_response(res, await proyectos_service.get_proyectos(req.MATCHED.page))
     } catch (e) {
         return bad_response(res, 400, e)
     }

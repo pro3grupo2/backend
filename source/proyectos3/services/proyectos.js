@@ -56,7 +56,7 @@ const get_proyectos = async (skip = 0, take = 20) => {
 
     await escribir_cache([{
         key: 'cached:proyectos', data: data
-    }], process.env.REDIS_SIGNIN_EXPIRES_IN)
+    }], process.env.REDIS_PROYECTOS_EXPIRES_IN)
     await hook_updates.success("Proyectos cacheados", new Date().toISOString(), JSON.stringify(data))
 
     return data
@@ -114,7 +114,7 @@ const get_proyecto = async (id) => {
 
     await escribir_cache([{
         key: `cached:proyectos:${id}`, data: data
-    }], process.env.REDIS_SIGNIN_EXPIRES_IN)
+    }], process.env.REDIS_PROYECTOS_EXPIRES_IN)
     await hook_updates.success("Proyecto cacheado", new Date().toISOString(), JSON.stringify(data))
 
     return data

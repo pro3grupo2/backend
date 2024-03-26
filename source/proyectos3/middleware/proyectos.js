@@ -2,16 +2,22 @@ const multer = require('multer')
 const fs = require("fs")
 
 const {bad_response} = require("../errors");
+const {exists, leer_cache} = require("../databases/redis");
 
 const proyectos_service = require("../services/proyectos")
 const proyectos_errors = require("../errors/proyectos")
+const auth_errors = require("../errors/auth");
 
 const is_propietario_or_administrador = async (req, res, next) => {
-    const data = await proyectos_service.get_proyecto(req.MATCHED.id)
-    if (!data)
+    if (!await exists(`cached:${req.JWT.correo}`))
+        return bad_response(res, 401, new Error(`${auth_errors.TOKEN_EXPIRED_OR_INVALID} : ${req.JWT.correo}`))
+
+    const usuario = await leer_cache(`cached:${req.JWT.correo}`)
+    const proyecto = await proyectos_service.get_proyecto(req.MATCHED.id)
+    if (!proyecto)
         return bad_response(res, 404, new Error(`${proyectos_errors.NOT_FOUND}: ${req.MATCHED.id}`))
 
-    if (data.id_creador !== req.JWT.id && req.JWT.rol !== "coordinador")
+    if (proyecto.id_creador !== req.JWT.id && usuario.rol !== "coordinador")
         return bad_response(res, 401, new Error(`${proyectos_errors.NOT_PROPIETARIO} : ${req.JWT.correo} : ${req.MATCHED.id}`))
 
     next()

@@ -1,4 +1,5 @@
 const {bad_response} = require("../errors");
+const {exists, leer_cache} = require('../databases/redis')
 
 const auth_service = require("../services/auth")
 const auth_errors = require("../errors/auth")
@@ -18,8 +19,12 @@ const verificar_JWT = (req, res, next) => {
     next()
 }
 
-const is_administrador = (req, res, next) => {
-    if (req.JWT.rol !== "coordinador")
+const is_administrador = async (req, res, next) => {
+    if (!await exists(`cached:${req.JWT.correo}`))
+        return bad_response(res, 401, new Error(`${auth_errors.TOKEN_EXPIRED_OR_INVALID} : ${req.JWT.correo}`))
+
+    const data = await leer_cache(`cached:${req.JWT.correo}`)
+    if (data.rol !== "coordinador")
         return bad_response(res, 401, new Error(`${auth_errors.NOT_ADMININSTRADOR} : ${req.JWT.correo}`))
 
     next()

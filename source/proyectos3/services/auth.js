@@ -53,7 +53,7 @@ const signin = async (correo, password) => {
     if (!bcryptjs.compareSync(password, data.password))
         throw new Error(auth_errors.WRONG_PASSWORD)
 
-    return jwt.sign({id: data.id, correo: data.correo, rol: data.rol}, process.env.JWT_SECRET, {expiresIn: process.env.JWT_SESSION_EXPIRES_IN})
+    return jwt.sign({id: data.id, correo: data.correo}, process.env.JWT_SECRET, {expiresIn: process.env.JWT_SESSION_EXPIRES_IN})
 }
 
 const signup_cache = async (usuario) => {

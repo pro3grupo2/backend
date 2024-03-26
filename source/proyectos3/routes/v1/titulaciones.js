@@ -8,7 +8,7 @@ const global_validators = require("../../validators")
 
 const router = express.Router()
 
-router.get("/", auth_middleware.verificar_JWT, global_validators.pagination, titulacions_controller.get_titulaciones)
+router.get("/", auth_middleware.verificar_JWT, titulacions_controller.get_titulaciones)
 router.get("/:id", auth_middleware.verificar_JWT, global_validators.params_id, titulacions_controller.get_titulacion)
 
 router.post("/", auth_middleware.verificar_JWT, auth_middleware.is_administrador, titulaciones_validators.titulacion, titulacions_controller.create_titulacion)

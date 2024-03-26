@@ -12,8 +12,6 @@ const validate = (req, res, next) => {
 
 const pagination = [
     body('page').default(0).isInt(),
-    body('skip').default(0).toInt(),
-    body('take').default(20).toInt(),
     validate
 ]
 

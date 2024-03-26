@@ -4,7 +4,7 @@ const asignaturas_service = require('../services/asignaturas')
 
 const get_asignaturas = async (req, res) => {
     try {
-        return good_response(res, await asignaturas_service.get_asignaturas(req.MATCHED.skip, req.MATCHED.take))
+        return good_response(res, await asignaturas_service.get_asignaturas())
     } catch (e) {
         return bad_response(res, 400, e)
     }

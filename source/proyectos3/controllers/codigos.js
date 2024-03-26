@@ -6,7 +6,7 @@ const codigos_service = require('../services/codigos')
 
 const get_codigos = async (req, res) => {
     try {
-        return good_response(res, await codigos_service.get_codigos(req.MATCHED.skip, req.MATCHED.take))
+        return good_response(res, await codigos_service.get_codigos())
     } catch (e) {
         return bad_response(res, 400, e)
     }

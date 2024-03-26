@@ -2,10 +2,8 @@ const prisma = require('../databases/mysql')
 
 const areas_errors = require('../errors/areas')
 
-const get_areas = async (skip = 0, take = 20) => {
-    return prisma.areas.findMany({
-        skip: skip, take: take
-    })
+const get_areas = async () => {
+    return prisma.areas.findMany({})
 }
 
 const get_area = async (id) => {

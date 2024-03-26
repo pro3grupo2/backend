@@ -4,7 +4,7 @@ const areas_service = require('../services/areas')
 
 const get_areas = async (req, res) => {
     try {
-        return good_response(res, await areas_service.get_areas(req.MATCHED.skip, req.MATCHED.take))
+        return good_response(res, await areas_service.get_areas())
     } catch (e) {
         return bad_response(res, 400, e)
     }

@@ -1,5 +1,13 @@
-const {body} = require('express-validator')
+const {body, query} = require('express-validator')
 const {validate} = require('.')
+
+const filters = [
+    query('premiado', 'Type: Bool').exists().notEmpty().toBoolean().optional(),
+    query('anio', 'Type: Year (YYYY)').exists().notEmpty().toInt().optional(),
+    query('titulaciones', 'Type: Int, Int, ..., Int').exists().notEmpty().customSanitizer(value => value.split(',').map(parseInt)).optional(),
+    query('busqueda', 'Type: String, Max-Length: 100').exists().notEmpty().isString().isLength({max: 100}).optional(),
+    validate
+]
 
 const create_proyecto_files = [
     body('url', 'Type: String, Max-Length: None').exists().notEmpty().isString().optional(),
@@ -20,8 +28,8 @@ const create_proyecto = [
     validate
 ]
 
-
 module.exports = {
+    filters,
     create_proyecto_files,
     create_proyecto
 }

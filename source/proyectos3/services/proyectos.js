@@ -4,15 +4,43 @@ const {leer_cache, escribir_cache, limpiar_cache, limpiar_cache_pattern} = requi
 
 const proyectos_errors = require('../errors/proyectos')
 
-const get_proyectos = async (page) => {
+const get_proyectos = async (page, filters) => {
+    let
+        where_filters = {estado: 'aceptado'},
+        has_filters = false,
+        filters_keys = ['premiado', 'anio', 'titulaciones', 'busqueda']
+
+    filters_keys.forEach(key => {
+        if (!key in filters || filters[key] === undefined) return
+
+        if (key === 'titulaciones')
+            where_filters.proyectos_asignaturas = {some: {asignaturas: {titulaciones_asignaturas: {some: {titulaciones: {id: {in: filters.titulaciones}}}}}}}
+
+        else if (key === 'busqueda')
+            where_filters.OR = [
+                {titulo: {contains: filters.busqueda}},
+                {usuarios: {OR: [{correo: {contains: filters.busqueda}}, {nombre_completo: {contains: filters.busqueda}}]}},
+                {participantes: {some: {correo: {contains: filters.busqueda}}}}
+            ]
+
+        else
+            where_filters[key] = filters[key]
+
+        has_filters = true
+    })
+
+    if (has_filters) await limpiar_cache([`cached:proyectos:page:${page}`])
+
     let data = await leer_cache(`cached:proyectos:page:${page}`)
     if (data) return data
 
     const pagination_size = parseInt(process.env.PAGINATION_SIZE)
     data = await prisma.proyectos.findMany({
-        skip: pagination_size * page, take: pagination_size, where: {
-            estado: 'aceptado'
-        }, include: {
+        skip: pagination_size * page, take: pagination_size,
+        where: {
+            AND: where_filters
+        },
+        include: {
             usuarios: {
                 select: {
                     id: true, correo: true, alias: true, nombre_completo: true, descripcion: true, portfolio: true, foto: true, rol: true, promocion: true
@@ -55,7 +83,7 @@ const get_proyectos = async (page) => {
 
     if (!data.length) return data
 
-    await escribir_cache([{
+    if (!has_filters) await escribir_cache([{
         key: `cached:proyectos:page:${page}`, data: data
     }], process.env.REDIS_PROYECTOS_EXPIRES_IN)
     await hook_updates.success("Proyectos cacheados", new Date().toISOString(), JSON.stringify(data).substring(0, 1024))

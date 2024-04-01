@@ -7,6 +7,7 @@ const {hook_updates} = require("../databases/discord")
 const {exists, escribir_cache, limpiar_cache, leer_cache} = require('../databases/redis')
 
 const auth_errors = require("../errors/auth")
+const recover_mail = require("../mails/recover")
 const validation_mail = require("../mails/validation")
 
 const verificar_JWT = (token) => {
@@ -208,7 +209,8 @@ const recover = async (correo) => {
             from: 'recuperacion.repositorio.utad@gmail.com',
             to: correo,
             subject: "Recuperacion de contraseña U-Tad",
-            html: validation_mail
+            html: recover_mail
+                .replace('{{correo}}', correo)
                 .replace('{{nombre_completo}}', data.nombre_completo)
                 .replace(/{{to_link}}/g, "https://reservorio-u-tad.com/recover/" + jwt.sign({id: data.id}, process.env.JWT_SECRET, {expiresIn: process.env.JWT_RECOVER_EXPIRES_IN}))
         }

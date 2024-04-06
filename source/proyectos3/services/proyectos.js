@@ -91,6 +91,64 @@ const get_proyectos = async (page, filters) => {
     return data
 }
 
+const get_me_proyectos = async (user_id) => {
+    let data = await leer_cache(`cached:proyectos:user:${user_id}`)
+    if (data) return data
+
+    data = await prisma.proyectos.findUnique({
+        where: {
+            id_creador: user_id
+        }, include: {
+            usuarios: {
+                select: {
+                    id: true, correo: true, alias: true, nombre_completo: true, descripcion: true, portfolio: true, foto: true, rol: true, promocion: true
+                }
+            },
+
+            premios: {
+                select: {id: true, titulo: true}
+            },
+
+            participantes: {
+                select: {
+                    id: true, correo: true
+                }
+            },
+
+            proyectos_asignaturas: {
+                select: {
+                    asignaturas: {
+                        select: {
+                            id: true, titulo: true, curso: true, titulaciones_asignaturas: {
+                                select: {
+                                    titulaciones: {
+                                        select: {
+                                            id: true, titulo: true, areas: {
+                                                select: {
+                                                    id: true, titulo: true
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    })
+
+    if (!data) throw new Error(proyectos_errors.NOT_FOUND)
+
+    await escribir_cache([{
+        key: `cached:proyectos:user:${user_id}`, data: data
+    }], process.env.REDIS_PROYECTOS_EXPIRES_IN)
+    await hook_updates.success(`Proyectos de usuario ${user_id} cacheados`, new Date().toISOString(), JSON.stringify(data).substring(0, 1024))
+
+    return data
+}
+
 const get_proyecto = async (id) => {
     let data = await leer_cache(`cached:proyectos:${id}`)
     if (data) return data
@@ -186,6 +244,7 @@ const create_proyecto = async (proyecto) => {
 const delete_proyecto = async (id) => {
     try {
         await limpiar_cache_pattern('cached:proyectos:page:*')
+        await limpiar_cache_pattern('cached:proyectos:user:*')
         await limpiar_cache([`cached:proyectos:${id}`])
 
         await prisma.participantes.deleteMany({
@@ -219,6 +278,7 @@ const delete_proyecto = async (id) => {
 const aceptar_proyecto = async (id) => {
     try {
         await limpiar_cache_pattern('cached:proyectos:page:*')
+        await limpiar_cache_pattern('cached:proyectos:user:*')
         await limpiar_cache([`cached:proyectos:${id}`])
 
         return await prisma.proyectos.update({
@@ -236,6 +296,7 @@ const aceptar_proyecto = async (id) => {
 const rechazar_proyecto = async (id) => {
     try {
         await limpiar_cache_pattern('cached:proyectos:page:*')
+        await limpiar_cache_pattern('cached:proyectos:user:*')
         await limpiar_cache([`cached:proyectos:${id}`])
 
         return await prisma.proyectos.update({
@@ -251,5 +312,5 @@ const rechazar_proyecto = async (id) => {
 }
 
 module.exports = {
-    get_proyectos, get_proyecto, create_proyecto, delete_proyecto, aceptar_proyecto, rechazar_proyecto
+    get_proyectos, get_me_proyectos, get_proyecto, create_proyecto, delete_proyecto, aceptar_proyecto, rechazar_proyecto
 }

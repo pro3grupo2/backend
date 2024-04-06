@@ -15,6 +15,10 @@ Content-Type: application/json
 GET http://localhost:3000/api/v1/proyectos/
 Authorization: Bearer {{auth_token}}
 
+### /api/v1/proyectos/me
+GET http://localhost:3000/api/v1/proyectos/me
+Authorization: Bearer {{auth_token}}
+
 ### /api/v1/proyectos?filtros
 GET http://localhost:3000/api/v1/proyectos?premiado=true&anio=2021&titulaciones=1,2,3&busqueda=miproyecto
 Authorization: Bearer {{auth_token}}

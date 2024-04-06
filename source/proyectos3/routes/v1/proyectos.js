@@ -10,6 +10,7 @@ const global_validators = require("../../validators")
 const router = express.Router()
 
 router.get("/", auth_middleware.verificar_JWT, global_validators.pagination, proyectos_validators.filters, proyectos_controller.get_proyectos)
+router.get("/me", auth_middleware.verificar_JWT, proyectos_controller.get_proyectos)
 router.get("/:id", auth_middleware.verificar_JWT, global_validators.params_id, proyectos_controller.get_proyecto)
 router.get("/:id/aceptar", auth_middleware.verificar_JWT, global_validators.params_id, auth_middleware.is_administrador, proyectos_controller.aceptar_proyecto)
 router.get("/:id/rechazar", auth_middleware.verificar_JWT, global_validators.params_id, auth_middleware.is_administrador, proyectos_controller.rechazar_proyecto)

@@ -210,6 +210,7 @@ const get_proyecto = async (id) => {
 const create_proyecto = async (proyecto) => {
     try {
         await limpiar_cache_pattern('cached:proyectos:page:*')
+        await limpiar_cache_pattern('cached:proyectos:user:*')
 
         const data = await prisma.proyectos.create({
             data: {

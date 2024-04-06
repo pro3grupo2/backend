@@ -95,7 +95,7 @@ const get_me_proyectos = async (user_id) => {
     let data = await leer_cache(`cached:proyectos:user:${user_id}`)
     if (data) return data
 
-    data = await prisma.proyectos.findUnique({
+    data = await prisma.proyectos.findMany({
         where: {
             id_creador: user_id
         }, include: {
@@ -139,7 +139,7 @@ const get_me_proyectos = async (user_id) => {
         }
     })
 
-    if (!data) throw new Error(proyectos_errors.NOT_FOUND)
+    if (!data.length) return data
 
     await escribir_cache([{
         key: `cached:proyectos:user:${user_id}`, data: data

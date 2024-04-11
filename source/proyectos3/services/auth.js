@@ -114,8 +114,12 @@ const signup_cache = async (usuario) => {
                 to: usuario.correo,
                 subject: "Verificacion de tu cuenta U-Tad",
                 html: validation_mail
-                    .replace('{{nombre_completo}}', usuario.nombre_completo)
-                    .replace(/{{to_link}}/g, "https://reservorio-u-tad.com/validate/" + jwt.sign({cache_key: key}, process.env.JWT_SECRET, {expiresIn: process.env.JWT_SIGNUP_EXPIRES_IN}))
+                    .replace(/{{to_link}}/g, "https://reservorio-u-tad.com/validate/" + jwt.sign({cache_key: key}, process.env.JWT_SECRET, {expiresIn: process.env.JWT_SIGNUP_EXPIRES_IN})),
+                attachments: [{
+                    filename: 'validation.svg',
+                    path: __dirname + '/images/validation.svg',
+                    cid: 'imagen2' 
+                }]
             }
 
         await new Promise((resolve, reject) => {

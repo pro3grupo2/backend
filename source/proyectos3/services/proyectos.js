@@ -4,17 +4,27 @@ const {leer_cache, escribir_cache, limpiar_cache, limpiar_cache_pattern} = requi
 
 const proyectos_errors = require('../errors/proyectos')
 
+/**
+ * Fetch all projects with optional filters
+ * @async
+ * @function
+ * @param {number} page - The page number for pagination
+ * @param {object} filters - The filters to apply
+ * @returns {Promise<object[]>} The fetched projects
+ */
 const get_proyectos = async (page, filters) => {
     let
-        where_filters = {estado: 'aceptado'},
+        where_filters = {estado: filters.estado ?? 'aceptado'},
         has_filters = false,
-        filters_keys = ['premiado', 'anio', 'titulaciones', 'busqueda']
+        filters_keys = ['premiado', 'anio', 'titulaciones', 'busqueda', 'area']
 
     filters_keys.forEach(key => {
         if (!key in filters || filters[key] === undefined) return
 
         if (key === 'titulaciones')
-            where_filters.proyectos_asignaturas = {some: {asignaturas: {titulaciones_asignaturas: {some: {titulaciones: {id: {in: filters.titulaciones}}}}}}}
+            where_filters.proyectos_asignaturas = filters.area
+                ? {proyectos_asignaturas: {some: {asignaturas: {titulaciones_asignaturas: {some: {titulaciones: {AND: {id: {in: filters.titulaciones}, id_area: filters.area}}}}}}}}
+                : {some: {asignaturas: {titulaciones_asignaturas: {some: {titulaciones: {id: {in: filters.titulaciones}}}}}}}
 
         else if (key === 'busqueda')
             where_filters.OR = [
@@ -91,6 +101,13 @@ const get_proyectos = async (page, filters) => {
     return data
 }
 
+/**
+ * Fetch all projects of a specific user
+ * @async
+ * @function
+ * @param {string} user_id - The ID of the user
+ * @returns {Promise<object[]>} The fetched projects
+ */
 const get_me_proyectos = async (user_id) => {
     let data = await leer_cache(`cached:proyectos:user:${user_id}`)
     if (data) return data
@@ -149,6 +166,13 @@ const get_me_proyectos = async (user_id) => {
     return data
 }
 
+/**
+ * Fetch a specific project by its ID
+ * @async
+ * @function
+ * @param {string} id - The ID of the project
+ * @returns {Promise<object>} The fetched project
+ */
 const get_proyecto = async (id) => {
     let data = await leer_cache(`cached:proyectos:${id}`)
     if (data) return data
@@ -207,6 +231,13 @@ const get_proyecto = async (id) => {
     return data
 }
 
+/**
+ * Create a new project
+ * @async
+ * @function
+ * @param {object} proyecto - The project data
+ * @returns {Promise<object>} The created project
+ */
 const create_proyecto = async (proyecto) => {
     try {
         await limpiar_cache_pattern('cached:proyectos:page:*')
@@ -242,6 +273,13 @@ const create_proyecto = async (proyecto) => {
     }
 }
 
+/**
+ * Delete a specific project by its ID
+ * @async
+ * @function
+ * @param {string} id - The ID of the project
+ * @returns {Promise<object>} The deleted project
+ */
 const delete_proyecto = async (id) => {
     try {
         await limpiar_cache_pattern('cached:proyectos:page:*')
@@ -276,6 +314,13 @@ const delete_proyecto = async (id) => {
     }
 }
 
+/**
+ * Accept a specific project by its ID
+ * @async
+ * @function
+ * @param {string} id - The ID of the project
+ * @returns {Promise<object>} The accepted project
+ */
 const aceptar_proyecto = async (id) => {
     try {
         await limpiar_cache_pattern('cached:proyectos:page:*')
@@ -294,6 +339,13 @@ const aceptar_proyecto = async (id) => {
     }
 }
 
+/**
+ * Reject a specific project by its ID
+ * @async
+ * @function
+ * @param {string} id - The ID of the project
+ * @returns {Promise<object>} The rejected project
+ */
 const rechazar_proyecto = async (id) => {
     try {
         await limpiar_cache_pattern('cached:proyectos:page:*')

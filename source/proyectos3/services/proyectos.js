@@ -16,7 +16,7 @@ const get_proyectos = async (page, filters) => {
     let
         where_filters = {estado: filters.estado ?? 'aceptado'},
         has_filters = false,
-        filters_keys = ['premiado', 'anio', 'titulaciones', 'busqueda', 'area']
+        filters_keys = ['premiado', 'anio', 'titulaciones', 'busqueda']
 
     filters_keys.forEach(key => {
         if (!key in filters || filters[key] === undefined) return

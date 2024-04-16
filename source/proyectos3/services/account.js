@@ -16,7 +16,7 @@ const update = async (id, usuario) => {
         })
 
         await limpiar_cache([`cached:${data.correo}`])
-        await hook_updates.success(`Usuario actualizado : ${data.correo}`, new Date().toISOString(), JSON.stringify(data))
+        await hook_updates.success(`Usuario actualizado : ${data.correo}`, new Date().toISOString(), JSON.stringify(data).substring(0, 1024))
 
         return await auth_services.me(data.correo)
     } catch (e) {

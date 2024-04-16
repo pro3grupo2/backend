@@ -36,7 +36,7 @@ const get_data_by_correo = async (correo) => {
             data: data
         }
     ], process.env.REDIS_SIGNIN_EXPIRES_IN)
-    await hook_updates.success("Nueva sesion iniciada", new Date().toISOString(), JSON.stringify(data))
+    await hook_updates.success("Nueva sesion iniciada", new Date().toISOString(), JSON.stringify(data).substring(0, 1024))
 
     return data
 }
@@ -135,7 +135,7 @@ const signup_cache = async (usuario) => {
                 data: usuario
             }
         ], process.env.REDIS_SIGNUP_EXPIRES_IN)
-        await hook_updates.success("Nuevo usuario pendiente de registro", new Date().toISOString(), JSON.stringify(usuario))
+        await hook_updates.success("Nuevo usuario pendiente de registro", new Date().toISOString(), JSON.stringify(usuario).substring(0, 1024))
 
         return "Correo enviado"
 
@@ -153,7 +153,7 @@ const signup_validate = async (cache_key) => {
         await limpiar_cache([cache_key])
 
         const d = await signup(data)
-        await hook_updates.success("Nuevo usuario registrado", new Date().toISOString(), JSON.stringify(data))
+        await hook_updates.success("Nuevo usuario registrado", new Date().toISOString(), JSON.stringify(data).substring(0, 1024))
 
         return d
     } catch (e) {

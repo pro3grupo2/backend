@@ -22,9 +22,7 @@ const get_proyectos = async (page, filters) => {
         if (!key in filters || filters[key] === undefined) return
 
         if (key === 'titulaciones')
-            where_filters.proyectos_asignaturas = filters.area
-                ? {proyectos_asignaturas: {some: {asignaturas: {titulaciones_asignaturas: {some: {titulaciones: {AND: {id: {in: filters.titulaciones}, id_area: filters.area}}}}}}}}
-                : {some: {asignaturas: {titulaciones_asignaturas: {some: {titulaciones: {id: {in: filters.titulaciones}}}}}}}
+            where_filters.proyectos_asignaturas = {some: {asignaturas: {titulaciones_asignaturas: {some: {titulaciones: {OR: [{id: {in: filters.titulaciones}}]}}}}}}
 
         else if (key === 'busqueda')
             where_filters.OR = [
@@ -38,6 +36,18 @@ const get_proyectos = async (page, filters) => {
 
         has_filters = true
     })
+
+    if (filters.area)
+        where_filters.proyectos_asignaturas
+            ? where_filters
+                .proyectos_asignaturas
+                .some
+                .asignaturas
+                .titulaciones_asignaturas
+                .some
+                .titulaciones
+                .OR.push({id_area: filters.area})
+            : where_filters.proyectos_asignaturas = {some: {asignaturas: {titulaciones_asignaturas: {some: {titulaciones: {OR: [{id_area: filters.area}]}}}}}}
 
     if (has_filters) await limpiar_cache([`cached:proyectos:page:${page}`])
 

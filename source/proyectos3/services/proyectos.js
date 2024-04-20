@@ -17,20 +17,20 @@ const get_proyectos = async (page, filters) => {
         where_filters = {estado: filters.estado ?? 'aceptado'},
         has_filters = Object.keys(filters).length !== 0
 
-    if (filters.busqueda)
+    if ('busqueda' in filters)
         where_filters.OR = [
             {titulo: {contains: filters.busqueda}},
             {usuarios: {OR: [{correo: {contains: filters.busqueda}}, {nombre_completo: {contains: filters.busqueda}}]}},
             {participantes: {some: {correo: {contains: filters.busqueda}}}}
         ]
 
-    if (filters.premiado)
+    if ('premiado' in filters)
         where_filters.premiado = filters.premiado
 
-    if (filters.anio)
+    if ('anio' in filters)
         where_filters.anio = filters.anio
 
-    if (filters.titulaciones || filters.area)
+    if ('titulaciones' in filters || 'area' in filters)
         where_filters.proyectos_asignaturas = {
             some: {
                 asignaturas: {

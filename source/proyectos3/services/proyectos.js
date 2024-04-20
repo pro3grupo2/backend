@@ -15,39 +15,38 @@ const proyectos_errors = require('../errors/proyectos')
 const get_proyectos = async (page, filters) => {
     let
         where_filters = {estado: filters.estado ?? 'aceptado'},
-        has_filters = false,
-        filters_keys = ['premiado', 'anio', 'titulaciones', 'busqueda']
+        has_filters = Object.keys(filters).length !== 0
 
-    filters_keys.forEach(key => {
-        if (!key in filters || filters[key] === undefined) return
+    if (filters.busqueda)
+        where_filters.OR = [
+            {titulo: {contains: filters.busqueda}},
+            {usuarios: {OR: [{correo: {contains: filters.busqueda}}, {nombre_completo: {contains: filters.busqueda}}]}},
+            {participantes: {some: {correo: {contains: filters.busqueda}}}}
+        ]
 
-        if (key === 'titulaciones')
-            where_filters.proyectos_asignaturas = {some: {asignaturas: {titulaciones_asignaturas: {some: {titulaciones: {OR: [{id: {in: filters.titulaciones}}]}}}}}}
+    if (filters.premiado)
+        where_filters.premiado = filters.premiado
 
-        else if (key === 'busqueda')
-            where_filters.OR = [
-                {titulo: {contains: filters.busqueda}},
-                {usuarios: {OR: [{correo: {contains: filters.busqueda}}, {nombre_completo: {contains: filters.busqueda}}]}},
-                {participantes: {some: {correo: {contains: filters.busqueda}}}}
-            ]
+    if (filters.anio)
+        where_filters.anio = filters.anio
 
-        else
-            where_filters[key] = filters[key]
-
-        has_filters = true
-    })
-
-    if (filters.area)
-        where_filters.proyectos_asignaturas
-            ? where_filters
-                .proyectos_asignaturas
-                .some
-                .asignaturas
-                .titulaciones_asignaturas
-                .some
-                .titulaciones
-                .OR.push({id_area: filters.area})
-            : where_filters.proyectos_asignaturas = {some: {asignaturas: {titulaciones_asignaturas: {some: {titulaciones: {OR: [{id_area: filters.area}]}}}}}}
+    if (filters.titulaciones || filters.area)
+        where_filters.proyectos_asignaturas = {
+            some: {
+                asignaturas: {
+                    titulaciones_asignaturas: {
+                        some: {
+                            titulaciones: {
+                                AND: {
+                                    id: {in: filters.titulaciones},
+                                    id_area: filters.area
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
     if (has_filters) await limpiar_cache([`cached:proyectos:page:${page}`])
 
@@ -57,9 +56,7 @@ const get_proyectos = async (page, filters) => {
     const pagination_size = parseInt(process.env.PAGINATION_SIZE)
     data = await prisma.proyectos.findMany({
         skip: pagination_size * page, take: pagination_size,
-        where: {
-            AND: where_filters
-        },
+        where: where_filters,
         include: {
             usuarios: {
                 select: {

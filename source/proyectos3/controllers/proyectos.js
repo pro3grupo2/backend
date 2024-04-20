@@ -11,7 +11,8 @@ const proyectos_service = require("../services/proyectos")
  */
 const get_proyectos = async (req, res) => {
     try {
-        return good_response(res, await proyectos_service.get_proyectos(req.MATCHED.page, req.MATCHED))
+        const {page, ...resto} = req.MATCHED
+        return good_response(res, await proyectos_service.get_proyectos(page, resto))
     } catch (e) {
         return bad_response(res, 400, e)
     }
@@ -26,7 +27,8 @@ const get_proyectos = async (req, res) => {
  */
 const get_proyectos_pendientes = async (req, res) => {
     try {
-        return good_response(res, await proyectos_service.get_proyectos(req.MATCHED.page, {estado: "pendiente", ...req.MATCHED}))
+        const {page, ...resto} = req.MATCHED
+        return good_response(res, await proyectos_service.get_proyectos(page, {estado: "pendiente", ...resto}))
     } catch (e) {
         return bad_response(res, 400, e)
     }
@@ -41,7 +43,8 @@ const get_proyectos_pendientes = async (req, res) => {
  */
 const get_proyectos_rechazados = async (req, res) => {
     try {
-        return good_response(res, await proyectos_service.get_proyectos(req.MATCHED.page, {estado: "rechazado", ...req.MATCHED}))
+        const {page, ...resto} = req.MATCHED
+        return good_response(res, await proyectos_service.get_proyectos(page, {estado: "rechazado", ...resto}))
     } catch (e) {
         return bad_response(res, 400, e)
     }

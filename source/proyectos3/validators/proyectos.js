@@ -8,7 +8,7 @@ const {validate} = require('.')
 const filters = [
     query('premiado', 'Type: Bool').exists().notEmpty().toBoolean().optional(),
     query('anio', 'Type: Year (YYYY)').exists().notEmpty().toInt().optional(),
-    query('titulaciones', 'Type: Int, Int, ..., Int').exists().notEmpty().customSanitizer(value => value.split(',').map(parseInt)).optional(),
+    query('titulaciones', 'Type: Int, Int, ..., Int').exists().notEmpty().customSanitizer(value => value.split(',').map((x) => parseInt(x))).optional(),
     query('busqueda', 'Type: String, Max-Length: 100').exists().notEmpty().isString().isLength({max: 100}).optional(),
     query('area', 'Type: Int').exists().notEmpty().toInt().optional(),
     validate

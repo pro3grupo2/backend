@@ -56,7 +56,7 @@ Content-Type: application/json
     "correo1@gmail.com",
     "..."
   ],
-  "proyectos_asignaturas": [
+  "asignaturas": [
     1,
     2,
     3

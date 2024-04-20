@@ -357,6 +357,7 @@ CREATE TABLE `participantes`
     KEY `id_proyecto` (`id_proyecto`),
     CONSTRAINT `participantes_ibfk_1` FOREIGN KEY (`id_proyecto`) REFERENCES `proyectos` (`id`)
 ) ENGINE = InnoDB
+  AUTO_INCREMENT = 5
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -368,6 +369,11 @@ CREATE TABLE `participantes`
 LOCK TABLES `participantes` WRITE;
 /*!40000 ALTER TABLE `participantes`
     DISABLE KEYS */;
+INSERT INTO `participantes`
+VALUES (1, 1, 'adriantoral@sertor.es'),
+       (2, 1, 'pedro.limones@live.u-tad.com'),
+       (3, 2, 'adriantoral@sertor.es'),
+       (4, 2, 'pedro.limones@live.u-tad.com');
 /*!40000 ALTER TABLE `participantes`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -388,6 +394,7 @@ CREATE TABLE `premios`
     KEY `id_proyecto` (`id_proyecto`),
     CONSTRAINT `premios_ibfk_1` FOREIGN KEY (`id_proyecto`) REFERENCES `proyectos` (`id`)
 ) ENGINE = InnoDB
+  AUTO_INCREMENT = 5
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -399,6 +406,11 @@ CREATE TABLE `premios`
 LOCK TABLES `premios` WRITE;
 /*!40000 ALTER TABLE `premios`
     DISABLE KEYS */;
+INSERT INTO `premios`
+VALUES (1, 1, 'Premio 1'),
+       (2, 1, '...'),
+       (3, 2, 'Premio 1'),
+       (4, 2, '...');
 /*!40000 ALTER TABLE `premios`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -426,6 +438,7 @@ CREATE TABLE `proyectos`
     KEY `id_creador` (`id_creador`),
     CONSTRAINT `proyectos_ibfk_1` FOREIGN KEY (`id_creador`) REFERENCES `usuarios` (`id`)
 ) ENGINE = InnoDB
+  AUTO_INCREMENT = 21
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -437,6 +450,27 @@ CREATE TABLE `proyectos`
 LOCK TABLES `proyectos` WRITE;
 /*!40000 ALTER TABLE `proyectos`
     DISABLE KEYS */;
+INSERT INTO `proyectos`
+VALUES (1, 1, 'Mi primer proyecto 1', 'Mi primer proyecto es una aplicación web que...', 'https://youtube.com', 'https://atlassianblog.wpengine.com/wp-content/uploads/Projectmanagement-1361x760.png', 'aceptado', 1, 2023),
+       (2, 1, 'Mi primer proyecto 2', 'Mi primer proyecto es una aplicación web que...', 'https://youtube.com', 'https://images.squarespace-cdn.com/content/v1/5a7269ce1f318daf3337dfbf/1fd0a583-9189-4b7d-877e-478c9a7a5e5a/projectwaterlogo.png', 'rechazado', 0, 2020),
+       (3, 1, 'Mi primer proyecto 3', 'Mi primer proyecto es una aplicación web que...', 'https://youtube.com', 'https://atlassianblog.wpengine.com/wp-content/uploads/Projectmanagement-1361x760.png', 'aceptado', 1, 2019),
+       (4, 1, 'Mi primer proyecto 4', 'Mi primer proyecto es una aplicación web que...', 'https://youtube.com', 'https://images.squarespace-cdn.com/content/v1/5a7269ce1f318daf3337dfbf/1fd0a583-9189-4b7d-877e-478c9a7a5e5a/projectwaterlogo.png', 'pendiente', 0, 2023),
+       (5, 1, 'Mi primer proyecto 5', 'Mi primer proyecto es una aplicación web que...', 'https://youtube.com', 'https://atlassianblog.wpengine.com/wp-content/uploads/Projectmanagement-1361x760.png', 'pendiente', 1, 2021),
+       (6, 1, 'Mi primer proyecto 6', 'Mi primer proyecto es una aplicación web que...', 'https://youtube.com', 'https://images.squarespace-cdn.com/content/v1/5a7269ce1f318daf3337dfbf/1fd0a583-9189-4b7d-877e-478c9a7a5e5a/projectwaterlogo.png', 'pendiente', 0, 2022),
+       (7, 1, 'Mi primer proyecto 7', 'Mi primer proyecto es una aplicación web que...', 'https://youtube.com', 'https://atlassianblog.wpengine.com/wp-content/uploads/Projectmanagement-1361x760.png', 'aceptado', 1, 2021),
+       (8, 1, 'Mi primer proyecto 8', 'Mi primer proyecto es una aplicación web que...', 'https://youtube.com', 'https://images.squarespace-cdn.com/content/v1/5a7269ce1f318daf3337dfbf/1fd0a583-9189-4b7d-877e-478c9a7a5e5a/projectwaterlogo.png', 'rechazado', 0, 2020),
+       (9, 1, 'Mi primer proyecto 9', 'Mi primer proyecto es una aplicación web que...', 'https://youtube.com', 'https://atlassianblog.wpengine.com/wp-content/uploads/Projectmanagement-1361x760.png', 'pendiente', 1, 2018),
+       (10, 1, 'Mi primer proyecto 10', 'Mi primer proyecto es una aplicación web que...', 'https://youtube.com', 'https://images.squarespace-cdn.com/content/v1/5a7269ce1f318daf3337dfbf/1fd0a583-9189-4b7d-877e-478c9a7a5e5a/projectwaterlogo.png', 'pendiente', 0, 2019),
+       (11, 1, 'Mi primer proyecto 11', 'Mi primer proyecto es una aplicación web que...', 'https://youtube.com', 'https://atlassianblog.wpengine.com/wp-content/uploads/Projectmanagement-1361x760.png', 'aceptado', 1, 2018),
+       (12, 1, 'Mi primer proyecto 12', 'Mi primer proyecto es una aplicación web que...', 'https://youtube.com', 'https://images.squarespace-cdn.com/content/v1/5a7269ce1f318daf3337dfbf/1fd0a583-9189-4b7d-877e-478c9a7a5e5a/projectwaterlogo.png', 'rechazado', 0, 2018),
+       (13, 1, 'Mi primer proyecto 13', 'Mi primer proyecto es una aplicación web que...', 'https://youtube.com', 'https://atlassianblog.wpengine.com/wp-content/uploads/Projectmanagement-1361x760.png', 'pendiente', 1, 2020),
+       (14, 1, 'Mi primer proyecto 14', 'Mi primer proyecto es una aplicación web que...', 'https://youtube.com', 'https://images.squarespace-cdn.com/content/v1/5a7269ce1f318daf3337dfbf/1fd0a583-9189-4b7d-877e-478c9a7a5e5a/projectwaterlogo.png', 'pendiente', 0, 2020),
+       (15, 1, 'Mi primer proyecto 15', 'Mi primer proyecto es una aplicación web que...', 'https://youtube.com', 'https://atlassianblog.wpengine.com/wp-content/uploads/Projectmanagement-1361x760.png', 'aceptado', 1, 2020),
+       (16, 1, 'Mi primer proyecto 16', 'Mi primer proyecto es una aplicación web que...', 'https://youtube.com', 'https://images.squarespace-cdn.com/content/v1/5a7269ce1f318daf3337dfbf/1fd0a583-9189-4b7d-877e-478c9a7a5e5a/projectwaterlogo.png', 'rechazado', 1, 2023),
+       (17, 1, 'Mi primer proyecto 17', 'Mi primer proyecto es una aplicación web que...', 'https://youtube.com', 'https://atlassianblog.wpengine.com/wp-content/uploads/Projectmanagement-1361x760.png', 'pendiente', 1, 2021),
+       (18, 1, 'Mi primer proyecto 18', 'Mi primer proyecto es una aplicación web que...', 'https://youtube.com', 'https://images.squarespace-cdn.com/content/v1/5a7269ce1f318daf3337dfbf/1fd0a583-9189-4b7d-877e-478c9a7a5e5a/projectwaterlogo.png', 'pendiente', 1, 2023),
+       (19, 1, 'Mi primer proyecto 19', 'Mi primer proyecto es una aplicación web que...', 'https://youtube.com', 'https://atlassianblog.wpengine.com/wp-content/uploads/Projectmanagement-1361x760.png', 'aceptado', 1, 2021),
+       (20, 1, 'Mi primer proyecto 20', 'Mi primer proyecto es una aplicación web que...', 'https://youtube.com', 'https://images.squarespace-cdn.com/content/v1/5a7269ce1f318daf3337dfbf/1fd0a583-9189-4b7d-877e-478c9a7a5e5a/projectwaterlogo.png', 'rechazado', 1, 2020);
 /*!40000 ALTER TABLE `proyectos`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -469,6 +503,15 @@ CREATE TABLE `proyectos_asignaturas`
 LOCK TABLES `proyectos_asignaturas` WRITE;
 /*!40000 ALTER TABLE `proyectos_asignaturas`
     DISABLE KEYS */;
+INSERT INTO `proyectos_asignaturas`
+VALUES (1, 1),
+       (1, 2),
+       (1, 3),
+       (1, 194),
+       (2, 1),
+       (2, 2),
+       (2, 3),
+       (2, 194);
 /*!40000 ALTER TABLE `proyectos_asignaturas`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -576,14 +619,148 @@ LOCK TABLES `titulaciones_asignaturas` WRITE;
 /*!40000 ALTER TABLE `titulaciones_asignaturas`
     DISABLE KEYS */;
 INSERT INTO `titulaciones_asignaturas`
-VALUES (1, 6),
+VALUES (33, 1),
+       (18, 2),
+       (18, 3),
+       (18, 4),
+       (18, 5),
+       (1, 6),
+       (18, 7),
+       (18, 8),
+       (15, 9),
+       (15, 10),
+       (18, 10),
+       (18, 11),
+       (15, 12),
+       (18, 13),
+       (15, 14),
+       (18, 15),
+       (18, 16),
+       (18, 18),
+       (18, 19),
+       (18, 20),
+       (15, 21),
+       (15, 22),
+       (18, 23),
+       (18, 24),
+       (18, 25),
+       (18, 26),
+       (18, 27),
+       (18, 28),
+       (18, 29),
+       (18, 30),
+       (18, 31),
+       (18, 32),
+       (18, 33),
+       (18, 34),
+       (18, 35),
        (1, 36),
+       (18, 37),
+       (18, 38),
+       (18, 39),
+       (18, 40),
+       (18, 41),
+       (18, 42),
+       (18, 43),
+       (18, 44),
+       (18, 45),
+       (18, 46),
+       (18, 47),
+       (18, 48),
+       (18, 49),
+       (18, 50),
        (1, 51),
        (1, 52),
+       (18, 53),
+       (18, 54),
+       (18, 55),
+       (18, 56),
+       (18, 57),
+       (18, 58),
+       (18, 59),
+       (15, 60),
+       (15, 61),
+       (15, 62),
+       (15, 63),
+       (15, 66),
+       (15, 67),
+       (15, 68),
+       (15, 69),
+       (15, 70),
+       (15, 71),
+       (15, 72),
+       (15, 73),
+       (15, 74),
+       (15, 75),
+       (15, 76),
        (1, 77),
+       (15, 79),
+       (15, 80),
+       (15, 81),
+       (15, 82),
+       (15, 83),
+       (15, 84),
+       (15, 85),
        (1, 86),
+       (33, 86),
+       (15, 89),
+       (15, 90),
+       (15, 91),
+       (15, 92),
+       (15, 93),
+       (15, 94),
        (1, 95),
+       (15, 97),
+       (15, 98),
+       (15, 99),
+       (33, 100),
+       (15, 101),
+       (33, 102),
+       (33, 103),
+       (33, 104),
+       (33, 105),
+       (33, 106),
+       (33, 107),
+       (33, 108),
+       (33, 109),
+       (33, 110),
+       (33, 111),
+       (33, 112),
+       (33, 113),
+       (33, 114),
+       (33, 115),
+       (33, 116),
+       (33, 117),
+       (33, 118),
+       (33, 119),
+       (33, 120),
+       (33, 123),
+       (33, 124),
+       (33, 125),
+       (33, 126),
+       (33, 127),
+       (33, 128),
+       (33, 129),
+       (33, 130),
+       (33, 131),
+       (33, 132),
+       (33, 133),
+       (33, 134),
+       (33, 135),
+       (33, 136),
+       (33, 137),
        (1, 138),
+       (33, 138),
+       (33, 139),
+       (33, 140),
+       (33, 141),
+       (33, 142),
+       (33, 143),
+       (33, 144),
+       (33, 145),
+       (33, 146),
+       (33, 147),
+       (33, 148),
        (1, 149),
        (1, 150),
        (1, 151),
@@ -666,6 +843,7 @@ CREATE TABLE `usuarios`
     UNIQUE KEY `correo` (`correo`),
     UNIQUE KEY `alias` (`alias`)
 ) ENGINE = InnoDB
+  AUTO_INCREMENT = 3
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -677,6 +855,9 @@ CREATE TABLE `usuarios`
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios`
     DISABLE KEYS */;
+INSERT INTO `usuarios`
+VALUES (1, 'adrian.toral@live.u-tad.com', 'adriantoral', 'Adrian Toral', '$2a$10$pntUftxDSSovJTFQ6wwCpOKfaTSOCzciEsjT6Oech0Ghqd6FCA/Me', 'None', 'https://adriantoral.sertor.es/', 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png', 'alumno', 2019),
+       (2, 'admin.admin@u-tad.com', 'admin', 'Adrian Toral', '$2a$10$pntUftxDSSovJTFQ6wwCpOKfaTSOCzciEsjT6Oech0Ghqd6FCA/Me', 'None', 'https://adriantoral.sertor.es/', 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png', 'coordinador', 2019);
 /*!40000 ALTER TABLE `usuarios`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -690,4 +871,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-26 13:26:04
+-- Dump completed on 2024-04-20 20:36:00

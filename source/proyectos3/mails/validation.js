@@ -122,7 +122,7 @@ const mail = `
 <tr>
 <td class="pad" style="padding-bottom:30px;padding-left:10px;padding-right:10px;text-align:center;">
 <div align="center" class="alignment"><!--[if mso]>
-<v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="http://www.example.com" style="height:78px;width:389px;v-text-anchor:middle;" arcsize="13%" strokeweight="0.75pt" strokecolor="#0065f3" fillcolor="#0065f3">
+<v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="{{to_link}}" style="height:78px;width:389px;v-text-anchor:middle;" arcsize="13%" strokeweight="0.75pt" strokecolor="#0065f3" fillcolor="#0065f3">
 <w:anchorlock/>
 <v:textbox inset="0px,0px,0px,0px">
 <center style="color:#ffffff; font-family:Arial, sans-serif; font-size:26px">

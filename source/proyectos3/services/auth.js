@@ -116,8 +116,8 @@ const signup_cache = async (usuario) => {
                 html: validation_mail
                     .replace(/{{to_link}}/g, "https://reservorio-u-tad.com/validate/" + jwt.sign({cache_key: key}, process.env.JWT_SECRET, {expiresIn: process.env.JWT_SIGNUP_EXPIRES_IN})),
                 attachments: [{
-                    filename: 'validation.svg',
-                    path: __dirname + '/images/validation.svg',
+                    filename: 'validation.png',
+                    path: __dirname + '/images/validation.png',
                     cid: 'imagen2' 
                 }]
             }
@@ -217,8 +217,8 @@ const recover = async (correo) => {
                 .replace('{{correo}}', correo)
                 .replace('{{to_link}}', "https://reservorio-u-tad.com/recover/" + jwt.sign({id: data.id}, process.env.JWT_SECRET, {expiresIn: process.env.JWT_RECOVER_EXPIRES_IN})),
             attachments: [{
-                filename: 'recover.svg',
-                path: __dirname + '/images/recover.svg',
+                filename: 'recover.png',
+                path: __dirname + '/images/recover.png',
                 cid: 'imagen1' 
             }]
         }

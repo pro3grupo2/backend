@@ -14,7 +14,7 @@ const get_codigos = async (req, res) => {
 
 const create_codigo = async (req, res) => {
     try {
-        req.MATCHED.codigo = crypto.randomBytes(6).toString('hex')
+        req.MATCHED.codigo = crypto.randomBytes(5).toString('hex')
         return good_response(res, await codigos_service.create_codigo(req.MATCHED))
     } catch (e) {
         return bad_response(res, 400, e)

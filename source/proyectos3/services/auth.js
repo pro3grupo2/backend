@@ -215,7 +215,7 @@ const recover = async (correo) => {
             subject: "Recuperacion de contraseña U-Tad",
             html: recover_mail
                 .replace('{{correo}}', correo)
-                .replace('{{to_link}}', "https://reservorio-u-tad.com/recover/" + jwt.sign({id: data.id}, process.env.JWT_SECRET, {expiresIn: process.env.JWT_RECOVER_EXPIRES_IN})),
+                .replace(/{{to_link}}/g, "https://reservorio-u-tad.com/recover/" + jwt.sign({id: data.id}, process.env.JWT_SECRET, {expiresIn: process.env.JWT_RECOVER_EXPIRES_IN})),
             attachments: [{
                 filename: 'recover.png',
                 path: __dirname + '/images/recover.png',

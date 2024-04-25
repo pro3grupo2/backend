@@ -41,8 +41,25 @@ const create_proyecto = [
     validate
 ]
 
+/**
+ * Validation rules for updating a project
+ * @type {ValidationChain[]}
+ */
+const patch_proyecto = [
+    body('ficha', 'Type: String, Max-Length: None').exists().notEmpty().isString().optional(),
+    body('url', 'Type: String, Max-Length: None').exists().notEmpty().isString().optional(),
+    body('portada', 'Type: String, Max-Length: None').exists().notEmpty().isString().optional(),
+    body('participantes', 'Type: Array[Email]').default([]).exists().notEmpty().isArray().optional(),
+    body('asignaturas', 'Type: Array[Int]').default([]).exists().notEmpty().isArray().optional(),
+    body('premios', 'Type: Array[String]').default([]).exists().notEmpty().isArray().optional(),
+    body('premiado', 'Type: Bool').exists().notEmpty().isBoolean().optional(),
+    body('anio', 'Type: Year (YYYY)').exists().notEmpty().isInt().optional(),
+    validate
+]
+
 module.exports = {
     filters,
     create_proyecto_files,
-    create_proyecto
+    create_proyecto,
+    patch_proyecto
 }

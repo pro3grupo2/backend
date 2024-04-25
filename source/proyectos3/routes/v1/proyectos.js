@@ -75,6 +75,15 @@ router.post("/", auth_middleware.verificar_JWT, proyectos_validators.create_proy
 router.post("/subir", auth_middleware.verificar_JWT, proyectos_middleware.upload_file.fields([{name: "url", maxCount: 1}, {name: "portada", maxCount: 1}]), proyectos_middleware.inject_file_path_to_body, proyectos_validators.create_proyecto_files, proyectos_controller.create_proyecto_files)
 
 /**
+ * @route PATCH /:id
+ * @desc Update a project by its ID
+ * @access Admin
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware.
+ */
+router.patch("/:id", auth_middleware.verificar_JWT, global_validators.params_id, auth_middleware.is_administrador, proyectos_validators.patch_proyecto, proyectos_controller.patch_proyecto)
+
+/**
  * @route DELETE /:id
  * @desc Delete a project by id
  * @access Admin

@@ -108,6 +108,24 @@ const create_proyecto = async (req, res) => {
 }
 
 /**
+ * Update a specific project by its ID
+ * @async
+ * @function
+ * @param {object} req - Express request object containing the ID of the project to be updated and the new project data
+ * @param {object} res - Express response object
+ * @returns {Promise<object>} The response object containing the updated project
+ * @throws {Error} When there is an error updating the project
+ */
+const patch_proyecto = async (req, res) => {
+    try {
+        const {id, ...proyecto} = req.MATCHED
+        return good_response(res, await proyectos_service.patch_proyecto(id, proyecto))
+    } catch (e) {
+        return bad_response(res, 400, e)
+    }
+}
+
+/**
  * Delete a project by id
  * @async
  * @function
@@ -160,6 +178,7 @@ module.exports = {
     get_proyecto,
     create_proyecto_files,
     create_proyecto,
+    patch_proyecto,
     delete_proyecto,
     aceptar_proyecto,
     rechazar_proyecto

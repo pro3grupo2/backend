@@ -15,50 +15,36 @@ const proyectos_errors = require('../errors/proyectos')
  * @returns {Promise<object[]>} The fetched projects
  */
 const get_proyectos = async (page, filters) => {
-    let
-        hash = crypto.createHash('md5').update(JSON.stringify({page: page, ...filters})).digest('hex'),
-        cache_hash = `cached:proyectos:hash:${hash}`,
-        where_filters = {estado: filters.estado ?? 'aceptado'}
+    let hash = crypto.createHash('md5').update(JSON.stringify({page: page, ...filters})).digest('hex'), cache_hash = `cached:proyectos:hash:${hash}`, where_filters = {estado: filters.estado ?? 'aceptado'}
 
-    if ('busqueda' in filters)
-        where_filters.OR = [
-            {titulo: {contains: filters.busqueda}},
-            {usuarios: {OR: [{correo: {contains: filters.busqueda}}, {nombre_completo: {contains: filters.busqueda}}]}},
-            {participantes: {some: {correo: {contains: filters.busqueda}}}}
-        ]
+    if ('busqueda' in filters) where_filters.OR = [{titulo: {contains: filters.busqueda}}, {usuarios: {OR: [{correo: {contains: filters.busqueda}}, {nombre_completo: {contains: filters.busqueda}}]}}, {participantes: {some: {correo: {contains: filters.busqueda}}}}]
 
-    if ('premiado' in filters)
-        where_filters.premiado = filters.premiado
+    if ('premiado' in filters) where_filters.premiado = filters.premiado
 
-    if ('anio' in filters)
-        where_filters.anio = filters.anio
+    if ('anio' in filters) where_filters.anio = filters.anio
 
-    if ('titulaciones' in filters || 'area' in filters)
-        where_filters.proyectos_asignaturas = {
-            some: {
-                asignaturas: {
-                    titulaciones_asignaturas: {
-                        some: {
-                            titulaciones: {
-                                AND: {
-                                    id: {in: filters.titulaciones},
-                                    id_area: filters.area
-                                }
+    if ('titulaciones' in filters || 'area' in filters) where_filters.proyectos_asignaturas = {
+        some: {
+            asignaturas: {
+                titulaciones_asignaturas: {
+                    some: {
+                        titulaciones: {
+                            AND: {
+                                id: {in: filters.titulaciones}, id_area: filters.area
                             }
                         }
                     }
                 }
             }
         }
+    }
 
     let data = await leer_cache(cache_hash)
     if (data) return data
 
     const pagination_size = parseInt(process.env.PAGINATION_SIZE)
     data = await prisma.proyectos.findMany({
-        skip: pagination_size * page, take: pagination_size,
-        where: where_filters,
-        include: {
+        skip: pagination_size * page, take: pagination_size, where: where_filters, include: {
             usuarios: {
                 select: {
                     id: true, correo: true, alias: true, nombre_completo: true, descripcion: true, portfolio: true, foto: true, rol: true, promocion: true
@@ -117,9 +103,7 @@ const get_proyectos = async (page, filters) => {
  * @returns {Promise<object[]>} The fetched projects
  */
 const get_me_proyectos = async (user_id) => {
-    let
-        cache_hash = `cached:proyectos:usuario:${user_id}`,
-        data = await leer_cache(cache_hash)
+    let cache_hash = `cached:proyectos:usuario:${user_id}`, data = await leer_cache(cache_hash)
 
     if (data) return data
 
@@ -185,9 +169,7 @@ const get_me_proyectos = async (user_id) => {
  * @returns {Promise<object>} The fetched project
  */
 const get_proyecto = async (id) => {
-    let
-        cache_hash = `cached:proyectos:proyecto:${id}`,
-        data = await leer_cache(cache_hash)
+    let cache_hash = `cached:proyectos:proyecto:${id}`, data = await leer_cache(cache_hash)
 
     if (data) return data
 
@@ -288,6 +270,58 @@ const create_proyecto = async (proyecto) => {
 }
 
 /**
+ * Update a specific project by its ID
+ * @async
+ * @function
+ * @param {string} id - The ID of the project
+ * @param {object} proyecto - The new project data
+ * @returns {Promise<object>} The updated project
+ * @throws {Error} When there is an error updating the project
+ */
+const patch_proyecto = async (id, proyecto) => {
+    try {
+        // Clear cache patterns
+        await limpiar_cache_pattern('cached:proyectos:hash:*')
+        await limpiar_cache_pattern('cached:proyectos:usuario:*')
+        await limpiar_cache_pattern(`cached:proyectos:proyecto:${id}`)
+
+        let {participantes, asignaturas, premios, ...query} = proyecto
+
+        if (participantes) query.participantes = {
+            createMany: {
+                data: proyecto.participantes.map((correo) => ({correo: correo})), skipDuplicates: true
+            }
+        }
+
+        if (asignaturas) query.proyectos_asignaturas = {
+            createMany: {
+                data: proyecto.asignaturas.map((id) => ({id_asignatura: id})), skipDuplicates: true
+            }
+        }
+
+        if (premios) query.premios = {
+            createMany: {
+                data: proyecto.premios.map((titulo) => ({titulo: titulo})), skipDuplicates: true
+            }
+        }
+
+        // Update the project in the database
+        const data = await prisma.proyectos.update({
+            where: {
+                id: id
+            },
+            data: query
+        })
+
+        // Return the updated project
+        return await get_proyecto(data.id)
+    } catch (e) {
+        // Throw an error if the update fails
+        throw new Error(`${proyectos_errors.WRONG_PATCH}: ${e.message}`)
+    }
+}
+
+/**
  * Delete a specific project by its ID
  * @async
  * @function
@@ -379,5 +413,12 @@ const rechazar_proyecto = async (id) => {
 }
 
 module.exports = {
-    get_proyectos, get_me_proyectos, get_proyecto, create_proyecto, delete_proyecto, aceptar_proyecto, rechazar_proyecto
+    get_proyectos,
+    get_me_proyectos,
+    get_proyecto,
+    create_proyecto,
+    patch_proyecto,
+    delete_proyecto,
+    aceptar_proyecto,
+    rechazar_proyecto
 }

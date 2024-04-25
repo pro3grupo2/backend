@@ -23,3 +23,7 @@ Content-Type: application/json
 {
   "usos": 1
 }
+
+### /api/v1/codigos/1
+DELETE http://localhost:3000/api/v1/codigos/1
+Authorization: Bearer {{auth_token}}

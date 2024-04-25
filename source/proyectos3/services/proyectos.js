@@ -1,6 +1,8 @@
+const crypto = require("crypto")
+
 const prisma = require('../databases/mysql')
 const {hook_updates} = require("../databases/discord")
-const {leer_cache, escribir_cache, limpiar_cache, limpiar_cache_pattern} = require("../databases/redis")
+const {leer_cache, escribir_cache, limpiar_cache_pattern} = require("../databases/redis")
 
 const proyectos_errors = require('../errors/proyectos')
 
@@ -14,8 +16,9 @@ const proyectos_errors = require('../errors/proyectos')
  */
 const get_proyectos = async (page, filters) => {
     let
-        where_filters = {estado: filters.estado ?? 'aceptado'},
-        has_filters = Object.keys(filters).length !== 0
+        hash = crypto.createHash('md5').update(JSON.stringify({page: page, ...filters})).digest('hex'),
+        cache_hash = `cached:proyectos:hash:${hash}`,
+        where_filters = {estado: filters.estado ?? 'aceptado'}
 
     if ('busqueda' in filters)
         where_filters.OR = [
@@ -48,9 +51,7 @@ const get_proyectos = async (page, filters) => {
             }
         }
 
-    if (has_filters) await limpiar_cache([`cached:proyectos:page:${page}`])
-
-    let data = await leer_cache(`cached:proyectos:page:${page}`)
+    let data = await leer_cache(cache_hash)
     if (data) return data
 
     const pagination_size = parseInt(process.env.PAGINATION_SIZE)
@@ -100,10 +101,10 @@ const get_proyectos = async (page, filters) => {
 
     if (!data.length) return data
 
-    if (!has_filters) await escribir_cache([{
-        key: `cached:proyectos:page:${page}`, data: data
+    await escribir_cache([{
+        key: cache_hash, data: data
     }], process.env.REDIS_PROYECTOS_EXPIRES_IN)
-    await hook_updates.success("Proyectos cacheados", new Date().toISOString(), JSON.stringify(data).substring(0, 1024))
+    await hook_updates.success(`Proyectos cacheados ${hash}`, new Date().toISOString(), JSON.stringify(data).substring(0, 1024))
 
     return data
 }
@@ -116,7 +117,10 @@ const get_proyectos = async (page, filters) => {
  * @returns {Promise<object[]>} The fetched projects
  */
 const get_me_proyectos = async (user_id) => {
-    let data = await leer_cache(`cached:proyectos:user:${user_id}`)
+    let
+        cache_hash = `cached:proyectos:usuario:${user_id}`,
+        data = await leer_cache(cache_hash)
+
     if (data) return data
 
     data = await prisma.proyectos.findMany({
@@ -166,9 +170,9 @@ const get_me_proyectos = async (user_id) => {
     if (!data.length) return data
 
     await escribir_cache([{
-        key: `cached:proyectos:user:${user_id}`, data: data
+        key: cache_hash, data: data
     }], process.env.REDIS_PROYECTOS_EXPIRES_IN)
-    await hook_updates.success(`Proyectos de usuario ${user_id} cacheados`, new Date().toISOString(), JSON.stringify(data).substring(0, 1024))
+    await hook_updates.success(`Proyectos cacheados ${user_id} (usuario)`, new Date().toISOString(), JSON.stringify(data).substring(0, 1024))
 
     return data
 }
@@ -181,7 +185,10 @@ const get_me_proyectos = async (user_id) => {
  * @returns {Promise<object>} The fetched project
  */
 const get_proyecto = async (id) => {
-    let data = await leer_cache(`cached:proyectos:${id}`)
+    let
+        cache_hash = `cached:proyectos:proyecto:${id}`,
+        data = await leer_cache(cache_hash)
+
     if (data) return data
 
     data = await prisma.proyectos.findUnique({
@@ -231,9 +238,9 @@ const get_proyecto = async (id) => {
     if (!data) throw new Error(proyectos_errors.NOT_FOUND)
 
     await escribir_cache([{
-        key: `cached:proyectos:${id}`, data: data
+        key: cache_hash, data: data
     }], process.env.REDIS_PROYECTOS_EXPIRES_IN)
-    await hook_updates.success("Proyecto cacheado", new Date().toISOString(), JSON.stringify(data).substring(0, 1024))
+    await hook_updates.success(`Proyectos cacheados ${id} (proyecto)`, new Date().toISOString(), JSON.stringify(data).substring(0, 1024))
 
     return data
 }
@@ -247,8 +254,8 @@ const get_proyecto = async (id) => {
  */
 const create_proyecto = async (proyecto) => {
     try {
-        await limpiar_cache_pattern('cached:proyectos:page:*')
-        await limpiar_cache_pattern('cached:proyectos:user:*')
+        await limpiar_cache_pattern('cached:proyectos:hash:*')
+        await limpiar_cache_pattern(`cached:proyectos:usuario:${proyecto.id_creador}`)
 
         const data = await prisma.proyectos.create({
             data: {
@@ -289,9 +296,9 @@ const create_proyecto = async (proyecto) => {
  */
 const delete_proyecto = async (id) => {
     try {
-        await limpiar_cache_pattern('cached:proyectos:page:*')
-        await limpiar_cache_pattern('cached:proyectos:user:*')
-        await limpiar_cache([`cached:proyectos:${id}`])
+        await limpiar_cache_pattern('cached:proyectos:hash:*')
+        await limpiar_cache_pattern('cached:proyectos:usuario:*')
+        await limpiar_cache_pattern(`cached:proyectos:proyecto:${id}`)
 
         await prisma.participantes.deleteMany({
             where: {
@@ -330,9 +337,9 @@ const delete_proyecto = async (id) => {
  */
 const aceptar_proyecto = async (id) => {
     try {
-        await limpiar_cache_pattern('cached:proyectos:page:*')
-        await limpiar_cache_pattern('cached:proyectos:user:*')
-        await limpiar_cache([`cached:proyectos:${id}`])
+        await limpiar_cache_pattern('cached:proyectos:hash:*')
+        await limpiar_cache_pattern('cached:proyectos:usuario:*')
+        await limpiar_cache_pattern(`cached:proyectos:proyecto:${id}`)
 
         return await prisma.proyectos.update({
             where: {
@@ -355,9 +362,9 @@ const aceptar_proyecto = async (id) => {
  */
 const rechazar_proyecto = async (id) => {
     try {
-        await limpiar_cache_pattern('cached:proyectos:page:*')
-        await limpiar_cache_pattern('cached:proyectos:user:*')
-        await limpiar_cache([`cached:proyectos:${id}`])
+        await limpiar_cache_pattern('cached:proyectos:hash:*')
+        await limpiar_cache_pattern('cached:proyectos:usuario:*')
+        await limpiar_cache_pattern(`cached:proyectos:proyecto:${id}`)
 
         return await prisma.proyectos.update({
             where: {

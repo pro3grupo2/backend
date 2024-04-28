@@ -103,14 +103,16 @@ const signup_cache = async (usuario) => {
     try {
         const
             transporter = nodemailer.createTransport({
-                service: 'gmail',
+                host: process.env.MAIL_HOST,
+                port: process.env.MAIL_PORT,
+                secure: true,
                 auth: {
-                    user: 'recuperacion.repositorio.utad@gmail.com',
-                    pass: 'sfxn ucvq enin goeh',
+                    user: process.env.MAIL_USER, // The email address to authenticate with
+                    pass: process.env.MAIL_PASSWORD, // The password to authenticate with
                 },
             }),
             mailOptions = {
-                from: 'recuperacion.repositorio.utad@gmail.com',
+                from: process.env.MAIL_USER,
                 to: usuario.correo,
                 subject: "Verificacion de tu cuenta U-Tad",
                 html: validation_mail
@@ -118,7 +120,7 @@ const signup_cache = async (usuario) => {
                 attachments: [{
                     filename: 'validation.png',
                     path: __dirname + '/images/validation.png',
-                    cid: 'imagen2' 
+                    cid: 'imagen2'
                 }]
             }
 
@@ -203,14 +205,16 @@ const recover = async (correo) => {
 
     const
         transporter = nodemailer.createTransport({
-            service: 'gmail',
+            host: process.env.MAIL_HOST,
+            port: process.env.MAIL_PORT,
+            secure: true,
             auth: {
-                user: 'recuperacion.repositorio.utad@gmail.com',
-                pass: 'sfxn ucvq enin goeh',
+                user: process.env.MAIL_USER, // The email address to authenticate with
+                pass: process.env.MAIL_PASSWORD, // The password to authenticate with
             },
         }),
         mailOptions = {
-            from: 'recuperacion.repositorio.utad@gmail.com',
+            from: process.env.MAIL_USER,
             to: correo,
             subject: "Recuperacion de contraseña U-Tad",
             html: recover_mail
@@ -219,7 +223,7 @@ const recover = async (correo) => {
             attachments: [{
                 filename: 'recover.png',
                 path: __dirname + '/images/recover.png',
-                cid: 'imagen1' 
+                cid: 'imagen1'
             }]
         }
 

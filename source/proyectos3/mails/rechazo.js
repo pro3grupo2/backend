@@ -105,7 +105,7 @@ const mail = `
 <table border="0" cellpadding="0" cellspacing="0" class="heading_block block-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
 <tr>
 <td class="pad" style="text-align:center;width:100%;">
-<h1 style="margin: 0; color: #0065f3; direction: ltr; font-family: 'Cabin', Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 33px; font-weight: 400; letter-spacing: normal; line-height: 120%; text-align: center; margin-top: 0; margin-bottom: 0; mso-line-height-alt: 39.6px;"><strong>¡Ya casi eres un nuevo miembro de U-Reservorio!</strong></h1>
+<h1 style="margin: 0; color: #0065f3; direction: ltr; font-family: 'Cabin', Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 33px; font-weight: 400; letter-spacing: normal; line-height: 120%; text-align: center; margin-top: 0; margin-bottom: 0; mso-line-height-alt: 39.6px;"><strong>¡Lo sentimos!</strong></h1>
 </td>
 </tr>
 </table>

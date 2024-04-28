@@ -1,10 +1,13 @@
 const crypto = require("crypto")
+const nodemailer = require("nodemailer")
 
 const prisma = require('../databases/mysql')
 const {hook_updates} = require("../databases/discord")
 const {leer_cache, escribir_cache, limpiar_cache_pattern} = require("../databases/redis")
 
 const proyectos_errors = require('../errors/proyectos')
+const rechazo_mail = require("../mails/rechazo")
+
 
 /**
  * Fetch all projects with optional filters
@@ -400,14 +403,44 @@ const rechazar_proyecto = async (id) => {
         await limpiar_cache_pattern('cached:proyectos:usuario:*')
         await limpiar_cache_pattern(`cached:proyectos:proyecto:${id}`)
 
-        return await prisma.proyectos.update({
+        const data = await prisma.proyectos.update({
             where: {
                 id: id
             }, data: {
                 estado: 'rechazado'
+            },
+            include: {
+                usuarios: true
             }
         })
-    } catch (e) {
+
+        const
+            transporter = nodemailer.createTransport({
+                host: process.env.MAIL_HOST,
+                port: process.env.MAIL_PORT,
+                secure: true,
+                auth: {
+                    user: process.env.MAIL_USER, // The email address to authenticate with
+                    pass: process.env.MAIL_PASSWORD, // The password to authenticate with
+                },
+            }),
+            mailOptions = {
+                from: process.env.MAIL_USER,
+                to: data.usuarios.correo,
+                subject: "Estado de tu proyecto U-Tad",
+                html: rechazo_mail
+            }
+
+        await new Promise((resolve, reject) => {
+            transporter.sendMail(mailOptions, (error, info) => {
+                if (error) reject(error)
+                else resolve(info)
+            })
+        })
+
+        return data
+
+    } catch (error) {
         throw new Error(`${proyectos_errors.WRONG_VALIDATION}: ${e.message}`)
     }
 }

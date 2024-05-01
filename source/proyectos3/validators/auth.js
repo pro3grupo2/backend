@@ -1,7 +1,7 @@
 const {body} = require('express-validator')
 const {validate} = require('.')
 
-const password_validator = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+const password_validator = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!"#$%&'()*+,-.\/:;<=>?@[^_`{|}~])[A-Za-z\d!"#$%&'()*+,-.\/:;<=>?@[^_`{|}~]{8,}$/
 
 const signin = [
     body('correo', 'Type: String, Max-Length: 200').exists().notEmpty().isEmail().isLength({max: 200}),

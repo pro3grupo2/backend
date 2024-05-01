@@ -47,7 +47,7 @@ const get_proyectos = async (page, filters) => {
 
     const pagination_size = parseInt(process.env.PAGINATION_SIZE)
     data = await prisma.proyectos.findMany({
-        skip: pagination_size * page, take: pagination_size, where: where_filters, include: {
+        orderBy: {id: 'desc'}, skip: pagination_size * page, take: pagination_size, where: where_filters, include: {
             usuarios: {
                 select: {
                     id: true, correo: true, alias: true, nombre_completo: true, descripcion: true, portfolio: true, foto: true, rol: true, promocion: true
@@ -111,6 +111,7 @@ const get_me_proyectos = async (user_id) => {
     if (data) return data
 
     data = await prisma.proyectos.findMany({
+        orderBy: {id: 'desc'},
         where: {
             id_creador: user_id
         }, include: {

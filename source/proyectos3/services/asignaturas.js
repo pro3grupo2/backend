@@ -4,7 +4,7 @@ const asignaturas_errors = require('../errors/asignaturas')
 
 const get_asignaturas = async () => {
     return prisma.asignaturas.findMany({
-        include: {
+        orderBy: {titulo: 'asc'}, include: {
             titulaciones_asignaturas: {
                 select: {
                     titulaciones: {

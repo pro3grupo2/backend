@@ -20,8 +20,14 @@ const params_id = [
     validate
 ]
 
+const params_string = [
+    param('param', 'Type: String').exists().isString(),
+    validate
+]
+
 module.exports = {
     validate,
     pagination,
-    params_id
+    params_id,
+    params_string
 }

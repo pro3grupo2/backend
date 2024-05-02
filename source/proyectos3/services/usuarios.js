@@ -16,6 +16,7 @@ const get_users = async (page) => {
                 rol: true,
                 promocion: true,
                 proyectos: {
+                    orderBy: {id: 'desc'},
                     include: {
                         usuarios: {
                             select: {
@@ -79,6 +80,7 @@ const get_user_by_id = async (id) => {
                 rol: true,
                 promocion: true,
                 proyectos: {
+                    orderBy: {id: 'desc'},
                     include: {
                         usuarios: {
                             select: {
@@ -147,6 +149,7 @@ const get_user_by_correo = async (correo) => {
                 rol: true,
                 promocion: true,
                 proyectos: {
+                    orderBy: {id: 'desc'},
                     include: {
                         usuarios: {
                             select: {

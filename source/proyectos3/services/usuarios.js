@@ -17,6 +17,12 @@ const get_users = async (page) => {
                 promocion: true,
                 proyectos: {
                     include: {
+                        usuarios: {
+                            select: {
+                                id: true, correo: true, alias: true, nombre_completo: true, descripcion: true, portfolio: true, foto: true, rol: true, promocion: true
+                            }
+                        },
+
                         premios: {
                             select: {id: true, titulo: true}
                         },
@@ -74,6 +80,12 @@ const get_user_by_id = async (id) => {
                 promocion: true,
                 proyectos: {
                     include: {
+                        usuarios: {
+                            select: {
+                                id: true, correo: true, alias: true, nombre_completo: true, descripcion: true, portfolio: true, foto: true, rol: true, promocion: true
+                            }
+                        },
+
                         premios: {
                             select: {id: true, titulo: true}
                         },
@@ -136,6 +148,12 @@ const get_user_by_correo = async (correo) => {
                 promocion: true,
                 proyectos: {
                     include: {
+                        usuarios: {
+                            select: {
+                                id: true, correo: true, alias: true, nombre_completo: true, descripcion: true, portfolio: true, foto: true, rol: true, promocion: true
+                            }
+                        },
+
                         premios: {
                             select: {id: true, titulo: true}
                         },

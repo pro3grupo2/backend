@@ -4,7 +4,10 @@ const titulaciones_errors = require('../errors/titulaciones')
 
 const get_titulaciones = async () => {
     return prisma.titulaciones.findMany({
-        orderBy: {titulo: 'asc'}
+        orderBy: {titulo: 'asc'},
+        include: {
+            areas: true
+        }
     })
 }
 

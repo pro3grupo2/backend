@@ -3,7 +3,9 @@ const prisma = require('../databases/mysql')
 const areas_errors = require('../errors/areas')
 
 const get_areas = async () => {
-    return prisma.areas.findMany({})
+    return prisma.areas.findMany({
+        orderBy: {titulo: 'asc'}
+    })
 }
 
 const get_area = async (id) => {

@@ -3,7 +3,9 @@ const prisma = require('../databases/mysql')
 const titulaciones_errors = require('../errors/titulaciones')
 
 const get_titulaciones = async () => {
-    return prisma.titulaciones.findMany({})
+    return prisma.titulaciones.findMany({
+        orderBy: {titulo: 'asc'}
+    })
 }
 
 const get_titulacion = async (id) => {

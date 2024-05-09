@@ -800,7 +800,7 @@ CREATE TABLE `usuarios`
     UNIQUE KEY `correo` (`correo`),
     UNIQUE KEY `alias` (`alias`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 2
+  AUTO_INCREMENT = 3
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -813,7 +813,8 @@ LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios`
     DISABLE KEYS */;
 INSERT INTO `usuarios`
-VALUES (1, 'adrian.toral@live.u-tad.com', 'adriantoral', 'Adrian Toral', '$2a$10$pntUftxDSSovJTFQ6wwCpOKfaTSOCzciEsjT6Oech0Ghqd6FCA/Me', 'None', 'https://adriantoral.sertor.es/', 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png', 'coordinador', 2019);
+VALUES (1, 'adrian.toral@live.u-tad.com', 'adriantoral', 'Adrian Toral', '$2a$10$pntUftxDSSovJTFQ6wwCpOKfaTSOCzciEsjT6Oech0Ghqd6FCA/Me', 'Admin todopoderoso', 'https://adriantoral.sertor.es/', 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png', 'coordinador', 2019),
+       (2, 'pablo.perez2@u-tad.com', 'pabloperez2', 'Pablo Perez', '$2a$10$GOW0uBjIFr81fofk9PtRKu8mJ3Cr7kKfsUdC6g3Dz6ORosnZg0wR.', 'Pablito Perez', 'https://u-tad.com', 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png', 'coordinador', 2024);
 /*!40000 ALTER TABLE `usuarios`
     ENABLE KEYS */;
 UNLOCK TABLES;

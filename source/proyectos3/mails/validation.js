@@ -143,7 +143,7 @@ const mail = `
 <tr>
 <td class="pad" style="padding-bottom:25px;padding-left:60px;padding-right:60px;padding-top:20px;">
 <div style="color:#101112;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:120%;text-align:justify;mso-line-height-alt:19.2px;">
-<p style="margin: 0;">En caso de que el botón no funcione, simplemente copie y pegue la siguiente URL en una nueva ventana del navegador para completar el proceso.<br/><br/>Equipo de U-tad</p>
+<p style="margin: 0;">Equipo de U-tad</p>
 </div>
 </td>
 </tr>
